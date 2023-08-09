@@ -1,0 +1,7 @@
+.arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+.login-stack:hover .arrow-icon {
+    transform: translateX(2px);
+}

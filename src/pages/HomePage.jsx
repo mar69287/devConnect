@@ -1,8 +1,8 @@
-import React from 'react'
+import NonUserNavBar from "../components/NavBar/NonUserNavBar"
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <NonUserNavBar />
   )
 }
 
