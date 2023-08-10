@@ -8,7 +8,7 @@ import '../../components/NavBar/NavBar.css'
 const Hero = () => {
   const renderEmptyIndicator = () => <div></div>;
   return (
-    <Box minH="100vh" m='0 auto' display="flex" justifyContent={"center"} alignItems="center" p={'0 1rem'} width={{xl: '100%', '2xl': '1400px'}}>
+    <Box className="hero" minH="100vh" m='0 auto' display="flex" justifyContent={"center"} alignItems="center" p={'70px 1rem 0 1rem'} width={{xl: '100%', '2xl': '1400px'}}>
       <VStack >
         <Heading align={'center'}  fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(255, 255, 255)">Empowering Developers in the Digital Era.</Heading>
         <Heading align={'center'} marginBottom={3} fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(105, 107, 111)">Networking and Collaborating on Your Own Terms.</Heading>
