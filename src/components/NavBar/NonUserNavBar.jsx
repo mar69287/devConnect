@@ -1,4 +1,4 @@
-import { Box, HStack, Heading } from '@chakra-ui/react'
+import { Box, HStack, Heading, Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowRight } from 'react-icons/md'; 
 import './NavBar.css';
@@ -12,10 +12,12 @@ const NonUserNavBar = () => {
                   devConnect
               </Heading>
           </HStack>
-          <HStack className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0} color={'rgb(204, 206, 209)'} p={'.3rem 1rem'} backgroundColor={'rgb(29, 33, 39)'} borderRadius={50}>
-              <Link to='/auth'>Login</Link>
-                  <MdKeyboardArrowRight className="arrow-icon"/>
-          </HStack>
+          <Link to='/auth'>
+            <HStack className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0} color={'rgb(204, 206, 209)'} p={'.3rem 1rem'} backgroundColor={'rgb(29, 33, 39)'} borderRadius={50}>
+              <Text>Login</Text>
+              <MdKeyboardArrowRight className="arrow-icon"/>
+            </HStack>
+          </Link>
       </HStack>
     </Box>
   )
