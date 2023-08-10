@@ -19,7 +19,7 @@ const Hero = () => {
             </HStack>
         </Link>
         <Text align={'center'} color={'rgb(123, 125, 128)'} fontSize={'1.1rem'}>devConnect fuels your growth by channeling <br />your coding skills into meaningful</Text>
-        <Carousel infiniteLoop showArrows={false} autoPlay interval={5000} showStatus={false} showThumbs={false} renderIndicator={renderEmptyIndicator}>
+        <Carousel width={'20rem'} infiniteLoop showArrows={false} autoPlay interval={5000} showStatus={false}  renderIndicator={renderEmptyIndicator}>
             <Box><Text align={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.1rem'}>Connections</Text></Box>
             <Box><Text align={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.1rem'}>Collabortive projects</Text></Box>
             <Box><Text align={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.1rem'}>Career-enhancing opportunities</Text></Box>
