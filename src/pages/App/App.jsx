@@ -8,6 +8,7 @@ import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage';
 import { Navigate } from 'react-router-dom';
+import NonUserNavBar from '../../components/NavBar/NonUserNavBar';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -25,10 +26,13 @@ export default function App() {
         </>
         :
         // <AuthPage setUser={setUser} />
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="*" element={<Navigate replace to="/" />} />
-        </Routes>
+        <>
+          {/* <NonUserNavBar /> */}
+          <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="*" element={<Navigate replace to="/" />} />
+          </Routes>
+        </>
         
       }
     </main>
