@@ -5,7 +5,7 @@ import './NavBar.css';
 
 const NonUserNavBar = () => {
   return (
-    <Box w={'100vw'} position={'fixed'} top={0} zIndex={3}>
+    <Box w={'100vw'} position={'fixed'} top={0} zIndex={3} backgroundColor={'rgb(15, 16, 19)'}>
       <HStack width={{lg: '100%', '2xl': '1400px'}} m='5px auto' justifyContent={'space-between'} p='.9rem 1.2rem'>
           <HStack>
               <Heading _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} as={'h1'} fontSize={{ base: '1.1rem', md: '1.3rem', lg: '1.5rem' }} color="rgb(255, 255, 255)" p={'.3rem .1rem'} borderColor={'rgb(255, 255, 255)'} borderBottom={'2px solid'} borderTop={'2px solid'}>
