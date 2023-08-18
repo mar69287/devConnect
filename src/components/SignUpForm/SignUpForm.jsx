@@ -61,7 +61,7 @@ export default function SignUpForm({ setUser }) {
           </Button>
           {formData.error && <Text color="red.500">{formData.error}</Text>}
         </Stack>
-        <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', md: 'row'}} justifyContent={'center'}>
+        <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'row'}} justifyContent={'center'} alignItems={'center'}>
           <Text>Already registered?{' '}</Text>
           <Link to={'/login'}>
             <Text as={'b'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Login</Text>

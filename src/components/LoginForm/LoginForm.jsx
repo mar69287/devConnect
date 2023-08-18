@@ -44,14 +44,14 @@ export default function LoginForm({ setUser }) {
         </Button>
         {error && <Text color="red.500">{error}</Text>}
       </VStack>
-      <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', md: 'row'}} justifyContent={'center'}>
-          <Text>New to devConnect?{' '}</Text>
+      <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', lg: 'row'}} justifyContent={'center'} alignItems={'center'}>
+          <Text textAlign={'center'}>New to devConnect?{' '}</Text>
           <Link to={'/signup'}>
-            <Text as={'b'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Create your account</Text>
+            <Text as={'b'} textAlign={'center'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Create your account</Text>
           </Link>
       </Stack>
       <Center>
-        <Text color="rgb(255, 255, 255)">(Demo: email: user@user.com password: user)</Text>
+        <Text textAlign={'center'} color="rgb(255, 255, 255)">(Demo: email: user@user.com password: user)</Text>
       </Center>
     </Stack>
   );
