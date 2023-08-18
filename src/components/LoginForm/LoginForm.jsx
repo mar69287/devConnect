@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
+import { FormControl, FormLabel, Input, Button, Text, VStack, Heading, Stack } from "@chakra-ui/react";
 
 export default function LoginForm({ setUser }) {
   const [credentials, setCredentials] = useState({
@@ -7,6 +9,7 @@ export default function LoginForm({ setUser }) {
     password: ''
   });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   function handleChange(evt) {
     setCredentials({ ...credentials, [evt.target.name]: evt.target.value });
@@ -18,23 +21,28 @@ export default function LoginForm({ setUser }) {
     try {
       const user = await usersService.login(credentials);
       setUser(user);
+      navigate('/');
     } catch {
       setError('Log In Failed - Try Again');
     }
   }
 
   return (
-    <div>
-      <div className="form-container">
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input type="text" name="email" value={credentials.email} onChange={handleChange} required />
-          <label>Password</label>
-          <input type="password" name="password" value={credentials.password} onChange={handleChange} required />
-          <button type="submit">LOG IN</button>
-        </form>
-      </div>
-      <p className="error-message">&nbsp;{error}</p>
-    </div>
+    <Stack width={{ base: "100%", md: "50%" }} m="auto">
+      <VStack spacing={4}>
+        <FormControl id="email" isRequired>
+          <FormLabel color={'rgb(105, 107, 111)'}>Email</FormLabel>
+          <Input color={'rgb(105, 107, 111)'} type="email" name="email" value={credentials.email} onChange={handleChange} required />
+        </FormControl>
+        <FormControl id="password" isRequired>
+          <FormLabel color={'rgb(105, 107, 111)'}>Password</FormLabel>
+          <Input color={'rgb(105, 107, 111)'} type="password" name="password" value={credentials.password} onChange={handleChange} required />
+        </FormControl>
+        <Button _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)'}} transition='all 0.3s ease-in-out' backgroundColor={'rgb(255, 255, 255)'} borderRadius={50} background={'rgb(230, 137, 50)'} type="submit" onClick={handleSubmit}>
+          Continue
+        </Button>
+        {error && <Text color="red.500">{error}</Text>}
+      </VStack>
+    </Stack>
   );
 }
