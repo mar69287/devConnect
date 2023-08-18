@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
+import { Link } from "react-router-dom";
 import { FormControl, FormLabel, Input, Button, Text, VStack, Center, Stack } from "@chakra-ui/react";
 
 export default function LoginForm({ setUser }) {
@@ -45,7 +46,9 @@ export default function LoginForm({ setUser }) {
       </VStack>
       <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', md: 'row'}} justifyContent={'center'}>
           <Text>New to devConnect?{' '}</Text>
-          <Text as={'b'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Create your account</Text>
+          <Link to={'/signup'}>
+            <Text as={'b'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Create your account</Text>
+          </Link>
       </Stack>
       <Center>
         <Text color="rgb(255, 255, 255)">(Demo: email: user@user.com password: user)</Text>
