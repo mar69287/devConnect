@@ -12,7 +12,7 @@ const NonUserNavBar = () => {
                   devConnect
               </Heading>
           </HStack>
-          <Link to='/auth'>
+          <Link to='/login'>
             <HStack className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0} color={'rgb(204, 206, 209)'} p={'.3rem 1rem'} backgroundColor={'rgb(29, 33, 39)'} borderRadius={50}>
               <Text>Login</Text>
               <MdKeyboardArrowRight className="arrow-icon"/>
