@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
-import { FormControl, FormLabel, Input, Button, Text, VStack, Heading, Stack } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Button, Text, VStack, Center, Stack } from "@chakra-ui/react";
 
 export default function LoginForm({ setUser }) {
   const [credentials, setCredentials] = useState({
@@ -28,7 +28,7 @@ export default function LoginForm({ setUser }) {
   }
 
   return (
-    <Stack width={{ base: "100%", md: "50%" }} m="auto">
+    <Stack width={{ base: "100%", md: "75%" }} m="auto">
       <VStack spacing={4}>
         <FormControl id="email" isRequired>
           <FormLabel color={'rgb(105, 107, 111)'}>Email</FormLabel>
@@ -43,6 +43,13 @@ export default function LoginForm({ setUser }) {
         </Button>
         {error && <Text color="red.500">{error}</Text>}
       </VStack>
+      <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', md: 'row'}} justifyContent={'center'}>
+          <Text>New to devConnect?{' '}</Text>
+          <Text as={'b'} _hover={{ bgGradient:'linear(to-l, #7928CA, #FF0080)'}}  bgGradient='linear(to-l, #FF0080, #7928CA)' cursor={'pointer'} bgClip='text' >Create your account</Text>
+      </Stack>
+      <Center>
+        <Text color="rgb(255, 255, 255)">(Demo: email: user@user.com password: user)</Text>
+      </Center>
     </Stack>
   );
 }
