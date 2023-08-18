@@ -31,7 +31,7 @@ export default function App() {
           {/* <NonUserNavBar /> */}
           <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login " element={<LoginPage />} />
               <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </>
