@@ -9,7 +9,7 @@ const SignUpPage = ({ setUser }) => {
             <AbsoluteCenter>
                 <HStack width={{base: '100vw', '2xl': '1400px'}} p={5}>
                     <VStack flex={1}>
-                        <Heading color={'white'} textAlign={'center'}>Let's create an account!</Heading>
+                        <Heading color={'white'} fontSize={'2xl'} textAlign={'center'} mb={3}>Let's create an account!</Heading>
                         <SignUpForm setUser={setUser}/>
                     </VStack>
                     <Show breakpoint='(min-width: 600px)'>
