@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Box, HStack, Heading, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider } from '@chakra-ui/react'
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { AiFillHome } from 'react-icons/ai'
 import { BsPeopleFill } from 'react-icons/bs'
@@ -41,12 +41,42 @@ export default function NavBar({ user, setUser }) {
                         <BiSolidMessageRoundedDetail fontSize={20}/>
                         <Text fontSize={15}>Messages</Text>
                     </VStack>
-                    <Link to='/login'>
-                        <HStack className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0} color={'rgb(204, 206, 209)'} p={'.3rem 1rem'} backgroundColor={'rgb(29, 33, 39)'} borderRadius={50}>
-                            <Text>Profile</Text>
-                            <MdKeyboardArrowDown className="arrowdown-icon"/>
-                        </HStack>
-                    </Link>
+                    {/* <HStack className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0} color={'rgb(204, 206, 209)'} p={'.3rem 1rem'} backgroundColor={'rgb(29, 33, 39)'} borderRadius={50}>
+                        <Text>Profile</Text>
+                        <MdKeyboardArrowDown className="arrowdown-icon"/>
+                    </HStack> */}
+                    <Menu>
+                        <MenuButton
+                            className="login-stack"
+                            _hover={{
+                            cursor: 'pointer',
+                            backgroundColor: 'rgb(26, 29, 35)',
+                            color: 'rgb(183, 184, 185)',
+                            transition: 'all 0.3s ease-in-out',
+                            }}
+                            gap={0}
+                            color={'rgb(204, 206, 209)'}
+                            p={'.3rem 1rem'}
+                            backgroundColor={'rgb(29, 33, 39)'}
+                            _expanded={{ bg: 'rgb(26, 29, 35)' }}
+                            borderRadius={50}
+                            as={Button}
+                            rightIcon={<MdKeyboardArrowDown className="arrowdown-icon" />}
+                        >
+                            Profile
+    
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem>
+                                <Text>View Profile</Text>
+                            </MenuItem>
+                            <MenuDivider />
+                            <MenuItem>
+                                <Link to="" onClick={handleLogOut}>Log Out</Link>
+                                {/* <Text>Sign Out</Text> */}
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
                 </HStack>
             </HStack>
         </Box>
