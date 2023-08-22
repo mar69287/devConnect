@@ -12,7 +12,7 @@ const Hero = () => {
       <VStack >
         <Heading align={'center'}  fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(255, 255, 255)">Empowering Developers in the Digital Era.</Heading>
         <Heading align={'center'} marginBottom={3} fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(105, 107, 111)">Networking and Collaborating on Your Own Terms.</Heading>
-        <Link to='/auth'>
+        <Link to='/signup'>
             <HStack marginBottom={3} className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0}  p={'.5rem 1.2rem'} backgroundColor={'rgb(255, 255, 255)'} borderRadius={50}>
               <Text>Join Us</Text>
               <MdKeyboardArrowRight className="arrow-icon"/>

@@ -14,6 +14,7 @@ import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage';
 import ProfileCreatePage from '../ProfileCreatePage';
 import { Box } from '@chakra-ui/react'
+import FeedPage from '../FeedPage';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -42,6 +43,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/feed" element={<FeedPage />} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
           </Routes>
         </>

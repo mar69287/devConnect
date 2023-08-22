@@ -22,7 +22,7 @@ export default function LoginForm({ setUser }) {
     try {
       const user = await usersService.login(credentials);
       setUser(user);
-      navigate('/');
+      navigate('/feed');
     } catch {
       setError('Log In Failed - Try Again');
     }

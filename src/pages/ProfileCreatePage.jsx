@@ -40,7 +40,7 @@ const ProfileCreatePage = ({ setProfile, user }) => {
             picture: newProfile.picture,
         })
         setProfile(profile)
-        navigate('/')
+        navigate('/feed')
     } catch (err) {
         console.log(err)
     }
