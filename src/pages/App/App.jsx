@@ -11,6 +11,7 @@ import { Navigate } from 'react-router-dom';
 import NonUserNavBar from '../../components/NavBar/NonUserNavBar';
 import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage';
+import ProfileEditPage from '../ProfileCreatePage';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -23,6 +24,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path='/profile/create' element={<ProfileEditPage user={user}/>} />
           </Routes>
         </>
         :
