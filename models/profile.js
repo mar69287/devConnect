@@ -15,6 +15,10 @@ const skillSchema = new Schema({
 });
 
 const profileSchema = new Schema({
+    userName: {
+        type: String,
+        unique: true,
+    },
     location: String,
     user: {
         type: Schema.Types.ObjectId,
