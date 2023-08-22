@@ -36,7 +36,8 @@ export default function App() {
 }, [user]);
 
   return (
-    <Box className="App" >
+    <Box as='main' className="App" >
+      <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'}>
       {
         user ?
         <>
@@ -60,6 +61,7 @@ export default function App() {
         </>
         
       }
+      </Box>
     </Box>
   );
 }
