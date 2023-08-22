@@ -71,9 +71,9 @@ export default function NavBar({ user, setUser }) {
                                 <Text>View Profile</Text>
                             </MenuItem>
                             <MenuDivider />
-                            <MenuItem>
-                                <Link to="" onClick={handleLogOut}>Log Out</Link>
-                                {/* <Text>Sign Out</Text> */}
+                            <MenuItem onClick={handleLogOut}>
+                                {/* <Link  to="" onClick={handleLogOut}><Text w={"100%"}>Log Out</Text></Link> */}
+                                Log Out
                             </MenuItem>
                         </MenuList>
                     </Menu>

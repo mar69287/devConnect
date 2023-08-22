@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function AuthPage({ setUser }) {
     return (
-        <Box as='main' w={'100vw'} h={'100vh'}>
+        <Box >
             <AbsoluteCenter>
                 <HStack width={{base: '100vw', '2xl': '1400px'}} p={5}>
                     <VStack flex={1}>
