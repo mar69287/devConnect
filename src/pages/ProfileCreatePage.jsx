@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createProfile } from '../utilities/profiles-api'
 import { Stack, Box, Button, FormControl, FormLabel, Input, Text, VStack, Flex, Heading } from "@chakra-ui/react";
 
-const ProfileCreatePage = ({ user }) => {
+const ProfileCreatePage = ({ setProfile, user }) => {
   const [newProfile, setNewProfile] = useState({
     name: user.name,
     email: user.email,
@@ -39,6 +39,7 @@ const ProfileCreatePage = ({ user }) => {
             portfolio: newProfile.portfolio,
             picture: newProfile.picture,
         })
+        setProfile(profile)
         navigate('/')
     } catch (err) {
         console.log(err)

@@ -7,7 +7,7 @@ module.exports = {
 
 async function index(req, res) {
     const userId = req.user._id;
-    const profile = await Profile.find({ user: userId });
+    const profile = await Profile.findOne({ user: userId });
     res.json(profile);
 }
 

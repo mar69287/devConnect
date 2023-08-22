@@ -1,7 +1,8 @@
 import './App.css';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { getUser } from '../../utilities/users-service'
+import { getProfile } from '../../utilities/profiles-api'
 import AuthPage from '../AuthPage/AuthPage';
 import NewOrderPage from '../NewOrderPage/NewOrderPage';
 import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
@@ -11,11 +12,27 @@ import { Navigate } from 'react-router-dom';
 import NonUserNavBar from '../../components/NavBar/NonUserNavBar';
 import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage';
-import ProfileEditPage from '../ProfileCreatePage';
+import ProfileCreatePage from '../ProfileCreatePage';
 import { Box } from '@chakra-ui/react'
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
+  const [ profile, setProfile ] = useState(null)
+
+  useEffect(() => {
+    async function fetchProfile() {
+        try {
+            const profileData = await getProfile();
+            setProfile(profileData);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    if (user) {
+        fetchProfile();
+    }
+}, [user]);
 
   return (
     <Box className="App" >
@@ -25,7 +42,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path='/profile/create' element={<ProfileEditPage user={user}/>} />
+            <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
           </Routes>
         </>
         :
