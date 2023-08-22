@@ -12,12 +12,13 @@ import NonUserNavBar from '../../components/NavBar/NonUserNavBar';
 import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage';
 import ProfileEditPage from '../ProfileCreatePage';
+import { Box } from '@chakra-ui/react'
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
 
   return (
-    <main className="App">
+    <Box className="App" >
       {
         user ?
         <>
@@ -40,7 +41,7 @@ export default function App() {
         </>
         
       }
-    </main>
+    </Box>
   );
 }
 

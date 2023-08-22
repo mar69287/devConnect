@@ -1,6 +1,6 @@
 .App {
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: calc(100vh);
   background-color: rgb(15, 16, 19);
 }
 
