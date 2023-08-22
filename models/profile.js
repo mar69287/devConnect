@@ -15,9 +15,21 @@ const skillSchema = new Schema({
 });
 
 const profileSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        required: true
+    },
     userName: {
         type: String,
         unique: true,
+        required: true
     },
     location: String,
     user: {
