@@ -47,8 +47,20 @@ const FeedPage = ({ profile, setProfile }) => {
                     <Text color="whiteAlpha.800" fontSize='sm'>{profile.following.length}</Text>
                 </HStack>
             </VStack>
-            <VStack w={['100%', '50%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
-    
+            <VStack w={['100%', '50%']} >
+                <VStack gap={2} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
+                    <HStack>
+                    <Image
+                        borderRadius='full'
+                        boxSize='40px'
+                        src='https://bit.ly/dan-abramov'
+                        alt='Dan Abramov'
+                        // mt={1}
+                        border={'2px solid'}
+                        borderColor={"whiteAlpha.600"}
+                    />
+                    </HStack>
+                </VStack>
             </VStack>
             <VStack w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
     
