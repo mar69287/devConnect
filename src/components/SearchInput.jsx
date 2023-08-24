@@ -8,7 +8,7 @@ const SearchInput = () => {
   const navigate = useNavigate();
 
   return (
-    <form
+    <form style={{ width: '100%' }}
         // onSubmit={(event) => {
         //   event.preventDefault();
         //   if (ref.current) {
@@ -17,13 +17,19 @@ const SearchInput = () => {
         //   }
         // }}
     >
-      <InputGroup width={{ base: "100%", md: "20rem", lg: "30rem" }}>
-        <InputLeftElement children={<BsSearch />} />
+      <InputGroup>
+        {/* <InputLeftElement children={<BsSearch />} /> */}
         <Input
+          
           ref={ref}
-          borderRadius={5}
-          placeholder="What can we help you find?"
-          variant="filled"
+          borderRadius={100}
+          placeholder="What's on your mind..."
+          color={'whiteAlpha.800'}
+          fontSize={'sm'}
+          _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+          backgroundColor={'blackAlpha.300'}
+          borderColor={'whiteAlpha.500'}
+          focusBorderColor='whiteAlpha.600'
         />
       </InputGroup>
     </form>

@@ -1,7 +1,9 @@
-import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner } from "@chakra-ui/react"
+import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Button } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
+import { BsCardImage } from 'react-icons/bs'
 import { useEffect } from 'react'
 import { getProfile } from '../utilities/profiles-api'
+import SearchInput from "../components/SearchInput"
 
 const FeedPage = ({ profile, setProfile }) => {
     useEffect(() => {
@@ -17,7 +19,7 @@ const FeedPage = ({ profile, setProfile }) => {
     }, []);
 
   return (
-    <Flex w={'100%'} direction={['column', 'row']} gap={10} px={10} py={5}>
+    <Flex w={'100%'} direction={['column', 'row']} gap={8} px={10} py={5}>
       {profile ? (
         <>
             <VStack gap={2} py={3} px={4} w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
@@ -48,17 +50,25 @@ const FeedPage = ({ profile, setProfile }) => {
                 </HStack>
             </VStack>
             <VStack w={['100%', '50%']} >
-                <VStack gap={2} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
-                    <HStack>
-                    <Image
-                        borderRadius='full'
-                        boxSize='40px'
-                        src='https://bit.ly/dan-abramov'
-                        alt='Dan Abramov'
-                        // mt={1}
-                        border={'2px solid'}
-                        borderColor={"whiteAlpha.600"}
-                    />
+                <VStack gap={0} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
+                    <HStack mb={2} w={'100%'} dis>
+                        <Image
+                            borderRadius='full'
+                            boxSize='40px'
+                            src='https://bit.ly/dan-abramov'
+                            alt='Dan Abramov'
+                            // mt={1}
+                            border={'2px solid'}
+                            borderColor={"whiteAlpha.600"}
+                        />
+                        <SearchInput />
+                    </HStack>
+                    <Divider  borderColor={"whiteAlpha.300"} />
+                    <HStack mt={2} justifyContent={"space-between"} w={'100%'}>
+                        <Button h={10}  fontSize={'sm'} leftIcon={<BsCardImage />} colorScheme='whiteAlpha' variant={"ghost"}>
+                            Photo
+                        </Button>
+                        <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
                     </HStack>
                 </VStack>
             </VStack>
