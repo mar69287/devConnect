@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { createProfile } from '../utilities/profiles-api'
 import { Stack, Box, Button, FormControl, FormLabel, Input, Text, VStack, Flex, Heading } from "@chakra-ui/react";
+import axios from 'axios'
 
 const ProfileCreatePage = ({ setProfile, user }) => {
   const [newProfile, setNewProfile] = useState({
@@ -20,32 +21,52 @@ const ProfileCreatePage = ({ setProfile, user }) => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    setNewProfile({ ...newProfile, picture: selectedFile.name });
+    setNewProfile({ ...newProfile, picture: selectedFile });
     setSelectedFileName(selectedFile.name); 
   };
 
+
   const handleNewProfile = async (evt) => {
     evt.preventDefault();
-    try { 
-        const profile = await createProfile({
-            user: user._id,
-            name: newProfile.name,
-            email: user.email,
-            userName: newProfile.userName,
-            location: newProfile.location,
-            bio: newProfile.bio,
-            github: newProfile.github,
-            linkedIn: newProfile.linkedIn,
-            portfolio: newProfile.portfolio,
-            picture: newProfile.picture,
-        })
-        setProfile(profile)
-        navigate('/feed')
-    } catch (err) {
-        console.log(err)
+
+    if (newProfile.picture) {
+      try {
+        const formData = new FormData();
+        formData.append('profilePicture', newProfile.picture);
+
+        const response = await axios.post('/api/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('File uploaded:', response.data.filePath);
+      } catch (error) {
+        console.error('File upload error:', error);
+      }
     }
 
-  }
+    try {
+      const profile = await createProfile({
+        user: user._id,
+        name: newProfile.name,
+        email: user.email,
+        userName: newProfile.userName,
+        location: newProfile.location,
+        bio: newProfile.bio,
+        github: newProfile.github,
+        linkedIn: newProfile.linkedIn,
+        portfolio: newProfile.portfolio,
+        picture: newProfile.picture ? newProfile.picture.name : null, 
+      });
+
+      setProfile(profile);
+      navigate('/feed');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
       <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'} display={'flex'}  justifyContent={"center"} alignItems={"center"}>

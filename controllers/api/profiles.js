@@ -1,4 +1,5 @@
 const Profile = require('../../models/profile')
+const path = require('path');
 
 module.exports = {
     index,
@@ -11,6 +12,10 @@ async function index(req, res) {
     res.json(profile);
 }
 
+// async function create(req, res) {
+//     console.log('create controller profile')
+//     console.log(req.body);
+// }
 
 async function create(req, res) {
     try {
