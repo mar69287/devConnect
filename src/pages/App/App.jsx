@@ -20,20 +20,17 @@ export default function App() {
   const [ user, setUser ] = useState(getUser())
   const [ profile, setProfile ] = useState(null)
 
-  useEffect(() => {
-    async function fetchProfile() {
-        try {
-            const profileData = await getProfile();
-            setProfile(profileData);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    if (user) {
-        fetchProfile();
-    }
-}, [user]);
+//   useEffect(() => {
+//     async function fetchProfile() {
+//         try {
+//             const profileData = await getProfile();
+//             setProfile(profileData);
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     }
+//         fetchProfile();
+// }, [user]);
 
   return (
     <Box as='main' className="App" >
@@ -44,7 +41,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} />} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
           </Routes>
         </>
