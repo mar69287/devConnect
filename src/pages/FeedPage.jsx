@@ -26,7 +26,7 @@ const FeedPage = ({ profile, setProfile }) => {
                 <Image
                     borderRadius='full'
                     boxSize='70px'
-                    src='https://bit.ly/dan-abramov'
+                    src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}
                     alt='Dan Abramov'
                     // mt={1}
                     border={'2px solid'}
@@ -55,7 +55,7 @@ const FeedPage = ({ profile, setProfile }) => {
                         <Image
                             borderRadius='full'
                             boxSize='40px'
-                            src='https://bit.ly/dan-abramov'
+                            src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}s
                             alt='Dan Abramov'
                             // mt={1}
                             border={'2px solid'}
