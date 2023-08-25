@@ -41,7 +41,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} />} />
+            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} />} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
           </Routes>
         </>

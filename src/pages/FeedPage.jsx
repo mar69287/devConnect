@@ -3,9 +3,9 @@ import { TiLocationArrowOutline } from 'react-icons/ti'
 import { BsCardImage } from 'react-icons/bs'
 import { useEffect } from 'react'
 import { getProfile } from '../utilities/profiles-api'
-import SearchInput from "../components/SearchInput"
+import PostInput from "../components/PostInput"
 
-const FeedPage = ({ profile, setProfile }) => {
+const FeedPage = ({ profile, setProfile, user }) => {
     useEffect(() => {
         async function fetchProfile() {
             try {
@@ -61,7 +61,7 @@ const FeedPage = ({ profile, setProfile }) => {
                             border={'2px solid'}
                             borderColor={"whiteAlpha.600"}
                         />
-                        <SearchInput />
+                        <PostInput user={user} />
                     </HStack>
                     <Divider  borderColor={"whiteAlpha.300"} />
                     <HStack mt={2} justifyContent={"space-between"} w={'100%'}>
