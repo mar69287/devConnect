@@ -51,11 +51,11 @@ const FeedPage = ({ profile, setProfile }) => {
             </VStack>
             <VStack w={['100%', '50%']} >
                 <VStack gap={0} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
-                    <HStack mb={4} w={'100%'} dis>
+                    <HStack mb={4} w={'100%'} >
                         <Image
                             borderRadius='full'
                             boxSize='40px'
-                            src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}s
+                            src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}
                             alt='Dan Abramov'
                             // mt={1}
                             border={'2px solid'}
