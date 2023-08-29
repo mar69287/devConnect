@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Input, InputGroup, Modal, ModalContent, ModalHeader, ModalOverlay, ModalCloseButton, ModalBody, ModalFooter, Button, Divider, Textarea, FormControl, FormLabel } from "@chakra-ui/react";
+import { Input, InputGroup, Modal, ModalContent, ModalHeader, ModalOverlay, ModalCloseButton, ModalBody, ModalFooter, Button, Divider, Textarea, Box, Text } from "@chakra-ui/react";
 import { createPost } from "../utilities/posts-api";
+import { BsCardImage } from 'react-icons/bs'
+import axios from 'axios'
 
 const PostInput = ({user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(null); 
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState(""); 
   const [postData, setPostData] = useState({
     type: '',
     author: '',
@@ -12,6 +15,12 @@ const PostInput = ({user}) => {
     content: '',
     picture: ''
   });
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setPostData({ ...postData, picture: selectedFile });
+    setSelectedFileName(selectedFile.name); 
+  };
 
   const handleInputClick = () => {
     setIsModalOpen(true);
@@ -36,16 +45,33 @@ const PostInput = ({user}) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+    if (postData.picture) {
+      try {
+        const formData = new FormData();
+        formData.append('profilePicture', postData.picture);
+
+        const response = await axios.post('/api/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('File uploaded:', response.data.filePath);
+      } catch (error) {
+        console.error('File upload error:', error);
+      }
+    }
     try {
       const post = await createPost({
         type: selectedButton,
         author: user._id,
         title: postData.title,
         content: postData.content,
-        picture: ''
+        picture: postData.picture
       });
       setIsModalOpen(false);
       setSelectedButton(null)
+      setSelectedFileName('')
       setPostData({
       type: '',
       author: '',
@@ -145,10 +171,28 @@ const PostInput = ({user}) => {
             )}
           </ModalBody>
           <Divider borderColor={"whiteAlpha.300"} />
-          <ModalFooter>
-            {/* <Button colorScheme="blue" mr={3} onClick={closeModal}>
-              Close
-            </Button> */}
+          <ModalFooter display={'Flex'} justifyContent={"space-between"}> 
+            <Box>
+            <Input
+              display="none"
+              type="file"
+              id="post-picture"
+              onChange={handleFileChange}
+            />
+              <label htmlFor="post-picture">
+                <Button
+                  h={10}
+                  fontSize={'sm'}
+                  leftIcon={<BsCardImage />}
+                  colorScheme='whiteAlpha'
+                  variant={"ghost"}
+                  as="span" 
+                >
+                  Photo
+                </Button>
+              </label>
+              {selectedFileName && <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{selectedFileName}</Text>}
+            </Box>
             <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleSubmit}>Post</Button>
           </ModalFooter>
         </ModalContent>
