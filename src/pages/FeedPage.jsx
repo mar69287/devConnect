@@ -51,7 +51,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
             </VStack>
             <VStack w={['100%', '50%']} >
                 <VStack gap={0} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
-                    <HStack mb={4} w={'100%'} >
+                    <HStack  w={'100%'} >
                         <Image
                             borderRadius='full'
                             boxSize='40px'
@@ -61,15 +61,15 @@ const FeedPage = ({ profile, setProfile, user }) => {
                             border={'2px solid'}
                             borderColor={"whiteAlpha.600"}
                         />
-                        <PostInput user={user} />
+                        <PostInput user={user} profile={profile} />
                     </HStack>
-                    <Divider  borderColor={"whiteAlpha.300"} />
+                    {/* <Divider  borderColor={"whiteAlpha.300"} />
                     <HStack mt={2} justifyContent={"space-between"} w={'100%'}>
                         <Button h={10}  fontSize={'sm'} leftIcon={<BsCardImage />} colorScheme='whiteAlpha' variant={"ghost"}>
                             Photo
                         </Button>
                         <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
-                    </HStack>
+                    </HStack> */}
                 </VStack>
             </VStack>
             <VStack w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>

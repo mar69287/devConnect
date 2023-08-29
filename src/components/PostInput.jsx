@@ -4,16 +4,17 @@ import { createPost } from "../utilities/posts-api";
 import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
 
-const PostInput = ({user}) => {
+const PostInput = ({user, profile}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState(""); 
   const [postData, setPostData] = useState({
     type: '',
-    author: '',
+    profile: '',
     title: '',
     content: '',
-    picture: ''
+    picture: '',
+    username: ''
   });
 
   const handleFileChange = (e) => {
@@ -64,20 +65,22 @@ const PostInput = ({user}) => {
     try {
       const post = await createPost({
         type: selectedButton,
-        author: user._id,
+        profile: profile._id,
         title: postData.title,
         content: postData.content,
-        picture: postData.picture
+        picture: postData.picture,
+        username: profile.userName
       });
       setIsModalOpen(false);
       setSelectedButton(null)
       setSelectedFileName('')
       setPostData({
       type: '',
-      author: '',
+      profile: '',
       title: '',
       content: '',
-      picture: ''
+      picture: '',
+      username: ''
     });
     } catch {
       setPostData({ ...postData, error: 'Post Failed - Try Again' });
