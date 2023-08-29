@@ -23,8 +23,7 @@ const postSchema = new Schema({
         required: true
     },
     title: {
-        type: String,
-        required: true
+        type: String
     },
     picture: {
         type: String,

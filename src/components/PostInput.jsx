@@ -68,7 +68,7 @@ const PostInput = ({user, profile}) => {
         profile: profile._id,
         title: postData.title,
         content: postData.content,
-        picture: postData.picture,
+        picture: postData.picture ? postData.picture.name : null,
         username: profile.userName
       });
       setIsModalOpen(false);
