@@ -1,9 +1,9 @@
 import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Button } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
-import { BsCardImage } from 'react-icons/bs'
 import { useEffect } from 'react'
 import { getProfile } from '../utilities/profiles-api'
 import PostInput from "../components/PostInput"
+import Posts from "../components/Posts"
 
 const FeedPage = ({ profile, setProfile, user }) => {
     useEffect(() => {
@@ -49,7 +49,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
                     <Text color="whiteAlpha.800" fontSize='sm'>{profile.following.length}</Text>
                 </HStack>
             </VStack>
-            <VStack w={['100%', '50%']} >
+            <VStack w={['100%', '50%']} gap={4}>
                 <VStack gap={0} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
                     <HStack  w={'100%'} >
                         <Image
@@ -71,6 +71,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
                         <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
                     </HStack> */}
                 </VStack>
+                <Posts profile={profile} />
             </VStack>
             <VStack w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
     
