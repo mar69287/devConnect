@@ -6,15 +6,15 @@ module.exports = {
 }
 
 async function index(req, res) {
-    const userId = req.user._id;
-    const profile = await Post.findOne({ user: userId });
-    res.json(profile);
+    try {
+        const posts = await Post.find();
+        console.log(posts)
+        res.json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching posts' });
+    }
 }
-
-// async function create(req, res) {
-//     console.log('create controller profile')
-//     console.log(req.body);
-// }
 
 async function create(req, res) {
     try {
