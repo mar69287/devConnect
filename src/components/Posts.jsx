@@ -26,12 +26,13 @@ const Posts = ({ posts }) => {
                 </Box>
               )}
               <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm'>{post.content}</Text>
-              <Image
-              src={`/assets/${post.picture}`}
-              alt='Post Image'
-              objectFit='cover'
-            />
-
+              {post.picture && (
+                <Image
+                  src={`/assets/${post.picture}`}
+                  alt='Post Image'
+                  objectFit='cover'
+                />
+              )}
               <HStack justify='space-between' w={'100%'}>
                 <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BiSolidLike />}>
                   Like
