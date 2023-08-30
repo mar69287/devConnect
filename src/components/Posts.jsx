@@ -6,7 +6,7 @@ const Posts = ({ posts }) => {
   return (
     <>
       {posts.map((post) =>(
-        <VStack key={post._id} gap={2} py={3} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+        <VStack key={post._id} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
             <HStack justifyContent={'flex-start'} w={'100%'}>
               <Image
                   borderRadius='full'
