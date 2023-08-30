@@ -1,16 +1,21 @@
 import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Button } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getProfile } from '../utilities/profiles-api'
+import { getPosts } from "../utilities/posts-api"
 import PostInput from "../components/PostInput"
 import Posts from "../components/Posts"
 
 const FeedPage = ({ profile, setProfile, user }) => {
+    const [posts, setPosts] = useState([])
+
     useEffect(() => {
         async function fetchProfile() {
             try {
                 const profileData = await getProfile();
                 setProfile(profileData);
+                const posts = await getPosts();
+                setPosts(posts)
             } catch (error) {
                 console.error(error);
             }
@@ -22,7 +27,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
     <Flex w={'100%'} direction={['column', 'row']} gap={8} px={10} py={5}>
       {profile ? (
         <>
-            <VStack gap={2} py={3} px={4} w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+            <VStack gap={2} py={3} px={4} w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
                 <Image
                     borderRadius='full'
                     boxSize='70px'
@@ -71,9 +76,9 @@ const FeedPage = ({ profile, setProfile, user }) => {
                         <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
                     </HStack> */}
                 </VStack>
-                <Posts profile={profile} />
+                <Posts posts={posts} />
             </VStack>
-            <VStack w={['100%', '25%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+            <VStack w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
     
             </VStack>
         </>

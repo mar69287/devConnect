@@ -11,6 +11,7 @@ const PostInput = ({user, profile}) => {
   const [postData, setPostData] = useState({
     type: '',
     profile: '',
+    profilePic: '',
     title: '',
     content: '',
     picture: '',
@@ -66,6 +67,7 @@ const PostInput = ({user, profile}) => {
       const post = await createPost({
         type: selectedButton,
         profile: profile._id,
+        profilePic: profile.picture,
         title: postData.title,
         content: postData.content,
         picture: postData.picture ? postData.picture.name : null,

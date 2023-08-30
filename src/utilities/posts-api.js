@@ -5,3 +5,7 @@ export async function createPost(postData) {
     console.log('here at post api', postData)
     return sendRequest(`${BASE_URL}/create`, 'POST', postData)
 }
+
+export async function getPosts() {
+    return sendRequest(BASE_URL)
+}
