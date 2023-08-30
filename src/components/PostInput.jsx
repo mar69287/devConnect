@@ -4,7 +4,7 @@ import { createPost } from "../utilities/posts-api";
 import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
 
-const PostInput = ({user, profile}) => {
+const PostInput = ({user, profile, setPosts}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState(""); 
@@ -73,6 +73,7 @@ const PostInput = ({user, profile}) => {
         picture: postData.picture ? postData.picture.name : null,
         username: profile.userName
       });
+      setPosts(prevPosts => [post, ...prevPosts]);
       setIsModalOpen(false);
       setSelectedButton(null)
       setSelectedFileName('')

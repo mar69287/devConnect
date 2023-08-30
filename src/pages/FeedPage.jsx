@@ -15,7 +15,8 @@ const FeedPage = ({ profile, setProfile, user }) => {
                 const profileData = await getProfile();
                 setProfile(profileData);
                 const posts = await getPosts();
-                setPosts(posts)
+                const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setPosts(sortedPosts);
             } catch (error) {
                 console.error(error);
             }
@@ -66,7 +67,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
                             border={'2px solid'}
                             borderColor={"whiteAlpha.600"}
                         />
-                        <PostInput user={user} profile={profile} />
+                        <PostInput user={user} profile={profile} setPosts={setPosts} />
                     </HStack>
                     {/* <Divider  borderColor={"whiteAlpha.300"} />
                     <HStack mt={2} justifyContent={"space-between"} w={'100%'}>
