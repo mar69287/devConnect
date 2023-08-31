@@ -1,7 +1,7 @@
-import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure } from "@chakra-ui/react"
+import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem } from "@chakra-ui/react"
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
-import { BsFillChatLeftDotsFill } from 'react-icons/bs'
+import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
 import { deletePost } from "../utilities/posts-api";
 
 const Posts = ({ posts, profile, setPosts }) => {
@@ -42,9 +42,22 @@ const Posts = ({ posts, profile, setPosts }) => {
                 <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
               </HStack>
               {profile._id === post.profile && (
-                <Button size={'xs'} color={'rgb(204, 206, 209)'} variant='ghost' onClick={() => handleDeleteClick(post._id)}>
-                  X
-                </Button>
+                // <Button size={'xs'} color={'rgb(204, 206, 209)'} variant='ghost' onClick={() => handleDeleteClick(post._id)}>
+                //   X
+                // </Button>
+                <Menu>
+                  <MenuButton 
+                    color={'rgb(204, 206, 209)'}
+                    variant='ghost'
+                    size={'sm'}
+                    as={IconButton}
+                    icon={<BsThreeDots />}
+                  />
+                  <MenuList>
+                    <MenuItem icon={<BsFillPencilFill />}>Edit Post</MenuItem>
+                    <MenuItem icon={<BsTrash3Fill />} onClick={() => handleDeleteClick(post._id)}>Delete Post</MenuItem>
+                  </MenuList>
+                </Menu>
               )}
             </HStack>
             <VStack w={['100%']} alignItems={'flex-start'}>
