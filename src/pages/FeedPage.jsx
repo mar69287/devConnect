@@ -77,7 +77,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
                         <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
                     </HStack> */}
                 </VStack>
-                <Posts posts={posts} profile={profile} />
+                <Posts posts={posts} profile={profile} setPosts={setPosts} />
             </VStack>
             <VStack w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
     

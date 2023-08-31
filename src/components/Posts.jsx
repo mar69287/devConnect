@@ -2,9 +2,9 @@ import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDi
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
-import { AiFillDelete } from 'react-icons/ai'
+import { deletePost } from "../utilities/posts-api";
 
-const Posts = ({ posts, profile }) => {
+const Posts = ({ posts, profile, setPosts }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPostId, setSelectedPostId] = useState(null);
 
@@ -14,9 +14,15 @@ const Posts = ({ posts, profile }) => {
     onOpen();
   };
 
-  const handleDeleteConfirm = () => {
-    setSelectedPostId(null);
-    onClose();
+  const handleDeleteConfirm = async () => {
+      try {
+        await deletePost(selectedPostId); 
+        setSelectedPostId(null);
+        setPosts((prevPosts) => prevPosts.filter((post) => post._id !== selectedPostId));
+        onClose();
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
   };
 
   return (

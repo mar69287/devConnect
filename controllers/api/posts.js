@@ -2,7 +2,8 @@ const Post = require('../../models/post')
 
 module.exports = {
     index,
-    create
+    create,
+    deletePost
 }
 
 async function index(req, res) {
@@ -27,4 +28,18 @@ async function create(req, res) {
         console.error(error);
         res.status(500).json({ message: 'Error creating post' });
     }
+}
+
+async function deletePost(req, res) {
+    try {
+        const deletedPost = await Post.findByIdAndDelete(req.params.id);
+        if (!deletedPost) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        res.json({ message: "Post deleted successfully" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+    
 }
