@@ -1,17 +1,27 @@
-import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem } from "@chakra-ui/react"
+import { HStack, VStack, Input, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ButtonGroup, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
-import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost } from "../utilities/posts-api";
+import { BsFillChatLeftDotsFill, BsCardImage, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
+import { deletePost, updatePost } from "../utilities/posts-api";
+import axios from 'axios'
+import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const deleteDisclosure = useDisclosure(); 
+  const editDisclosure = useDisclosure();
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [selectedPostForEdit, setSelectedPostForEdit] = useState(null);
+  const [editedPost, setEditedPost] = useState({
+    title: '',
+    picture: '',
+    content: '',
+  });
 
   const handleDeleteClick = (postId) => {
     console.log(postId)
     setSelectedPostId(postId);
-    onOpen();
+    deleteDisclosure.onOpen();
   };
 
   const handleDeleteConfirm = async () => {
@@ -19,11 +29,12 @@ const Posts = ({ posts, profile, setPosts }) => {
         await deletePost(selectedPostId); 
         setSelectedPostId(null);
         setPosts((prevPosts) => prevPosts.filter((post) => post._id !== selectedPostId));
-        onClose();
+        deleteDisclosure.onClose();
       } catch (error) {
         console.error("Error deleting post:", error);
       }
   };
+
 
   return (
     <>
@@ -54,7 +65,12 @@ const Posts = ({ posts, profile, setPosts }) => {
                     icon={<BsThreeDots />}
                   />
                   <MenuList>
-                    <MenuItem icon={<BsFillPencilFill />}>Edit Post</MenuItem>
+                    <Link to={`/post/edit/${post._id}`}>
+                      <MenuItem icon={<BsFillPencilFill />} 
+                      >
+                            Edit Post
+                      </MenuItem>
+                    </Link>
                     <MenuItem icon={<BsTrash3Fill />} onClick={() => handleDeleteClick(post._id)}>Delete Post</MenuItem>
                   </MenuList>
                 </Menu>
@@ -86,7 +102,7 @@ const Posts = ({ posts, profile, setPosts }) => {
             </VStack>
         </VStack>
       ))}
-      <AlertDialog isOpen={isOpen} onClose={onClose} size='md'>
+      <AlertDialog isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
@@ -98,7 +114,7 @@ const Posts = ({ posts, profile, setPosts }) => {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={deleteDisclosure.onClose}>Cancel</Button>
               <Button colorScheme='red' onClick={handleDeleteConfirm} ml={3}>
                 Delete
               </Button>

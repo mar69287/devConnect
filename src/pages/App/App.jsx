@@ -15,6 +15,7 @@ import SignUpPage from '../SignUpPage';
 import ProfileCreatePage from '../ProfileCreatePage';
 import { Box } from '@chakra-ui/react'
 import FeedPage from '../FeedPage';
+import EditPostPage from '../EditPostPage';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} />} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
+            <Route path='/post/edit/:postId' element={<EditPostPage />} />
           </Routes>
         </>
         :

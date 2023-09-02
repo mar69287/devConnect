@@ -1,0 +1,154 @@
+import { HStack, VStack, Input, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ButtonGroup, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
+import { BsFillChatLeftDotsFill, BsCardImage, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getPost, updatePost } from '../utilities/posts-api';
+import axios from 'axios'
+
+const EditPostPage = () => {
+  const { postId } = useParams();
+  const [post, setPost] = useState(null);
+  const navigate = useNavigate();
+  const [fileName, setFileName] = useState('')
+  const [editedPost, setEditedPost] = useState({
+    title: '',
+    picture: '',
+    content: '',
+  });
+
+  useEffect(() => {
+    async function getPostById() {
+        const post = await getPost(postId);
+        setPost(post);
+        setEditedPost({
+            title: post.title,
+            picture: post.picture,
+            content: post.content,
+        });
+        setFileName(post.picture)
+    }
+    getPostById();
+}, []);
+
+const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setEditedPost({
+        ...editedPost,
+        picture: selectedFile,
+      });
+      setFileName(selectedFile.name)
+    }
+};
+
+const handleEditConfirm = async (evt) => {
+    evt.preventDefault();
+    if (editedPost.picture) {
+      try {
+        const formData = new FormData();
+        formData.append('profilePicture', editedPost.picture);
+
+        const response = await axios.post('/api/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('File uploaded:', response.data.filePath);
+      } catch (error) {
+        console.error('File upload error:', error);
+      }
+    }
+
+    try {
+      const updatedPost = {
+        title: editedPost.title || post.title,
+        content: editedPost.content || post.content,
+      }
+      if (editedPost.picture) {
+        updatedPost.picture = editedPost.picture.name;
+      } else {
+        updatedPost.picture = post.picture;
+      }
+      const newPost = await updatePost(post._id, updatedPost);
+      navigate(-1);
+    } catch {
+      console.error("Error updating post:");
+    }
+  };
+
+
+
+  return (
+    <Modal isOpen={true} size={"full"}>
+        <ModalOverlay />
+        <ModalContent backgroundColor={'rgb(28, 30, 35)'}>
+          <ModalHeader color="rgb(255, 255, 255)">Edit Post</ModalHeader>
+          <ModalCloseButton color="rgb(255, 255, 255)" onClick={() => navigate(-1)}/>
+          <ModalBody>
+            {post && (
+              <>
+                {post.type === "project" && (
+                  <Input
+                    borderRadius={100}
+                    color={'whiteAlpha.800'}
+                    fontSize={'sm'} 
+                    _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                    defaultValue={post.title}  
+                    backgroundColor={'blackAlpha.300'}
+                    borderColor={'whiteAlpha.500'}
+                    focusBorderColor='whiteAlpha.600'
+                    name="title"
+                    onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
+                  />
+                )}
+                <Textarea 
+                  borderRadius={10}
+                  defaultValue={post.content}
+                  color={'whiteAlpha.800'}
+                  fontSize={'sm'}
+                  _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                  backgroundColor={'blackAlpha.300'}
+                  borderColor={'whiteAlpha.500'}
+                  focusBorderColor='whiteAlpha.600'
+                  mt={5}
+                  name="content"
+                  onChange={(e) => setEditedPost({ ...editedPost, content: e.target.value })}
+                />
+              </>
+            )}
+          </ModalBody>
+          <Divider borderColor={"whiteAlpha.300"}/>
+          <ModalFooter display={'Flex'} justifyContent={"space-between"}>
+            <Box>
+              <Input
+                display="none"
+                type="file"
+                id="post-picture"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="post-picture">
+                <Button
+                  h={10}
+                  fontSize={'sm'}
+                  leftIcon={<BsCardImage />}
+                  colorScheme='whiteAlpha'
+                  variant={"ghost"}
+                  as="span" 
+                >
+                  Photo
+                </Button>
+              </label>
+              {post && (
+                <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
+              )}
+            </Box>
+            <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleEditConfirm}>Save Changes</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+  )
+}
+
+export default EditPostPage

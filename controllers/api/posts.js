@@ -2,7 +2,9 @@ const Post = require('../../models/post')
 
 module.exports = {
     index,
+    show,
     create,
+    edit, 
     deletePost
 }
 
@@ -17,6 +19,11 @@ async function index(req, res) {
     }
 }
 
+async function show(req, res) {
+    const company = await Post.findById(req.params.id);
+    res.json(company);
+}
+
 async function create(req, res) {
     try {
         const post = req.body;
@@ -27,6 +34,35 @@ async function create(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error creating post' });
+    }
+}
+
+async function edit(req, res) {
+    try {
+        const id = req.params.id;
+        const update = {};
+
+        if (req.body.title) {
+            update.title = req.body.title;
+        }
+
+        if (req.body.picture) {
+            update.picture = req.body.picture;
+        }
+
+        if (req.body.content) {
+            update.content = req.body.content;
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            id,
+            update,
+            { new: true }
+        );
+
+        res.json(updatedPost);
+    } catch (err) {
+        res.status(400).json(err);
     }
 }
 
