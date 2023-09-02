@@ -1,22 +1,13 @@
-import { HStack, VStack, Input, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ButtonGroup, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
+import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem } from "@chakra-ui/react"
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
-import { BsFillChatLeftDotsFill, BsCardImage, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, updatePost } from "../utilities/posts-api";
-import axios from 'axios'
+import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
+import { deletePost } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const deleteDisclosure = useDisclosure(); 
-  const editDisclosure = useDisclosure();
   const [selectedPostId, setSelectedPostId] = useState(null);
-  const [selectedPostForEdit, setSelectedPostForEdit] = useState(null);
-  const [editedPost, setEditedPost] = useState({
-    title: '',
-    picture: '',
-    content: '',
-  });
 
   const handleDeleteClick = (postId) => {
     console.log(postId)
@@ -53,9 +44,6 @@ const Posts = ({ posts, profile, setPosts }) => {
                 <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
               </HStack>
               {profile._id === post.profile && (
-                // <Button size={'xs'} color={'rgb(204, 206, 209)'} variant='ghost' onClick={() => handleDeleteClick(post._id)}>
-                //   X
-                // </Button>
                 <Menu>
                   <MenuButton 
                     color={'rgb(204, 206, 209)'}

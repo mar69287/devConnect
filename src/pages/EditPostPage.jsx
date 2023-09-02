@@ -1,5 +1,5 @@
-import { HStack, VStack, Input, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogCloseButton, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ButtonGroup, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
-import { BsFillChatLeftDotsFill, BsCardImage, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
+import {  Input, Text, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
+import { BsCardImage } from 'react-icons/bs'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getPost, updatePost } from '../utilities/posts-api';
