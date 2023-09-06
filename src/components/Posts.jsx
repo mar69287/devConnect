@@ -2,7 +2,7 @@ import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDi
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost } from "../utilities/posts-api";
+import { deletePost, addLike } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
@@ -10,7 +10,6 @@ const Posts = ({ posts, profile, setPosts }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   const handleDeleteClick = (postId) => {
-    console.log(postId)
     setSelectedPostId(postId);
     deleteDisclosure.onOpen();
   };
@@ -25,6 +24,19 @@ const Posts = ({ posts, profile, setPosts }) => {
         console.error("Error deleting post:", error);
       }
   };
+
+  const handleLike = async (postId) => {
+    try {
+      const idData = {
+        post: postId,
+        profile: profile._id
+      }
+      await addLike(postId, idData);
+    } catch (error) {
+      console.error("Error adding like:", error);
+    }
+
+  }
 
 
   return (
@@ -80,7 +92,7 @@ const Posts = ({ posts, profile, setPosts }) => {
                 />
               )}
               <HStack justify='space-between' w={'100%'}>
-                <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BiSolidLike />}>
+                <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BiSolidLike />} onClick={() => handleLike(post._id)}>
                   Like
                 </Button>
                 <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BsFillChatLeftDotsFill />}>

@@ -5,7 +5,8 @@ module.exports = {
     show,
     create,
     edit, 
-    deletePost
+    deletePost,
+    createLike, 
 }
 
 async function index(req, res) {
@@ -78,4 +79,21 @@ async function deletePost(req, res) {
         res.status(500).json({ error: "Server error" });
     }
     
+}
+
+async function createLike(req, res) {
+    try {
+        const postId = req.params.id;
+        const profileId = req.body.profile;
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+            { $push: { likes: { profile: profileId } } },
+            { new: true }
+        );
+
+        res.json(updatedPost);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }

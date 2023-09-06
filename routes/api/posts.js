@@ -8,5 +8,6 @@ router.get('/:id', ensureLoggedIn, postsCtrl.show);
 router.post('/create', ensureLoggedIn, postsCtrl.create);
 router.put('/:id', ensureLoggedIn, postsCtrl.edit);
 router.delete('/:id', ensureLoggedIn, postsCtrl.deletePost)
+router.post('/:id/like', ensureLoggedIn, postsCtrl.createLike)
 
 module.exports = router;
