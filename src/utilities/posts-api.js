@@ -28,6 +28,10 @@ export async function deleteLike(postId, idData) {
     return sendRequest(`${BASE_URL}/${postId}/like`, 'DELETE', idData)
 }
 
-export async function getLikes(profileId) {
+export async function getUserLikes(profileId) {
     return sendRequest(`${BASE_URL}/${profileId}/like`)
+}
+
+export async function getPostLikes(postId) {
+    return sendRequest(`${BASE_URL}/likes/${postId}`)
 }

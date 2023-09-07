@@ -2,19 +2,20 @@ import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDi
 import { useState, useEffect } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, addLike, deleteLike, getLikes } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
   const deleteDisclosure = useDisclosure();
-  const likeModalDisclosure = useDisclosure();
+  const [openModals, setOpenModals] = useState([]);
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [likedPosts, setLikedPosts] = useState(null);
+  const [postLikes, setPostLikes] = useState([]);
 
   useEffect(() => {
     async function fetchLikedPosts() {
       try {
-        const likes = await getLikes(profile._id)
+        const likes = await getUserLikes(profile._id)
         setLikedPosts(likes);
       } catch (error) {
         console.error(error);
@@ -90,12 +91,22 @@ const Posts = ({ posts, profile, setPosts }) => {
     }
   }
 
-  const handleOpenLikeModal = () => {
-    likeModalDisclosure.onOpen();
+  const toggleModal = async (postId) => {
+    try {
+      const postLikes = await getPostLikes(postId);
+      setPostLikes(postLikes);
+      if (openModals.includes(postId)) {
+        setOpenModals(openModals.filter((id) => id !== postId));
+      } else {
+        setOpenModals([...openModals, postId]);
+      }
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+    }
   };
 
-  const handleCloseLikeModal = () => {
-    likeModalDisclosure.onClose();
+  const isModalOpen = (postId) => {
+    return openModals.includes(postId);
   };
 
   return (
@@ -151,7 +162,7 @@ const Posts = ({ posts, profile, setPosts }) => {
                 />
               )}
               {post.likes.length > 0 && (
-                <HStack align="center" mt={0}  _hover={{ cursor: "pointer" }}>
+                <HStack align="center" mt={0}  _hover={{ cursor: "pointer" }}  onClick={() => toggleModal(post._id)}>
                   <BiSolidLike size={12} color={'rgb(213, 45, 129)'} />
                   <Text 
                     color={'rgb(204, 206, 209)'} 
@@ -162,31 +173,32 @@ const Posts = ({ posts, profile, setPosts }) => {
                   </Text>
                 </HStack>
               )}
-              <Modal isOpen={likeModalDisclosure.isOpen} onClose={handleCloseLikeModal} size='md'>
+              <Modal isOpen={isModalOpen(post._id)} onClose={() => toggleModal(post._id)} size='md'>
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>Likes</ModalHeader>
+                  <ModalHeader >Likes</ModalHeader>
+                  <Divider borderColor={"blackAlpha.600"} />
                   <ModalCloseButton />
-                  <ModalBody>
-                    {post.likes.map((like) => (
-                    <HStack key={like._id}>
-                      <Image
-                        borderRadius='full'
-                        boxSize='40px'
-                        src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://bit.ly/dan-abramov'}
-                        alt='Dan Abramov'
-                        border={'2px solid'}
-                        borderColor={"whiteAlpha.600"}
-                    />
-                      <Heading color="black" size='sm'>{like.profile.userName}</Heading>
-                    </HStack>
+                  <ModalBody m={0}>
+                    {postLikes.map((like) => (
+                      <Box key={like._id}>
+
+                        <HStack key={like._id}>
+                          <Image
+                            borderRadius='full'
+                            boxSize='40px'
+                            src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://bit.ly/dan-abramov'}
+                            alt='Dan Abramov'
+                            border={'2px solid'}
+                            borderColor={"whiteAlpha.600"}
+                        />
+                          <Heading color="black" size='sm'>{like.profile.userName}</Heading>
+                        </HStack>
+                        <Divider borderColor={"blackAlpha.600"} my={1}/>
+                      </Box>
+                      
                     ))}
                   </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" onClick={handleCloseLikeModal}>
-                      Close
-                    </Button>
-                  </ModalFooter>
                 </ModalContent>
               </Modal>
               <Divider borderColor={"whiteAlpha.300"} mt={2}/>
