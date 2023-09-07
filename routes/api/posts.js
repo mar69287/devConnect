@@ -9,5 +9,6 @@ router.post('/create', ensureLoggedIn, postsCtrl.create);
 router.put('/:id', ensureLoggedIn, postsCtrl.edit);
 router.delete('/:id', ensureLoggedIn, postsCtrl.deletePost)
 router.post('/:id/like', ensureLoggedIn, postsCtrl.createLike)
+router.delete('/:id/like', ensureLoggedIn, postsCtrl.deleteLike)
 
 module.exports = router;

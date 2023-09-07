@@ -2,7 +2,7 @@ import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDi
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, addLike } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
@@ -37,6 +37,29 @@ const Posts = ({ posts, profile, setPosts }) => {
           return {
             ...post,
             likes: [...post.likes, { profile: profile._id }],
+          };
+        }
+        return post;
+      });
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error("Error adding like:", error);
+    }
+
+  }
+
+  const handleDeleteLike = async (postId) => {
+    try {
+      const idData = {
+        post: postId,
+        profile: profile._id
+      }
+      await deleteLike(postId, idData);
+      const updatedPosts = posts.map((post) => {
+        if (post._id === postId) {
+          return {
+            ...post,
+            likes: post.likes.filter((like) => like.profile !== profile._id),
           };
         }
         return post;
@@ -102,7 +125,7 @@ const Posts = ({ posts, profile, setPosts }) => {
                 />
               )}
               {post.likes.length > 0 && (
-                <HStack align="center" mt={1}>
+                <HStack align="center" mt={0}>
                   <BiSolidLike size={12} color={'rgb(213, 45, 129)'} />
                   <Text color={'rgb(204, 206, 209)'} fontSize="xs" ml={1}>
                     {post.likes.length}
@@ -111,7 +134,16 @@ const Posts = ({ posts, profile, setPosts }) => {
               )}
               <Divider borderColor={"whiteAlpha.300"} mt={2}/>
               <HStack justify='space-between' w={'100%'}>
-                <Button color={post.likes.some((like) => like.profile === profile._id) ? 'rgb(213, 45, 129)' : 'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BiSolidLike />} onClick={() => handleLike(post._id)}>
+                <Button
+                 color={post.likes.some((like) => like.profile === profile._id) ? 'rgb(213, 45, 129)' : 'rgb(204, 206, 209)'} 
+                 flex='1' 
+                 variant='ghost' 
+                 leftIcon={<BiSolidLike />} 
+                 onClick={() =>
+                  post.likes.some((like) => like.profile === profile._id)
+                    ? handleDeleteLike(post._id)
+                    : handleLike(post._id)
+                }>
                   Like
                 </Button>
                 <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BsFillChatLeftDotsFill />}>

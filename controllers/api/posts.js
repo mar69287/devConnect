@@ -7,6 +7,7 @@ module.exports = {
     edit, 
     deletePost,
     createLike, 
+    deleteLike, 
 }
 
 async function index(req, res) {
@@ -96,4 +97,21 @@ async function createLike(req, res) {
     } catch (err) {
         res.status(400).json(err);
     }
+}
+
+async function deleteLike(req, res) {
+    try {
+        const postId = req.params.id;
+        const profileId = req.body.profile;
+
+        const post = await Post.findById(postId)
+        const likeIndex = post.likes.findIndex((like) => like.profile === profileId);
+        post.likes.splice(likeIndex, 1);
+
+        const updatedPost = await post.save();
+        res.json(updatedPost);  
+    } catch (err) {
+        res.status(400).json(err);
+    }
+
 }
