@@ -25,7 +25,9 @@ export async function addLike(postId, idData) {
 }
 
 export async function deleteLike(postId, idData) {
-    // console.log('deleting like')
     return sendRequest(`${BASE_URL}/${postId}/like`, 'DELETE', idData)
 }
 
+export async function getLikes(profileId) {
+    return sendRequest(`${BASE_URL}/${profileId}/like`)
+}

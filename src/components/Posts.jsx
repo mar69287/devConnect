@@ -1,13 +1,27 @@
-import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider } from "@chakra-ui/react"
-import { useState } from 'react';
+import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/react"
+import { useState, useEffect } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, addLike, deleteLike } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike, getLikes } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
-  const deleteDisclosure = useDisclosure(); 
+  const deleteDisclosure = useDisclosure();
+  const likeModalDisclosure = useDisclosure();
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [likedPosts, setLikedPosts] = useState(null);
+
+  useEffect(() => {
+    async function fetchLikedPosts() {
+      try {
+        const likes = await getLikes(profile._id)
+        setLikedPosts(likes);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchLikedPosts()
+  }, [profile._id])
 
   const handleDeleteClick = (postId) => {
     setSelectedPostId(postId);
@@ -25,6 +39,8 @@ const Posts = ({ posts, profile, setPosts }) => {
       }
   };
 
+  
+
   const handleLike = async (postId) => {
     try {
       const idData = {
@@ -32,6 +48,8 @@ const Posts = ({ posts, profile, setPosts }) => {
         profile: profile._id
       }
       await addLike(postId, idData);
+      const likedPost = posts.find((post) => post._id === postId);
+      setLikedPosts((prevLikedPosts) => [...prevLikedPosts, likedPost]);
       const updatedPosts = posts.map((post) => {
         if (post._id === postId) {
           return {
@@ -55,6 +73,8 @@ const Posts = ({ posts, profile, setPosts }) => {
         profile: profile._id
       }
       await deleteLike(postId, idData);
+      const updatedLikedPosts = likedPosts.filter((likedPost) => likedPost._id !== postId);
+      setLikedPosts(updatedLikedPosts);
       const updatedPosts = posts.map((post) => {
         if (post._id === postId) {
           return {
@@ -68,9 +88,15 @@ const Posts = ({ posts, profile, setPosts }) => {
     } catch (error) {
       console.error("Error adding like:", error);
     }
-
   }
 
+  const handleOpenLikeModal = () => {
+    likeModalDisclosure.onOpen();
+  };
+
+  const handleCloseLikeModal = () => {
+    likeModalDisclosure.onClose();
+  };
 
   return (
     <>
@@ -125,27 +151,80 @@ const Posts = ({ posts, profile, setPosts }) => {
                 />
               )}
               {post.likes.length > 0 && (
-                <HStack align="center" mt={0}>
+                <HStack align="center" mt={0}  _hover={{ cursor: "pointer" }}>
                   <BiSolidLike size={12} color={'rgb(213, 45, 129)'} />
-                  <Text color={'rgb(204, 206, 209)'} fontSize="xs" ml={1}>
+                  <Text 
+                    color={'rgb(204, 206, 209)'} 
+                    fontSize="xs" ml={1} 
+                    _hover={{ color: 'rgb(213, 45, 129)', transition: "color 0.2s" }}
+                  >
                     {post.likes.length}
                   </Text>
                 </HStack>
               )}
+              <Modal isOpen={likeModalDisclosure.isOpen} onClose={handleCloseLikeModal} size='md'>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Likes</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    {post.likes.map((like) => (
+                    <HStack key={like._id}>
+                      <Image
+                        borderRadius='full'
+                        boxSize='40px'
+                        src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://bit.ly/dan-abramov'}
+                        alt='Dan Abramov'
+                        border={'2px solid'}
+                        borderColor={"whiteAlpha.600"}
+                    />
+                      <Heading color="black" size='sm'>{like.profile.userName}</Heading>
+                    </HStack>
+                    ))}
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button colorScheme="blue" onClick={handleCloseLikeModal}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
               <Divider borderColor={"whiteAlpha.300"} mt={2}/>
               <HStack justify='space-between' w={'100%'}>
-                <Button
-                 color={post.likes.some((like) => like.profile === profile._id) ? 'rgb(213, 45, 129)' : 'rgb(204, 206, 209)'} 
-                 flex='1' 
+                {/* <Button
                  variant='ghost' 
-                 leftIcon={<BiSolidLike />} 
+                 color={clicked ? 'rgb(213, 45, 129)' : 'rgb(204, 206, 209)'}
+                 leftIcon={<BiSolidLike />}
+                 flex={1} 
                  onClick={() =>
-                  post.likes.some((like) => like.profile === profile._id)
+                  likedPosts && likedPosts.some((likedPost) => likedPost._id === post._id)
                     ? handleDeleteLike(post._id)
                     : handleLike(post._id)
-                }>
+                 }
+                >
                   Like
-                </Button>
+                </Button> */}
+                {likedPosts && likedPosts.some((likedPost) => likedPost._id === post._id) ? (
+                    <Button
+                      variant='ghost' 
+                      color='rgb(213, 45, 129)'
+                      leftIcon={<BiSolidLike />}
+                      flex={1} 
+                      onClick={() => handleDeleteLike(post._id)}
+                    >
+                     Like
+                    </Button>
+                  ) : (
+                    <Button
+                      variant='ghost' 
+                      color='rgb(204, 206, 209)'
+                      leftIcon={<BiSolidLike />}
+                      flex={1} 
+                      onClick={() => handleLike(post._id)}
+                    >
+                      Like
+                    </Button>
+                  )}
                 <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BsFillChatLeftDotsFill />}>
                   Comment
                 </Button>

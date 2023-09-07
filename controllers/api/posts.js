@@ -7,13 +7,13 @@ module.exports = {
     edit, 
     deletePost,
     createLike, 
-    deleteLike, 
+    deleteLike,
+    getLikes 
 }
 
 async function index(req, res) {
     try {
-        const posts = await Post.find();
-        console.log(posts)
+        const posts = await Post.find().populate('likes.profile');
         res.json(posts);
     } catch (error) {
         console.error(error);
@@ -114,4 +114,14 @@ async function deleteLike(req, res) {
         res.status(400).json(err);
     }
 
+}
+
+async function getLikes(req, res) {
+    try {
+        const profileId = req.params.id
+        const likedPosts = await Post.find({ 'likes.profile': profileId })
+        res.json(likedPosts)
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
