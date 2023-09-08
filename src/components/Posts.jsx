@@ -144,6 +144,10 @@ const Posts = ({ posts, profile, setPosts }) => {
     }
   };
 
+  const handleCommentInputChange = (e) => {
+    setCommentInput(e.target.value);
+  };
+
   return (
     <>
       {posts.map((post) =>(
@@ -282,8 +286,9 @@ const Posts = ({ posts, profile, setPosts }) => {
                     backgroundColor={'blackAlpha.300'}
                     borderColor={'whiteAlpha.500'}
                     focusBorderColor='whiteAlpha.600'
-                    onChange={(e) => setCommentInput(e.target.value)}
-                  />
+                    onChange={handleCommentInputChange}
+                    value={commentInput}                  
+                                      />
                   <Button colorScheme='pink' borderRadius={50} onClick={() => handleAddComment(post._id)}>Post</Button>
               </HStack>
               }
