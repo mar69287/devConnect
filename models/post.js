@@ -17,9 +17,6 @@ const commentSchema = new Schema({
         ref: 'Profile',
         required: true
     },
-    username: {
-        type: String
-    },
     content: {
         type: String,
         required: true

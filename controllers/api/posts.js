@@ -9,12 +9,13 @@ module.exports = {
     createLike, 
     deleteLike,
     getLikes,
-    getPostLikes 
+    getPostLikes,
+    createComment 
 }
 
 async function index(req, res) {
     try {
-        const posts = await Post.find().populate('likes.profile');
+        const posts = await Post.find().populate('likes.profile').populate('comments.profile');
         res.json(posts);
     } catch (error) {
         console.error(error);
@@ -139,4 +140,22 @@ async function getPostLikes(req, res) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
       }
+}
+
+async function createComment(req, res) {
+    try {
+        const postId = req.params.id;
+        const profileId = req.body.profile;
+        const postCommentContent = req.body.content
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+            { $push: { comments: { profile: profileId, content:  postCommentContent} } },
+            { new: true }
+        );
+
+        res.json(updatedPost);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }

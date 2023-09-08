@@ -35,3 +35,7 @@ export async function getUserLikes(profileId) {
 export async function getPostLikes(postId) {
     return sendRequest(`${BASE_URL}/likes/${postId}`)
 }
+
+export async function addComment(postId, commentData) {
+    return sendRequest(`${BASE_URL}/${postId}/comment`, 'POST', commentData)
+}

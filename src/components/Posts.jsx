@@ -1,8 +1,8 @@
-import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/react"
+import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Input, InputGroup } from "@chakra-ui/react"
 import { useState, useEffect } from 'react';
 import { BiSolidLike } from 'react-icons/bi'
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
@@ -11,6 +11,8 @@ const Posts = ({ posts, profile, setPosts }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [likedPosts, setLikedPosts] = useState(null);
   const [postLikes, setPostLikes] = useState([]);
+  const [commentStates, setCommentStates] = useState({});
+  const [commentInput, setCommentInput] = useState('');
 
   useEffect(() => {
     async function fetchLikedPosts() {
@@ -109,6 +111,39 @@ const Posts = ({ posts, profile, setPosts }) => {
     return openModals.includes(postId);
   };
 
+  const handleAddComment = async (postId) => {
+    if (commentInput.trim() === '') {
+      return;
+    }
+    try {
+      const commentData = {
+        content: commentInput,
+        profile: profile._id
+      }
+      await addComment(postId, commentData);
+      const updatedPosts = posts.map((post) => {
+        if (post._id === postId) {
+          return {
+            ...post,
+            comments: [
+              ...post.comments,
+              {
+                content: commentInput,
+                profile: profile._id,
+              },
+            ],
+          };
+        }
+        return post;
+      });
+  
+      setPosts(updatedPosts);
+      setCommentInput('')
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
   return (
     <>
       {posts.map((post) =>(
@@ -136,8 +171,7 @@ const Posts = ({ posts, profile, setPosts }) => {
                   />
                   <MenuList>
                     <Link to={`/post/edit/${post._id}`}>
-                      <MenuItem icon={<BsFillPencilFill />} 
-                      >
+                      <MenuItem icon={<BsFillPencilFill />}>
                             Edit Post
                       </MenuItem>
                     </Link>
@@ -203,19 +237,6 @@ const Posts = ({ posts, profile, setPosts }) => {
               </Modal>
               <Divider borderColor={"whiteAlpha.300"} mt={2}/>
               <HStack justify='space-between' w={'100%'}>
-                {/* <Button
-                 variant='ghost' 
-                 color={clicked ? 'rgb(213, 45, 129)' : 'rgb(204, 206, 209)'}
-                 leftIcon={<BiSolidLike />}
-                 flex={1} 
-                 onClick={() =>
-                  likedPosts && likedPosts.some((likedPost) => likedPost._id === post._id)
-                    ? handleDeleteLike(post._id)
-                    : handleLike(post._id)
-                 }
-                >
-                  Like
-                </Button> */}
                 {likedPosts && likedPosts.some((likedPost) => likedPost._id === post._id) ? (
                     <Button
                       variant='ghost' 
@@ -237,10 +258,35 @@ const Posts = ({ posts, profile, setPosts }) => {
                       Like
                     </Button>
                   )}
-                <Button color={'rgb(204, 206, 209)'} flex='1' variant='ghost' leftIcon={<BsFillChatLeftDotsFill />}>
+                <Button 
+                  color={'rgb(204, 206, 209)'} 
+                  flex='1' variant='ghost' 
+                  leftIcon={<BsFillChatLeftDotsFill />} 
+                  onClick={() => {
+                    setCommentStates((prevState) => ({
+                      ...prevState,
+                      [post._id]: !prevState[post._id] || true,
+                    }));
+                  }}>
                   Comment
                 </Button>
               </HStack>
+              {commentStates[post._id] && 
+              <HStack w={'100%'}>
+                  <Input
+                    borderRadius={100}
+                    placeholder="Add a comment..."
+                    color={'whiteAlpha.800'}
+                    fontSize={'sm'}
+                    _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                    backgroundColor={'blackAlpha.300'}
+                    borderColor={'whiteAlpha.500'}
+                    focusBorderColor='whiteAlpha.600'
+                    onChange={(e) => setCommentInput(e.target.value)}
+                  />
+                  <Button colorScheme='pink' borderRadius={50} onClick={() => handleAddComment(post._id)}>Post</Button>
+              </HStack>
+              }
             </VStack>
         </VStack>
       ))}
