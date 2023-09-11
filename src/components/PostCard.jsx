@@ -9,6 +9,7 @@ import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment
 const PostCard = ({ posts, post, profile, setPosts }) => {
     const deleteDisclosure = useDisclosure();
     // const deleteCommentDisclosure = useDisclosure();
+    const [postLikes, setPostLikes] = useState(post.likes)
     const [totalPostLikes, setTotalPostLikes] = useState(post.likes.length)
     const [isPostLikedByCurrentUser, setIsPostLikedByCurrentUser] = useState(post.likes.some((like) => like.profile._id === profile._id));
     const [totalPostComments, setTotalPostComments] = useState(post.comments.length)
@@ -16,6 +17,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
     const [commentInput, setCommentInput] = useState('');
     const [postComments, setPostComments] = useState(post.comments)
     const [showComments, setShowComments] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDeletePost = () => {
         // setSelectedPostId(post._id);
@@ -40,7 +42,13 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                 post: postId,
                 profile: profile._id
             }
-            await addLike(postId, idData);
+            const newLike = await addLike(postId, idData);
+            newLike.profile = {
+                picture: profile.picture,
+                userName: profile.userName,
+                _id: profile._id
+            };
+            setPostLikes((prevLikes) => [...prevLikes, newLike]);
             setTotalPostLikes((prevTotalLikes) => prevTotalLikes + 1);
             setIsPostLikedByCurrentUser(true);
         } catch (error) {
@@ -55,6 +63,8 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
             profile: profile._id
           }
           await deleteLike(postId, idData);
+          const likeIndexToDelete = postLikes.findIndex(like => like.profile._id === profile._id);
+          setPostLikes(prevLikes => prevLikes.filter((_, index) => index !== likeIndexToDelete));
           setTotalPostLikes((prevTotalLikes) => prevTotalLikes - 1);
           setIsPostLikedByCurrentUser(false);
         } catch (error) {
@@ -127,6 +137,10 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
     //     }
     // };
 
+    const handleToggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
   return (
     <VStack position={"relative"} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
@@ -178,7 +192,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
             )}
             <HStack justifyContent={'space-between'} w={'100%'} mt={0}>
                 {totalPostLikes > 0 && (
-                    <HStack align="center"  _hover={{ cursor: "pointer" }} >
+                    <HStack align="center"  _hover={{ cursor: "pointer" }} onClick={handleToggleModal}>
                         <BiSolidLike size={12} color={'rgb(213, 45, 129)'} />
                         <Text 
                         color={'rgb(204, 206, 209)'} 
@@ -188,6 +202,33 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                         {totalPostLikes}
                         </Text>
                     </HStack>
+                )}
+                {isModalOpen && (
+                    <Modal size='md' isOpen={isModalOpen} onClose={handleToggleModal}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Likes</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                {postLikes.map((like) => (
+                                    <Box key={like._id}>
+                                        <HStack mb={1}>
+                                            <Image
+                                                borderRadius='full'
+                                                boxSize='40px'
+                                                src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://bit.ly/dan-abramov'}
+                                                alt='Dan Abramov'
+                                                border={'2px solid'}
+                                                borderColor={"whiteAlpha.600"}
+                                            />
+                                            <Heading color="black" size='sm'>{like.profile.userName}</Heading>
+                                        </HStack>
+                                        <Divider borderColor={"blackAlpha.600"} my={1}/>
+                                    </Box>
+                                ))}
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal>
                 )}
                 {totalPostComments > 0 && (
                     <HStack align="center" _hover={{ cursor: "pointer" }} onClick={() => setShowComments(true)}>

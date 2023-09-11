@@ -97,7 +97,9 @@ async function createLike(req, res) {
             { new: true }
         );
 
-        res.json(updatedPost);
+        const newLike = updatedPost.likes.find((like) => like.profile.toString() === profileId);
+
+        res.json(newLike);
     } catch (err) {
         res.status(400).json(err);
     }
