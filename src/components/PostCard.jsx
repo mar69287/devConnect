@@ -3,11 +3,12 @@ import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } f
 import { BiSolidLike } from 'react-icons/bi';
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment, getPostComments } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment, getPostComments, deleteComment } from "../utilities/posts-api";
 
 
 const PostCard = ({ posts, post, profile, setPosts }) => {
     const deleteDisclosure = useDisclosure();
+    // const deleteCommentDisclosure = useDisclosure();
     const [totalPostLikes, setTotalPostLikes] = useState(post.likes.length)
     const [isPostLikedByCurrentUser, setIsPostLikedByCurrentUser] = useState(post.likes.some((like) => like.profile._id === profile._id));
     const [totalPostComments, setTotalPostComments] = useState(post.comments.length)
@@ -76,32 +77,53 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
           const newComment = await addComment(postId, commentData);
           newComment.profile = {
             picture: profile.picture,
-            userName: profile.userName
+            userName: profile.userName,
+            _id: profile._id
           };
-          const updatedPosts = posts.map((post) => {
-            if (post._id === postId) {
-              return {
-                ...post,
-                comments: [
-                  ...post.comments,
-                  {
-                    content: commentInput,
-                    profile: profile._id,
-                  },
-                ],
-              };
-            }
-            return post;
-          });
+        //   const updatedPosts = posts.map((post) => {
+        //     if (post._id === postId) {
+        //       return {
+        //         ...post,
+        //         comments: [
+        //           ...post.comments,
+        //           {
+        //             content: commentInput,
+        //             profile: profile._id,
+        //           },
+        //         ],
+        //       };
+        //     }
+        //     return post;
+        //   });
           
-          setPosts(updatedPosts);
+        //   setPosts(updatedPosts);
           setPostComments((prevComments) => [...prevComments, newComment]);
           setCommentInput('')
           setTotalPostComments((prevTotalComments) => prevTotalComments + 1);
         } catch (error) {
           console.error("Error adding comment:", error);
         }
-      };
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            await deleteComment(post._id, commentId); 
+            setPostComments((prevComments) =>
+                prevComments.filter((comment) => comment._id !== commentId)
+            );
+          } catch (error) {
+            console.error("Error deleting comment:", error);
+          }
+    };
+
+    // const handleCommentDeleteConfirm = async (commentId) => {
+    //     try {
+    //       await deleteComment(post._id, commentId); 
+    //       deleteCommentDisclosure.onClose();
+    //     } catch (error) {
+    //       console.error("Error deleting comment:", error);
+    //     }
+    // };
 
   return (
     <VStack position={"relative"} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
@@ -276,7 +298,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                                                     Edit Comment
                                             </MenuItem>
                                         </Link> */}
-                                        <MenuItem icon={<BsTrash3Fill />} onClick={handleDeletePost}>Delete Post</MenuItem>
+                                        <MenuItem icon={<BsTrash3Fill />} onClick={() => handleDeleteComment(comment._id)}>Delete Comment</MenuItem>
                                     </MenuList>
                                     </Menu>
                                 )}
@@ -285,6 +307,26 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                                 {comment.content}
                             </Text>
                         </VStack>
+                        {/* <AlertDialog isOpen={deleteCommentDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
+                            <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                Delete Comment
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody>
+                                Are you sure you want to delete this comment? This action cannot be undone.
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                <Button onClick={deleteCommentDisclosure.onClose}>Cancel</Button>
+                                <Button colorScheme='red' onClick={() => handleCommentDeleteConfirm(comment._id)} ml={3}>
+                                    Delete
+                                </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog> */}
                     </HStack>
                 ))}
         </VStack>

@@ -43,3 +43,8 @@ export async function addComment(postId, commentData) {
 export async function getPostComments(postId) {
     return sendRequest(`${BASE_URL}/${postId}/comments`)
 }
+
+export async function deleteComment(postId, commentId) {
+    // console.log('in delete comment')
+    return sendRequest(`${BASE_URL}/${postId}/comments/${commentId}`, 'DELETE')
+}

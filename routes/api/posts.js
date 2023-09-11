@@ -14,5 +14,6 @@ router.get('/:id/like', ensureLoggedIn, postsCtrl.getLikes)
 router.get('/likes/:id', ensureLoggedIn, postsCtrl.getPostLikes)
 router.post('/:id/comment', ensureLoggedIn, postsCtrl.createComment)
 router.get('/:id/comments', ensureLoggedIn, postsCtrl.getPostComments)
+router.delete('/:id/comments/:Cid', ensureLoggedIn, postsCtrl.deleteComment)
 
 module.exports = router;
