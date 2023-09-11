@@ -13,6 +13,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
     const [totalPostComments, setTotalPostComments] = useState(post.comments.length)
     const [showCommentInput, setShowCommentInput] = useState(false)
     const [commentInput, setCommentInput] = useState('');
+    const [postComments, setPostComments] = useState(post.comments)
 
     const handleDeletePost = () => {
         // setSelectedPostId(post._id);
@@ -72,7 +73,11 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
             content: commentInput,
             profile: profile._id
           }
-          await addComment(postId, commentData);
+          const newComment = await addComment(postId, commentData);
+          newComment.profile = {
+            picture: profile.picture,
+            userName: profile.userName
+          };
           const updatedPosts = posts.map((post) => {
             if (post._id === postId) {
               return {
@@ -88,8 +93,9 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
             }
             return post;
           });
-      
+          
           setPosts(updatedPosts);
+          setPostComments((prevComments) => [...prevComments, newComment]);
           setCommentInput('')
           setTotalPostComments((prevTotalComments) => prevTotalComments + 1);
         } catch (error) {
@@ -240,6 +246,47 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                     <Button colorScheme='pink' borderRadius={50} onClick={() => handleAddComment(post._id)}>Post</Button>
                 </HStack>
             )}
+                {postComments.map((comment) => (
+                    <HStack mb={1} key={comment._id} w={'100%'} display={"flex"} alignItems={'flex-start'} justifyContent={'flex-start'}>
+                        <Image
+                            borderRadius='full'
+                            boxSize='30px'
+                            src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://bit.ly/dan-abramov'}
+                            alt='Dan Abramov'
+                            border={'2px solid'}
+                            borderColor={"whiteAlpha.600"}
+                        />
+                        <VStack borderRadius={5} p={2} ml={2} flex={1} backgroundColor={'rgb(15, 17, 20)'} borderColor={'WhiteAlpha300'}>
+                            <HStack justifyContent={'space-between'} w={'100%'}>
+                                <HStack>
+                                    <Heading  color="rgb(255, 255, 255)" fontSize='.8rem'>{comment.profile.userName}</Heading>
+                                </HStack>
+                                {profile._id === comment.profile._id && (
+                                    <Menu>
+                                    <MenuButton 
+                                        color={'rgb(204, 206, 209)'}
+                                        variant='ghost'
+                                        size={'sm'}
+                                        as={IconButton}
+                                        icon={<BsThreeDots />}
+                                    />
+                                    <MenuList>
+                                        {/* <Link to={`/post/edit/${post._id}`}>
+                                            <MenuItem icon={<BsFillPencilFill />}>
+                                                    Edit Comment
+                                            </MenuItem>
+                                        </Link> */}
+                                        <MenuItem icon={<BsTrash3Fill />} onClick={handleDeletePost}>Delete Post</MenuItem>
+                                    </MenuList>
+                                    </Menu>
+                                )}
+                            </HStack>
+                            <Text w={'100%'} fontSize="sm" color="whiteAlpha.800" textAlign={"left"}>
+                                {comment.content}
+                            </Text>
+                        </VStack>
+                    </HStack>
+                ))}
         </VStack>
         <AlertDialog isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
             <AlertDialogOverlay>

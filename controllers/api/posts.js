@@ -154,8 +154,8 @@ async function createComment(req, res) {
             { $push: { comments: { profile: profileId, content:  postCommentContent} } },
             { new: true }
         );
-
-        res.json(updatedPost);
+        const newComment = updatedPost.comments[updatedPost.comments.length - 1];
+        res.json(newComment);
     } catch (err) {
         res.status(400).json(err);
     }
