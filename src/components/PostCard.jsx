@@ -231,7 +231,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                     </Modal>
                 )}
                 {totalPostComments > 0 && (
-                    <HStack align="center" _hover={{ cursor: "pointer" }} onClick={() => setShowComments(true)}>
+                    <HStack align="center" _hover={{ cursor: "pointer" }} onClick={() => setShowComments(!showComments)}>
                         <Text 
                             color={'rgb(204, 206, 209)'} 
                             fontSize="xs" 
