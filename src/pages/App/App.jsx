@@ -4,8 +4,6 @@ import { Routes, Route } from 'react-router-dom'
 import { getUser } from '../../utilities/users-service'
 import { getProfile } from '../../utilities/profiles-api'
 import AuthPage from '../AuthPage/AuthPage';
-import NewOrderPage from '../NewOrderPage/NewOrderPage';
-import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 import NavBar from '../../components/NavBar/UserNavBar'
 import HomePage from '../HomePage';
 import { Navigate } from 'react-router-dom';
