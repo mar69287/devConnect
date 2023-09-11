@@ -15,6 +15,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
     const [showCommentInput, setShowCommentInput] = useState(false)
     const [commentInput, setCommentInput] = useState('');
     const [postComments, setPostComments] = useState(post.comments)
+    const [showComments, setShowComments] = useState(false)
 
     const handleDeletePost = () => {
         // setSelectedPostId(post._id);
@@ -111,6 +112,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
             setPostComments((prevComments) =>
                 prevComments.filter((comment) => comment._id !== commentId)
             );
+            setTotalPostComments((prevTotalComments) => prevTotalComments - 1);
           } catch (error) {
             console.error("Error deleting comment:", error);
           }
@@ -188,7 +190,7 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                     </HStack>
                 )}
                 {totalPostComments > 0 && (
-                    <HStack align="center" _hover={{ cursor: "pointer" }}>
+                    <HStack align="center" _hover={{ cursor: "pointer" }} onClick={() => setShowComments(true)}>
                         <Text 
                             color={'rgb(204, 206, 209)'} 
                             fontSize="xs" 
@@ -268,67 +270,67 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                     <Button colorScheme='pink' borderRadius={50} onClick={() => handleAddComment(post._id)}>Post</Button>
                 </HStack>
             )}
-                {postComments.map((comment) => (
-                    <HStack mb={1} key={comment._id} w={'100%'} display={"flex"} alignItems={'flex-start'} justifyContent={'flex-start'}>
-                        <Image
-                            borderRadius='full'
-                            boxSize='30px'
-                            src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://bit.ly/dan-abramov'}
-                            alt='Dan Abramov'
-                            border={'2px solid'}
-                            borderColor={"whiteAlpha.600"}
-                        />
-                        <VStack borderRadius={5} p={2} ml={2} flex={1} backgroundColor={'rgb(15, 17, 20)'} borderColor={'WhiteAlpha300'}>
-                            <HStack justifyContent={'space-between'} w={'100%'}>
-                                <HStack>
-                                    <Heading  color="rgb(255, 255, 255)" fontSize='.8rem'>{comment.profile.userName}</Heading>
-                                </HStack>
-                                {profile._id === comment.profile._id && (
-                                    <Menu>
-                                    <MenuButton 
-                                        color={'rgb(204, 206, 209)'}
-                                        variant='ghost'
-                                        size={'sm'}
-                                        as={IconButton}
-                                        icon={<BsThreeDots />}
-                                    />
-                                    <MenuList>
-                                        {/* <Link to={`/post/edit/${post._id}`}>
-                                            <MenuItem icon={<BsFillPencilFill />}>
-                                                    Edit Comment
-                                            </MenuItem>
-                                        </Link> */}
-                                        <MenuItem icon={<BsTrash3Fill />} onClick={() => handleDeleteComment(comment._id)}>Delete Comment</MenuItem>
-                                    </MenuList>
-                                    </Menu>
-                                )}
+            {showComments && (postComments.map((comment) => (
+                <HStack mb={1} key={comment._id} w={'100%'} display={"flex"} alignItems={'flex-start'} justifyContent={'flex-start'}>
+                    <Image
+                        borderRadius='full'
+                        boxSize='30px'
+                        src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://bit.ly/dan-abramov'}
+                        alt='Dan Abramov'
+                        border={'2px solid'}
+                        borderColor={"whiteAlpha.600"}
+                    />
+                    <VStack borderRadius={5} p={2} ml={2} flex={1} backgroundColor={'rgb(15, 17, 20)'} borderColor={'WhiteAlpha300'}>
+                        <HStack justifyContent={'space-between'} w={'100%'}>
+                            <HStack>
+                                <Heading  color="rgb(255, 255, 255)" fontSize='.8rem'>{comment.profile.userName}</Heading>
                             </HStack>
-                            <Text w={'100%'} fontSize="sm" color="whiteAlpha.800" textAlign={"left"}>
-                                {comment.content}
-                            </Text>
-                        </VStack>
-                        {/* <AlertDialog isOpen={deleteCommentDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
-                            <AlertDialogOverlay>
-                            <AlertDialogContent>
-                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                Delete Comment
-                                </AlertDialogHeader>
+                            {profile._id === comment.profile._id && (
+                                <Menu>
+                                <MenuButton 
+                                    color={'rgb(204, 206, 209)'}
+                                    variant='ghost'
+                                    size={'sm'}
+                                    as={IconButton}
+                                    icon={<BsThreeDots />}
+                                />
+                                <MenuList>
+                                    {/* <Link to={`/post/edit/${post._id}`}>
+                                        <MenuItem icon={<BsFillPencilFill />}>
+                                                Edit Comment
+                                        </MenuItem>
+                                    </Link> */}
+                                    <MenuItem icon={<BsTrash3Fill />} onClick={() => handleDeleteComment(comment._id)}>Delete Comment</MenuItem>
+                                </MenuList>
+                                </Menu>
+                            )}
+                        </HStack>
+                        <Text w={'100%'} fontSize="sm" color="whiteAlpha.800" textAlign={"left"}>
+                            {comment.content}
+                        </Text>
+                    </VStack>
+                    {/* <AlertDialog isOpen={deleteCommentDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
+                        <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Delete Comment
+                            </AlertDialogHeader>
 
-                                <AlertDialogBody>
-                                Are you sure you want to delete this comment? This action cannot be undone.
-                                </AlertDialogBody>
+                            <AlertDialogBody>
+                            Are you sure you want to delete this comment? This action cannot be undone.
+                            </AlertDialogBody>
 
-                                <AlertDialogFooter>
-                                <Button onClick={deleteCommentDisclosure.onClose}>Cancel</Button>
-                                <Button colorScheme='red' onClick={() => handleCommentDeleteConfirm(comment._id)} ml={3}>
-                                    Delete
-                                </Button>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                            </AlertDialogOverlay>
-                        </AlertDialog> */}
-                    </HStack>
-                ))}
+                            <AlertDialogFooter>
+                            <Button onClick={deleteCommentDisclosure.onClose}>Cancel</Button>
+                            <Button colorScheme='red' onClick={() => handleCommentDeleteConfirm(comment._id)} ml={3}>
+                                Delete
+                            </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                        </AlertDialogOverlay>
+                    </AlertDialog> */}
+                </HStack>
+            )))}
         </VStack>
         <AlertDialog isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
             <AlertDialogOverlay>
