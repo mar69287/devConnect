@@ -5,6 +5,7 @@ import { getProfile } from '../utilities/profiles-api'
 import { getPosts } from "../utilities/posts-api"
 import PostInput from "../components/PostInput"
 import Posts from "../components/Posts"
+import PostCard from "../components/PostCard"
 
 const FeedPage = ({ profile, setProfile, user }) => {
     const [posts, setPosts] = useState([])
@@ -77,7 +78,10 @@ const FeedPage = ({ profile, setProfile, user }) => {
                         <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
                     </HStack> */}
                 </VStack>
-                <Posts posts={posts} profile={profile} setPosts={setPosts} />
+                {posts.map((post) => (
+                    <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts}/>
+                ))}
+                {/* <Posts posts={posts} profile={profile} setPosts={setPosts} /> */}
             </VStack>
             <VStack w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
     

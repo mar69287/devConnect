@@ -1,8 +1,8 @@
 import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Input, InputGroup } from "@chakra-ui/react"
 import { useState, useEffect } from 'react';
-import { BiSolidLike } from 'react-icons/bi'
+import { BiSolidLike } from 'react-icons/bi';
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
-import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment } from "../utilities/posts-api";
+import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment, getPostComments } from "../utilities/posts-api";
 import { Link } from "react-router-dom";
 
 const Posts = ({ posts, profile, setPosts }) => {
@@ -13,6 +13,8 @@ const Posts = ({ posts, profile, setPosts }) => {
   const [postLikes, setPostLikes] = useState([]);
   const [commentStates, setCommentStates] = useState({});
   const [commentInput, setCommentInput] = useState('');
+  const [postComments, setPostComments] = useState({})
+  const [totalPostComments, setTotalPostComments] = useState(0)
 
   useEffect(() => {
     async function fetchLikedPosts() {
@@ -288,7 +290,7 @@ const Posts = ({ posts, profile, setPosts }) => {
                     focusBorderColor='whiteAlpha.600'
                     onChange={handleCommentInputChange}
                     value={commentInput}                  
-                                      />
+                  />
                   <Button colorScheme='pink' borderRadius={50} onClick={() => handleAddComment(post._id)}>Post</Button>
               </HStack>
               }

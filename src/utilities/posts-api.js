@@ -39,3 +39,7 @@ export async function getPostLikes(postId) {
 export async function addComment(postId, commentData) {
     return sendRequest(`${BASE_URL}/${postId}/comment`, 'POST', commentData)
 }
+
+export async function getPostComments(postId) {
+    return sendRequest(`${BASE_URL}/${postId}/comments`)
+}

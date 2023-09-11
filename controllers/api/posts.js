@@ -10,7 +10,8 @@ module.exports = {
     deleteLike,
     getLikes,
     getPostLikes,
-    createComment 
+    createComment,
+    getPostComments 
 }
 
 async function index(req, res) {
@@ -158,4 +159,19 @@ async function createComment(req, res) {
     } catch (err) {
         res.status(400).json(err);
     }
+}
+
+async function getPostComments(req, res) {
+    // try {
+    //     const postId = req.params.id;
+    //     const post = await Post.findById(postId).populate('comments.profile');
+
+    //     const comments = post.comments;
+
+    //     res.json(comments);
+    // } catch (err) {
+    //     console.error(err);
+    //     res.status(500).json({ message: 'Server error' });
+    // }
+    console.log('getting comments from posts')
 }
