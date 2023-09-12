@@ -1,10 +1,9 @@
-import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Button } from "@chakra-ui/react"
+import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
 import { useEffect, useState } from 'react'
 import { getProfile } from '../utilities/profiles-api'
 import { getPosts } from "../utilities/posts-api"
 import PostInput from "../components/PostInput"
-import Posts from "../components/Posts"
 import PostCard from "../components/PostCard"
 
 const FeedPage = ({ profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
@@ -28,6 +27,30 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
         }
             fetchProfile();
     }, []);
+
+    const resources = [
+        {
+            name: 'Codedex',
+            link: 'https://www.codedex.io/',
+        },
+        {
+            name: 'Coddy',
+            link: 'https://coddy.tech/',
+        },
+        {
+            name: 'Developer Roadmaps',
+            link: 'https://roadmap.sh/',
+        },
+        {
+            name: 'Free Code Camp',
+            link: 'https://www.freecodecamp.org/',
+        },
+        {
+            name: 'Programming with Mosh',
+            link: 'https://www.youtube.com/@programmingwithmosh',
+        },
+      
+    ];
 
   return (
     <Flex w={'100%'} direction={['column', 'row']} gap={8} px={10} py={5}>
@@ -85,10 +108,25 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
                 {posts.map((post) => (
                     <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />
                 ))}
-                {/* <Posts posts={posts} profile={profile} setPosts={setPosts} /> */}
             </VStack>
-            <VStack w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
-    
+            <VStack py={3} px={4} w={['100%', '25%']} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+                <Heading textAlign={'center'} color="rgb(255, 255, 255)" size='sm'>Learning to code or just want more practice?</Heading>
+                <Text align={"center"} color="whiteAlpha.800" fontSize='sm'>Below we'll share some great resources for you to check out.</Text>
+                <List spacing={2} mt={2} textAlign="left">
+                    {resources.map((resource, index) => (
+                        <ListItem key={index}>
+                            <Link
+                                href={resource.link}
+                                isExternal  
+                                color="purple.400"  
+                                textDecoration="none"
+                                _hover={{ color: "purple.800" }}  
+                            >
+                                {resource.name}
+                            </Link>
+                        </ListItem>
+                    ))}
+                </List>
             </VStack>
         </>
         ) : (
