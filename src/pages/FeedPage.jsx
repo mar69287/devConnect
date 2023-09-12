@@ -7,7 +7,7 @@ import PostInput from "../components/PostInput"
 import Posts from "../components/Posts"
 import PostCard from "../components/PostCard"
 
-const FeedPage = ({ profile, setProfile, user }) => {
+const FeedPage = ({ profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
@@ -15,6 +15,10 @@ const FeedPage = ({ profile, setProfile, user }) => {
             try {
                 const profileData = await getProfile();
                 setProfile(profileData);
+                setFollowers(profileData.followers)
+                setFollowersCount(profileData.followers.length)
+                setFollowing(profileData.following)
+                setFollowingCount(profileData.following.length)
                 const posts = await getPosts();
                 const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setPosts(sortedPosts);
@@ -49,11 +53,11 @@ const FeedPage = ({ profile, setProfile, user }) => {
                 <Divider  borderColor={"whiteAlpha.300"} />
                 <HStack  justifyContent={'space-between'} w={'100%'}>
                     <Text color="whiteAlpha.600" fontSize='sm'>Followers</Text>
-                    <Text color="whiteAlpha.800" fontSize='sm'>{profile.followers.length}</Text>
+                    <Text color="whiteAlpha.800" fontSize='sm'>{followersCount}</Text>
                 </HStack>
                 <HStack  justifyContent={'space-between'} w={'100%'}>
                     <Text color="whiteAlpha.600" fontSize='sm'>Following</Text>
-                    <Text color="whiteAlpha.800" fontSize='sm'>{profile.following.length}</Text>
+                    <Text color="whiteAlpha.800" fontSize='sm'>{followingCount}</Text>
                 </HStack>
             </VStack>
             <VStack w={['100%', '50%']} gap={4}>
@@ -79,7 +83,7 @@ const FeedPage = ({ profile, setProfile, user }) => {
                     </HStack> */}
                 </VStack>
                 {posts.map((post) => (
-                    <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts}/>
+                    <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />
                 ))}
                 {/* <Posts posts={posts} profile={profile} setPosts={setPosts} /> */}
             </VStack>

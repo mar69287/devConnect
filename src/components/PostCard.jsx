@@ -1,18 +1,19 @@
 import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Input, InputGroup } from "@chakra-ui/react"
-import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill } from 'react-icons/bs'
+import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill, BsFillPersonCheckFill, BsPlusLg } from 'react-icons/bs'
 import { BiSolidLike } from 'react-icons/bi';
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment, getPostComments, deleteComment } from "../utilities/posts-api";
+import { addFollowing } from '../utilities/profiles-api'
 
-
-const PostCard = ({ posts, post, profile, setPosts }) => {
+const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, setFollowingCount}) => {
     const deleteDisclosure = useDisclosure();
     // const deleteCommentDisclosure = useDisclosure();
     const [postLikes, setPostLikes] = useState(post.likes)
     const [totalPostLikes, setTotalPostLikes] = useState(post.likes.length)
     const [isPostLikedByCurrentUser, setIsPostLikedByCurrentUser] = useState(post.likes.some((like) => like.profile._id === profile._id));
     const [totalPostComments, setTotalPostComments] = useState(post.comments.length)
+    const [isFollowingPostAuthor, setIsFollowingPostAuthor] = useState(following.some((followedProfile) => followedProfile._id === post.profile));
     const [showCommentInput, setShowCommentInput] = useState(false)
     const [commentInput, setCommentInput] = useState('');
     const [postComments, setPostComments] = useState(post.comments)
@@ -141,6 +142,26 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
         setIsModalOpen(!isModalOpen);
     };
 
+    const handleAddFollowing = async (postProfileId) => {
+        try {
+            const newFollowing = await addFollowing(profile._id, postProfileId);
+            setFollowing((prev) => [...prev, newFollowing]);
+            setFollowingCount((prevTotal) => prevTotal + 1);
+            setIsFollowingPostAuthor(true)
+        } catch (error) {
+            console.error("Error adding like:", error);
+        }
+    }
+    
+    const handleDeleteFollowing = (postProfileId) => {
+        console.log(profile._id, postProfileId)
+        if(profile._id !== postProfileId) {
+            console.log('what the')
+        }
+        setIsFollowingPostAuthor(false)
+    }
+
+
   return (
     <VStack position={"relative"} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
@@ -173,7 +194,28 @@ const PostCard = ({ posts, post, profile, setPosts }) => {
                     <MenuItem icon={<BsTrash3Fill />} onClick={handleDeletePost}>Delete Post</MenuItem>
                   </MenuList>
                 </Menu>
-              )}
+            )}
+            {profile._id !== post.profile && (
+                <Button
+                    variant='ghost' 
+                    color='rgb(204, 206, 209)'
+                    size={"sm"}
+                    leftIcon={isFollowingPostAuthor ? <BsFillPersonCheckFill /> : <BsPlusLg />}
+                    onClick={() => {
+                        if (isFollowingPostAuthor) {
+                            handleDeleteFollowing(post.profile);
+                        } else {
+                            handleAddFollowing(post.profile);
+                        }
+                    }}
+                    _hover={{
+                        color: 'rgb(255, 255, 255)',
+                        borderColor: 'rgb(255, 255, 255)',
+                    }}
+                >
+                {isFollowingPostAuthor ? "Following" : "Follow"}
+                </Button>
+            )}
         </HStack>
         <VStack w={['100%']} alignItems={'flex-start'}>
             {post.type === "project" && (

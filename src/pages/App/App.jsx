@@ -18,7 +18,11 @@ import EditPostPage from '../EditPostPage';
 export default function App() {
   const [ user, setUser ] = useState(getUser())
   const [ profile, setProfile ] = useState(null)
-
+  const [ followers, setFollowers ] = useState({})
+  const [ following, setFollowing ] = useState({})
+  const [ followersCount, setFollowersCount ] = useState(0)
+  const [ followingCount, setFollowingCount ] = useState(0)
+  
 //   useEffect(() => {
 //     async function fetchProfile() {
 //         try {
@@ -40,7 +44,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} />} />
+            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
             <Route path='/post/edit/:postId' element={<EditPostPage />} />
           </Routes>

@@ -9,3 +9,7 @@ export async function createProfile(profileData) {
 export async function getProfile() {
     return sendRequest(BASE_URL)
 }
+
+export async function addFollowing(profileId, postProfileId) {
+    return sendRequest(`${BASE_URL}/${profileId}/following/${postProfileId}`, 'POST')
+}
