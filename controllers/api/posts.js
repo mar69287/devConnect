@@ -182,14 +182,19 @@ async function getPostComments(req, res) {
 async function deleteComment(req, res) {
     try {
         const postId = req.params.id;
-        const commentId = req.params.Cid;
-        const post = await Post.findById(postId)
-        const commentIndex = post.comments.findIndex(comment => comment._id === commentId);
-        post.comments.splice(commentIndex, 1)
-        await post.save();
-        res.json({ message: 'Comment deleted successfully' });
+        const commentId = req.params.Cid.toString();
+        const post = await Post.findById(postId);
+
+        const commentIndex = post.comments.findIndex((comment) => comment._id.toString() === commentId);
+
+        if (commentIndex !== -1) {
+            post.comments.splice(commentIndex, 1);
+            await post.save(); 
+            res.json({ message: 'Comment deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Comment not found' });
+        }
     } catch (err) {
         res.status(400).json(err);
     }
-
 }
