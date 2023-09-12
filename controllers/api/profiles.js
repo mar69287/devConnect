@@ -48,7 +48,7 @@ async function addFollowing(req, res) {
         await userProfile.save();
         await followerProfile.save();
 
-        res.json({ message: 'Following added', followerProfile });
+        res.json(userProfile);
     } catch (error) {
         res.status(500).json({ message: 'Error adding' });
     }
