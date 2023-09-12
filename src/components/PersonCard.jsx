@@ -31,17 +31,19 @@ const PersonCard = ({ person, following, setFollowing, setFollowingCount, profil
   return (
     <>
         <HStack  w={'100%'} alignItems={'center'} justifyContent={'space-between'}>
-            <HStack >
-                <Image
-                    borderRadius='full'
-                    boxSize='50px'
-                    src={person.picture ? `/assets/${person.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
-                    alt='Dan Abramov'
-                    border={'2px solid'}
-                    borderColor={"whiteAlpha.600"}
-                />
-                <Heading ml={2} color="rgb(255, 255, 255)" size='sm'>{person.userName}</Heading>
-            </HStack>
+            <Link to={`/profile/${person.userName}`}>
+                <HStack >
+                    <Image
+                        borderRadius='full'
+                        boxSize='50px'
+                        src={person.picture ? `/assets/${person.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                        alt='Dan Abramov'
+                        border={'2px solid'}
+                        borderColor={"whiteAlpha.600"}
+                    />
+                    <Heading ml={2} color="rgb(255, 255, 255)" size='sm'>{person.userName}</Heading>
+                </HStack>
+            </Link>
             <Button
                 variant='ghost' 
                 color='rgb(204, 206, 209)'

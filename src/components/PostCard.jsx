@@ -168,17 +168,19 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
   return (
     <VStack position={"relative"} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
-            <HStack>
-                <Image
-                    borderRadius='full'
-                    boxSize='40px'
-                    src={post.profilePic ? `/assets/${post.profilePic}` : 'https://bit.ly/dan-abramov'}
-                    alt='Dan Abramov'
-                    border={'2px solid'}
-                    borderColor={"whiteAlpha.600"}
-                />
-                <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
-            </HStack>
+            <Link to={`/profile/${post.username}`}>
+                <HStack>
+                    <Image
+                        borderRadius='full'
+                        boxSize='40px'
+                        src={post.profilePic ? `/assets/${post.profilePic}` : 'https://i.imgur.com/uNL6B8O.png'}
+                        alt='Dan Abramov'
+                        border={'2px solid'}
+                        borderColor={"whiteAlpha.600"}
+                    />
+                    <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
+                </HStack>
+            </Link>
             {profile._id === post.profile && (
                 <Menu>
                   <MenuButton 
@@ -257,17 +259,19 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                             <ModalBody>
                                 {postLikes.map((like) => (
                                     <Box key={like._id}>
-                                        <HStack mb={1}>
-                                            <Image
-                                                borderRadius='full'
-                                                boxSize='40px'
-                                                src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://bit.ly/dan-abramov'}
-                                                alt='Dan Abramov'
-                                                border={'2px solid'}
-                                                borderColor={"whiteAlpha.600"}
-                                            />
-                                            <Heading color="black" size='sm'>{like.profile.userName}</Heading>
-                                        </HStack>
+                                        <Link to={`/profile/${like.profile.userName}`}>
+                                            <HStack mb={1}>
+                                                <Image
+                                                    borderRadius='full'
+                                                    boxSize='40px'
+                                                    src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                                                    alt='Dan Abramov'
+                                                    border={'2px solid'}
+                                                    borderColor={"whiteAlpha.600"}
+                                                />
+                                                <Heading color="black" size='sm'>{like.profile.userName}</Heading>
+                                            </HStack>
+                                        </Link>
                                         <Divider borderColor={"blackAlpha.600"} my={1}/>
                                     </Box>
                                 ))}
@@ -358,14 +362,16 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
             )}
             {showComments && (postComments.map((comment) => (
                 <HStack mb={1} key={comment._id} w={'100%'} display={"flex"} alignItems={'flex-start'} justifyContent={'flex-start'}>
-                    <Image
-                        borderRadius='full'
-                        boxSize='30px'
-                        src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://bit.ly/dan-abramov'}
-                        alt='Dan Abramov'
-                        border={'2px solid'}
-                        borderColor={"whiteAlpha.600"}
-                    />
+                    <Link to={`/profile/${comment.profile.userName}`}>
+                        <Image
+                            borderRadius='full'
+                            boxSize='30px'
+                            src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                            alt='Dan Abramov'
+                            border={'2px solid'}
+                            borderColor={"whiteAlpha.600"}
+                        />
+                    </Link>
                     <VStack borderRadius={5} p={2} ml={2} flex={1} backgroundColor={'rgb(15, 17, 20)'} borderColor={'WhiteAlpha300'}>
                         <HStack justifyContent={'space-between'} w={'100%'}>
                             <HStack>
@@ -395,26 +401,6 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                             {comment.content}
                         </Text>
                     </VStack>
-                    {/* <AlertDialog isOpen={deleteCommentDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
-                        <AlertDialogOverlay>
-                        <AlertDialogContent>
-                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Delete Comment
-                            </AlertDialogHeader>
-
-                            <AlertDialogBody>
-                            Are you sure you want to delete this comment? This action cannot be undone.
-                            </AlertDialogBody>
-
-                            <AlertDialogFooter>
-                            <Button onClick={deleteCommentDisclosure.onClose}>Cancel</Button>
-                            <Button colorScheme='red' onClick={() => handleCommentDeleteConfirm(comment._id)} ml={3}>
-                                Delete
-                            </Button>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                        </AlertDialogOverlay>
-                    </AlertDialog> */}
                 </HStack>
             )))}
         </VStack>

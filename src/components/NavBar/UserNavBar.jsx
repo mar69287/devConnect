@@ -6,7 +6,7 @@ import { BsPeopleFill } from 'react-icons/bs'
 import { BiSolidMessageRoundedDetail } from 'react-icons/bi'
 import * as userService from '../../utilities/users-service' 
 
-export default function NavBar({ user, setUser }) {
+export default function NavBar({ user, setUser, profile }) {
 
     function handleLogOut() {
         userService.logOut()
@@ -60,12 +60,14 @@ export default function NavBar({ user, setUser }) {
                             as={Button}
                             rightIcon={<MdKeyboardArrowDown className="arrowdown-icon" />}
                         >
-                            Profile
+                            {profile.name}
     
                         </MenuButton>
                         <MenuList>
                             <MenuItem>
-                                <Text>View Profile</Text>
+                                <Link to={`/profile/${profile.userName}`}>
+                                    <Text>View Profile</Text>
+                                </Link>
                             </MenuItem>
                             <MenuDivider />
                             <MenuItem onClick={handleLogOut}>
