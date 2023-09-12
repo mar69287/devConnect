@@ -4,7 +4,7 @@ import { BiSolidLike } from 'react-icons/bi';
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { deletePost, addLike, deleteLike, getUserLikes, getPostLikes, addComment, getPostComments, deleteComment } from "../utilities/posts-api";
-import { addFollowing } from '../utilities/profiles-api'
+import { addFollowing, deleteFollowing } from '../utilities/profiles-api'
 
 const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, setFollowingCount}) => {
     const deleteDisclosure = useDisclosure();
@@ -153,12 +153,15 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
         }
     }
     
-    const handleDeleteFollowing = (postProfileId) => {
-        console.log(profile._id, postProfileId)
-        if(profile._id !== postProfileId) {
-            console.log('what the')
+    const handleDeleteFollowing = async (postProfileId) => {
+        try {
+            await deleteFollowing(profile._id, postProfileId);
+            setFollowing((prevFollowing) => prevFollowing.filter((profile) => profile._id !== postProfileId));
+            setFollowingCount((prevTotal) => prevTotal - 1);
+            setIsFollowingPostAuthor(false)
+        } catch (error) {
+            console.error("Error adding like:", error);
         }
-        setIsFollowingPostAuthor(false)
     }
 
 

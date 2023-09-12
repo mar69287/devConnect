@@ -6,5 +6,6 @@ const ensureLoggedIn = require('../../config/ensureLoggedIn');
 router.get('/', ensureLoggedIn, profilesCtrl.index);
 router.post('/create', ensureLoggedIn, profilesCtrl.create);
 router.post('/:id/following/:fid', ensureLoggedIn, profilesCtrl.addFollowing)
+router.delete('/:id/following/:fid', ensureLoggedIn, profilesCtrl.deleteFollowing)
 
 module.exports = router;
