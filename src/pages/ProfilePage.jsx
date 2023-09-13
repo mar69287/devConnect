@@ -1,16 +1,21 @@
 import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
-import {  getProfile } from "../utilities/profiles-api"
+import {  getProfile, addFollowing, deleteFollowing } from "../utilities/profiles-api"
 import {  getProfilePosts } from "../utilities/posts-api"
 import { useState, useEffect } from "react"
 import { BsFillPersonCheckFill, BsPlusLg } from 'react-icons/bs'
 import { BiPaperPlane } from 'react-icons/bi'
+import PostCard from "../components/PostCard"
 
-const ProfilePage = ({ profile }) => {
+const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) => {
   const { userName } = useParams();
   const [profilePageAccount, setProfilePageAccount] = useState({})
-  const [isFollowingPostAuthor, setIsFollowingPostAuthor] = useState(false)
+  const [isFollowingProfile, setIsFollowingProfile] = useState(false)
   const [posts, setPosts] = useState([])
+  const [ profileFollowing, setProfileFollowing] = useState([])
+  const [ profileFollowers, setProfileFollowers] = useState([])
+  const [ profileFollowingCount, setProfileFollowingCount] = useState(0)
+  const [ profileFollowersCount, setProfileFollowersCount] = useState(0)
 
   useEffect(() => {
     async function fetchProfile() {
@@ -19,22 +24,54 @@ const ProfilePage = ({ profile }) => {
             setProfilePageAccount(profileData);
             const profilePosts = await getProfilePosts(profileData._id)
             setPosts(profilePosts)
-            const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setPosts(sortedPosts);
-            // setFollowers(profileData.followers)
-            // setFollowersCount(profileData.followers.length)
-            // setFollowing(profileData.following)
-            // setFollowingCount(profileData.following.length)
+
+            if(posts.length > 1) {
+                const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setPosts(sortedPosts);
+            }
+
+            setIsFollowingProfile(following.some((followedProfile) => followedProfile._id === profilePageAccount._id))
+            setProfileFollowers(profileData.followers)
+            setProfileFollowersCount(profileData.followers.length)
+            setProfileFollowing(profileData.following)
+            setProfileFollowingCount(profileData.following.length)
         } catch (error) {
             console.error(error);
         }
     }
         fetchProfile();
-}, []);
+}, [userName, following, profilePageAccount._id]);
+
+// const handleAddFollowing = async (profilePageId) => {
+//     try {
+//         const newFollowing = await addFollowing(profile._id, profilePageId);
+//         setFollowing((prev) => [...prev, newFollowing]);
+//         setFollowingCount((prevTotal) => prevTotal + 1);
+//         setIsFollowingProfile(true)
+//     } catch (error) {
+//         console.error("Error adding like:", error);
+//     }
+// }
+
+// const handleDeleteFollowing = async (profilePageId) => {
+//     try {
+//         await deleteFollowing(profile._id, profilePageId);
+//         setFollowing((prevFollowing) => prevFollowing.filter((prof) => prof._id !== profilePageId));
+//         setFollowingCount((prevTotal) => prevTotal - 1);
+//         setIsFollowingProfile(false)
+//     } catch (error) {
+//         console.error("Error adding like:", error);
+//     }
+//     // console.log(profileId)
+// }
 
   if (profilePageAccount === null) {
     return <Spinner />
   }
+
+  const updateIsFollowingPostAuthor = (value) => {
+    setIsFollowingProfile(value); // Update the state in ProfilePage
+  };
 
   return (
     <Grid
@@ -85,29 +122,31 @@ const ProfilePage = ({ profile }) => {
                 >
                     Message
                 </Button>
-                <Button
+                {/* <Button
                     variant='none' 
                     color='rgb(204, 206, 209)'
                     size={"md"}
-                    leftIcon={isFollowingPostAuthor ? <BsFillPersonCheckFill /> : <BsPlusLg />}
-                    // onClick={() => {
-                    //     if (isFollowingPostAuthor) {
-                    //         handleDeleteFollowing(person._id);
-                    //     } else {
-                    //         handleAddFollowing(person._id);
-                    //     }
-                    // }}
+                    leftIcon={isFollowingProfile ? <BsFillPersonCheckFill /> : <BsPlusLg />}
+                    onClick={() => {
+                        if (isFollowingProfile) {
+                            handleDeleteFollowing(profilePageAccount._id);
+                        } else {
+                            handleAddFollowing(profilePageAccount._id);
+                        }
+                    }}
                     _hover={{
                         color: 'rgb(255, 255, 255)',
                         borderColor: 'rgb(255, 255, 255)',
                     }}
                 >
-                    {isFollowingPostAuthor ? "Following" : "Follow"}
-                </Button>
+                    {isFollowingProfile ? "Following" : "Follow"}
+                </Button> */}
             </HStack>
         </GridItem>
-        <GridItem w={'100%'} bgColor={'white'} area={'posts'}>
-            <Text>posts displayed</Text>
+        <GridItem w={'100%'} area={'posts'}>
+                {posts.map((post) => (
+                    <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />
+                ))}
         </GridItem>
         <GridItem w={'100%'} bgColor={'white'} area={'skills'} h={'max-content'}>
             <Text>skills</Text>
