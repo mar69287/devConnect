@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider } from '@chakra-ui/react'
+import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider, Spinner } from '@chakra-ui/react'
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { AiFillHome } from 'react-icons/ai'
 import { BsPeopleFill } from 'react-icons/bs'
@@ -12,6 +12,8 @@ export default function NavBar({ user, setUser, profile }) {
         userService.logOut()
         setUser(null)
     }
+
+    
 
     return (
         <Box w={'100%'} position={'fixed'} top={0} left={0} zIndex={3} backgroundColor={'rgb(15, 16, 19)'}>
@@ -42,7 +44,7 @@ export default function NavBar({ user, setUser, profile }) {
                             <Text fontSize={15}>Messages</Text>
                         </VStack>
                     </Link>
-                    <Menu>
+                    {profile ? (<Menu>
                         <MenuButton
                             className="login-stack"
                             _hover={{
@@ -75,6 +77,9 @@ export default function NavBar({ user, setUser, profile }) {
                             </MenuItem>
                         </MenuList>
                     </Menu>
+                    ) : (
+                        <Spinner />
+                    )}
                 </HStack>
             </HStack>
         </Box>
