@@ -166,7 +166,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
 
 
   return (
-    <VStack position={"relative"} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+    <VStack position={"relative"} mb={4} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
             <Link to={`/profile/${post.username}`}>
                 <HStack>

@@ -84,8 +84,8 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
                     <Text color="whiteAlpha.800" fontSize='sm'>{followingCount}</Text>
                 </HStack>
             </VStack>
-            <VStack w={['100%', '50%']} gap={4}>
-                <VStack gap={0} py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
+            <VStack w={['100%', '50%']} >
+                <VStack gap={0} py={3} px={4} mb={2} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
                     <HStack  w={'100%'} >
                         <Image
                             borderRadius='full'
