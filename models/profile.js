@@ -4,12 +4,7 @@ const Schema = mongoose.Schema;
 const skillSchema = new Schema({
     skill: {
         type: String,
-    },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    }
 }, {
     timestamps: true
 });
