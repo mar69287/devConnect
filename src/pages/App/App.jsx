@@ -1,13 +1,10 @@
 import './App.css';
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { getUser } from '../../utilities/users-service'
-import { getProfile } from '../../utilities/profiles-api'
-import AuthPage from '../AuthPage/AuthPage';
 import NavBar from '../../components/NavBar/UserNavBar'
 import HomePage from '../HomePage';
 import { Navigate } from 'react-router-dom';
-import NonUserNavBar from '../../components/NavBar/NonUserNavBar';
 import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage';
 import ProfileCreatePage from '../ProfileCreatePage';
@@ -24,18 +21,15 @@ export default function App() {
   const [ following, setFollowing ] = useState([])
   const [ followersCount, setFollowersCount ] = useState(0)
   const [ followingCount, setFollowingCount ] = useState(0)
-  
-//   useEffect(() => {
-//     async function fetchProfile() {
-//         try {
-//             const profileData = await getProfile();
-//             setProfile(profileData);
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     }
-//         fetchProfile();
-// }, [user]);
+  const navigate = useNavigate();
+
+useEffect(() => {
+  const lastVisitedPage = localStorage.getItem('lastVisitedPage');
+
+  if (lastVisitedPage) {
+    navigate(lastVisitedPage);
+  }
+}, []);
 
   return (
     <Box as='main' className="App" >
@@ -51,12 +45,11 @@ export default function App() {
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
             <Route path='/profile/:userName' element={<ProfilePage profile={profile} setProfile={setProfile} user={user} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount}/>} />
             <Route path='/post/edit/:postId' element={<EditPostPage />} />
+            <Route path="*" element={<Navigate replace to="/feed" />} />
           </Routes>
         </>
         :
-        // <AuthPage setUser={setUser} />
         <>
-          {/* <NonUserNavBar /> */}
           <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage setUser={setUser}/>} />
@@ -64,7 +57,6 @@ export default function App() {
               <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </>
-        
       }
       </Box>
     </Box>

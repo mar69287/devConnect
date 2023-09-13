@@ -10,6 +10,7 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
+        localStorage.setItem('lastVisitedPage', '/feed');
         async function fetchProfile() {
             try {
                 const profileData = await getUserProfile();
