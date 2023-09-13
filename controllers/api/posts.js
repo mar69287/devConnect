@@ -12,7 +12,8 @@ module.exports = {
     getPostLikes,
     createComment,
     getPostComments,
-    deleteComment 
+    deleteComment,
+    getProfilePosts, 
 }
 
 async function index(req, res) {
@@ -26,8 +27,8 @@ async function index(req, res) {
 }
 
 async function show(req, res) {
-    const company = await Post.findById(req.params.id);
-    res.json(company);
+    const post = await Post.findById(req.params.id);
+    res.json(post);
 }
 
 async function create(req, res) {
@@ -196,5 +197,16 @@ async function deleteComment(req, res) {
         }
     } catch (err) {
         res.status(400).json(err);
+    }
+}
+
+async function getProfilePosts(req, res) {
+    try {
+        const profileId = req.params.id
+        const posts = await Post.find({ 'profile': profileId }).populate('likes.profile').populate('comments.profile');
+        res.json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching posts' });
     }
 }
