@@ -54,10 +54,10 @@ const NetworkPage = ({ profile, followers, setFollowers, followersCount, setFoll
       <GridItem  h={'max-content'} as="main" py={3} px={4} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <SimpleGrid spacing={4} columns={[1]} w={'100%'}>
             {followingComponent ? (
-                <Text align={'left'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.3rem'}>Following</Text>
+                <Text align={'left'} color={"transparent"} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.3rem'}>Following</Text>
             ) : (
                 <Text align={'left'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.3rem'}>Followers</Text>
-
+                
             )} 
             {followingComponent && following.map((person) => (
                 <PersonCard

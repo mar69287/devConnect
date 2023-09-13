@@ -12,7 +12,8 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
     useEffect(() => {
         async function fetchProfile() {
             try {
-                const profileData = await getProfile();
+                const feedPage = true
+                const profileData = await getProfile(true);
                 setProfile(profileData);
                 setFollowers(profileData.followers)
                 setFollowersCount(profileData.followers.length)
