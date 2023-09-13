@@ -1,8 +1,29 @@
 import { Grid, GridItem, HStack, Heading, Image, Text, VStack } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
+import {  getProfile } from "../utilities/profiles-api"
+import { useState, useEffect } from "react"
 
 const ProfilePage = ({ profile }) => {
   const { userName } = useParams();
+  const [profilePageAccount, setProfilePageAccount] = useState(true)
+
+  useEffect(() => {
+    async function fetchProfile() {
+        try {
+            const profileData = await getProfile(userName);
+            setProfilePageAccount(profileData);
+            // setFollowers(profileData.followers)
+            // setFollowersCount(profileData.followers.length)
+            // setFollowing(profileData.following)
+            // setFollowingCount(profileData.following.length)
+            // const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            // setPosts(sortedPosts);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+        fetchProfile();
+}, []);
     
   return (
     <Grid

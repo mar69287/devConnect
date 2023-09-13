@@ -1,7 +1,7 @@
 import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
 import { useEffect, useState } from 'react'
-import { getProfile } from '../utilities/profiles-api'
+import { getUserProfile } from '../utilities/profiles-api'
 import { getPosts } from "../utilities/posts-api"
 import PostInput from "../components/PostInput"
 import PostCard from "../components/PostCard"
@@ -12,8 +12,7 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
     useEffect(() => {
         async function fetchProfile() {
             try {
-                const feedPage = true
-                const profileData = await getProfile(true);
+                const profileData = await getUserProfile();
                 setProfile(profileData);
                 setFollowers(profileData.followers)
                 setFollowersCount(profileData.followers.length)

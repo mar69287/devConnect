@@ -4,6 +4,7 @@ import { BsFillPeopleFill } from 'react-icons/bs'
 import PersonCard from "../components/PersonCard"
 import { useState } from "react"
 
+
 const NetworkPage = ({ profile, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
   const [followingComponent, setFollowingComponent] = useState(true)
 

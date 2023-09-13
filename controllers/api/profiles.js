@@ -4,7 +4,8 @@ module.exports = {
     index,
     create,
     addFollowing,
-    deleteFollowing
+    deleteFollowing,
+    getProfile
 }
 
 async function index(req, res) {
@@ -74,3 +75,16 @@ async function deleteFollowing(req, res) {
     }
 }
     
+async function getProfile(req, res) {
+    const userName = req.params.userName;
+    const profile = await Profile.findOne({ userName })
+            .populate({
+                path: 'followers',
+                select: 'userName picture _id'
+            })
+            .populate({
+                path: 'following',
+                select: 'userName picture _id'
+            });
+    res.json(profile);
+}
