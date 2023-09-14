@@ -18,7 +18,7 @@ module.exports = {
 
 async function index(req, res) {
     try {
-        const posts = await Post.find().populate('likes.profile').populate('comments.profile');
+        const posts = await Post.find().populate('profile').populate('likes.profile').populate('comments.profile');
         res.json(posts);
     } catch (error) {
         console.error(error);
