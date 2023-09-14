@@ -1,9 +1,9 @@
-import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input } from '@chakra-ui/react'
+import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input,  } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
 import {  getProfile, addSkill, addFollowing, deleteFollowing } from "../utilities/profiles-api"
 import {  getProfilePosts } from "../utilities/posts-api"
 import { useState, useEffect } from "react"
-import { BsFillPersonCheckFill, BsPlusLg } from 'react-icons/bs'
+import { BsFillPersonCheckFill, BsPlusLg, BsTrash2 } from 'react-icons/bs'
 import { BiPaperPlane } from 'react-icons/bi'
 import PostCard from "../components/PostCard"
 
@@ -11,10 +11,11 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
   const { userName } = useParams();
   const [profilePageAccount, setProfilePageAccount] = useState({})
   const [posts, setPosts] = useState([])
-  const [skills, setSkills] = useState('')
+  const [skills, setSkills] = useState([])
   const [showSkillInput, setShowSkillInput] = useState(false)
   const [skillInput, setSkillInput] = useState('')
   const [skillError, setSkillError] = useState(false)
+  const [displaySkills, setDisplaySkills] = useState(true)
 //   const [isFollowingProfile, setIsFollowingProfile] = useState(false)
 //   const [ profileFollowing, setProfileFollowing] = useState([])
 //   const [ profileFollowers, setProfileFollowers] = useState([])
@@ -49,7 +50,7 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
         fetchProfile();
 }, [userName, following, profilePageAccount._id]);
 
-const displaySkill = () => {
+const displaySkillInput = () => {
     setShowSkillInput(!showSkillInput)
     setSkillError(false)
 }
@@ -186,7 +187,7 @@ const handleAddSkill = async () => {
                         color: 'rgb(255, 255, 255)',
                         cursor: 'pointer'
                     }}
-                    onClick={displaySkill}
+                    onClick={displaySkillInput}
                 >
                     <BsPlusLg/>
                 </Box>
@@ -226,6 +227,37 @@ const handleAddSkill = async () => {
             {skillError && 
                 <Text align={'center'} mt={2} fontWeight={'normal'} fontSize={'md'} color="red">Must be unique skill</Text>
             }
+            {skills.length > 0 && 
+             <Text 
+                align={'right'} 
+                mt={2} 
+                fontWeight={'normal'} 
+                fontSize={'xs'} 
+                color="rgb(204, 206, 209)"
+                _hover={{
+                    color: 'rgb(255, 255, 255)',
+                    cursor: 'pointer'
+                }}
+                onClick={() => setDisplaySkills(!displaySkills)}
+             >
+                {displaySkills ? 'Hide' : 'Show'} Skills
+            </Text>
+            }
+            {displaySkills && skills.map((skill, index) => (
+                <HStack mt={1} key={index} justifyContent={'space-between'}>
+                    <Text color={'rgb(204, 206, 209)'} key={index}>{skill}</Text>
+                    <Box
+                        color="rgb(204, 206, 209)"
+                        _hover={{
+                            color: 'rgb(255, 255, 255)',
+                            cursor: 'pointer'
+                        }}
+                        onClick={displaySkillInput}
+                    >
+                        <BsTrash2 fontSize={'.9rem'}/>
+                    </Box>
+                </HStack>
+            ))}
         </GridItem>
     </Grid>
   )
