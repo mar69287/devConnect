@@ -5,7 +5,8 @@ module.exports = {
     create,
     addFollowing,
     deleteFollowing,
-    getProfile
+    getProfile,
+    addSkill
 }
 
 async function index(req, res) {
@@ -87,4 +88,20 @@ async function getProfile(req, res) {
                 select: 'userName picture _id'
             });
     res.json(profile);
+}
+
+async function addSkill(req, res) {
+    try {
+        const profileId = req.params.id;
+        const skill = req.params.skill;
+
+        const profile = await Profile.findById(profileId);
+        const newSkill = { skill };
+        profile.skills.push(newSkill);
+
+        await profile.save();
+        res.json(skill)
+    } catch (error) {
+        res.json({ message: 'Error adding skill' });
+    }
 }

@@ -1,6 +1,6 @@
-import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button } from '@chakra-ui/react'
+import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
-import {  getProfile, addFollowing, deleteFollowing } from "../utilities/profiles-api"
+import {  getProfile, addSkill, addFollowing, deleteFollowing } from "../utilities/profiles-api"
 import {  getProfilePosts } from "../utilities/posts-api"
 import { useState, useEffect } from "react"
 import { BsFillPersonCheckFill, BsPlusLg } from 'react-icons/bs'
@@ -10,12 +10,16 @@ import PostCard from "../components/PostCard"
 const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) => {
   const { userName } = useParams();
   const [profilePageAccount, setProfilePageAccount] = useState({})
-  const [isFollowingProfile, setIsFollowingProfile] = useState(false)
   const [posts, setPosts] = useState([])
-  const [ profileFollowing, setProfileFollowing] = useState([])
-  const [ profileFollowers, setProfileFollowers] = useState([])
-  const [ profileFollowingCount, setProfileFollowingCount] = useState(0)
-  const [ profileFollowersCount, setProfileFollowersCount] = useState(0)
+  const [skills, setSkills] = useState('')
+  const [showSkillInput, setShowSkillInput] = useState(false)
+  const [skillInput, setSkillInput] = useState('')
+  const [skillError, setSkillError] = useState(false)
+//   const [isFollowingProfile, setIsFollowingProfile] = useState(false)
+//   const [ profileFollowing, setProfileFollowing] = useState([])
+//   const [ profileFollowers, setProfileFollowers] = useState([])
+//   const [ profileFollowingCount, setProfileFollowingCount] = useState(0)
+//   const [ profileFollowersCount, setProfileFollowersCount] = useState(0)
 
   useEffect(() => {
     async function fetchProfile() {
@@ -25,22 +29,51 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
             const profilePosts = await getProfilePosts(profileData._id)
             setPosts(profilePosts)
 
+            const skillsArray = profileData.skills.map((skillObject) => skillObject.skill);
+            setSkills(skillsArray)
+
             if(posts.length > 1) {
                 const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setPosts(sortedPosts);
             }
 
-            setIsFollowingProfile(following.some((followedProfile) => followedProfile._id === profilePageAccount._id))
-            setProfileFollowers(profileData.followers)
-            setProfileFollowersCount(profileData.followers.length)
-            setProfileFollowing(profileData.following)
-            setProfileFollowingCount(profileData.following.length)
+            // setIsFollowingProfile(following.some((followedProfile) => followedProfile._id === profilePageAccount._id))
+            // setProfileFollowers(profileData.followers)
+            // setProfileFollowersCount(profileData.followers.length)
+            // setProfileFollowing(profileData.following)
+            // setProfileFollowingCount(profileData.following.length)
         } catch (error) {
             console.error(error);
         }
     }
         fetchProfile();
 }, [userName, following, profilePageAccount._id]);
+
+const displaySkill = () => {
+    setShowSkillInput(!showSkillInput)
+    setSkillError(false)
+}
+
+const handleAddSkill = async () => {
+    if (skillInput.trim() === '') {
+        return;
+    }
+
+    if (skills.includes(skillInput)) {
+        setSkillError(true);
+        return;
+    }
+
+    try {
+        const skill = skillInput
+        const newSkill = await addSkill(profilePageAccount._id, skill);
+        setSkills((prevSkills) => [...prevSkills, newSkill])
+        setSkillInput('')
+        setSkillError(false);
+    } catch (error) {
+        console.error("Error adding skill:", error);
+    }
+}
 
 // const handleAddFollowing = async (profilePageId) => {
 //     try {
@@ -68,10 +101,6 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
   if (profilePageAccount === null) {
     return <Spinner />
   }
-
-  const updateIsFollowingPostAuthor = (value) => {
-    setIsFollowingProfile(value); // Update the state in ProfilePage
-  };
 
   return (
     <Grid
@@ -148,8 +177,55 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
                     <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />
                 ))}
         </GridItem>
-        <GridItem w={'100%'} bgColor={'white'} area={'skills'} h={'max-content'}>
-            <Text>skills</Text>
+        <GridItem w={'100%'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} area={'skills'} h={'max-content'}>
+            <HStack mb={0} justifyContent={'space-between'}>
+                <Heading align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Tech Skills</Heading>
+                <Box
+                    color="rgb(204, 206, 209)"
+                    _hover={{
+                        color: 'rgb(255, 255, 255)',
+                        cursor: 'pointer'
+                    }}
+                    onClick={displaySkill}
+                >
+                    <BsPlusLg/>
+                </Box>
+            </HStack>
+            {showSkillInput && (
+                <HStack w={'100%'} mt={3}>
+                    <Input
+                        borderRadius={100}
+                        placeholder="Add skill..."
+                        color={'whiteAlpha.800'}
+                        fontSize={'sm'}
+                        size={'sm'}
+                        _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                        backgroundColor={'blackAlpha.300'}
+                        borderColor={'whiteAlpha.500'}
+                        focusBorderColor='whiteAlpha.600'
+                        onChange={(e) => setSkillInput(e.target.value)}
+                        value={skillInput}                  
+                    />
+                    <Button
+                        backgroundColor='#7928CA' 
+                        color='rgb(255, 255, 255)' 
+                        borderRadius='full' 
+                        px={4} 
+                        _hover={{
+                            backgroundColor: 'purple.600', 
+                            color: 'white', 
+                        }}
+                        fontSize='md' 
+                        size={'sm'}
+                        onClick={() => handleAddSkill()}
+                    >
+                    Save
+                    </Button>
+                </HStack>
+            )}
+            {skillError && 
+                <Text align={'center'} mt={2} fontWeight={'normal'} fontSize={'md'} color="red">Must be unique skill</Text>
+            }
         </GridItem>
     </Grid>
   )
