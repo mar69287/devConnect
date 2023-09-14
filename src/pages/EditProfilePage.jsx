@@ -17,12 +17,13 @@ const EditProfilePage = ({ profile, setProfile }) => {
     picture: profile.picture,
   })
   const navigate = useNavigate()
+  const [selectedFile, setSelectedFile] = useState(null)
   const [fileName, setFileName] = useState(profile.picture)
 
   const handleUpdateProfile = async (evt) => {
     evt.preventDefault();
 
-    if (updateProfile.picture !== profile.picture) {
+    if (fileName !== profile.picture) {
         try {
           const formData = new FormData();
           formData.append('profilePicture', updateProfile.picture);
@@ -37,9 +38,14 @@ const EditProfilePage = ({ profile, setProfile }) => {
         } catch (error) {
           console.error('File upload error:', error);
         }
-      }
+    }
 
     try {
+        if (updateProfile.picture !== profile.picture) {
+            updateProfile.picture = fileName;
+        } else {
+            updateProfile.picture = profile.picture;
+        }
       const updatedProfile = await updateUserProfile(profile._id, updateProfile);
       setProfile(updatedProfile);
       navigate(`/profile/${profile.userName}`)

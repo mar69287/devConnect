@@ -3,6 +3,7 @@ const Profile = require('../../models/profile')
 module.exports = {
     index,
     create,
+    edit,
     addFollowing,
     deleteFollowing,
     getProfile,
@@ -34,6 +35,24 @@ async function create(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error creating profile' });
+    }
+}
+
+async function edit(req, res) {
+    try {
+        const profileId = req.params.id;
+        const update = req.body;
+
+        const profile = await Profile.findById(profileId);
+
+        Object.keys(update).forEach((key) => {
+            profile[key] = update[key];
+        });
+
+        await profile.save();
+        res.json(profile);
+    } catch (err) {
+        res.status(400).json(err);
     }
 }
 
