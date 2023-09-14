@@ -181,7 +181,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                     <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
                 </HStack>
             </Link>
-            {profile._id === post.profile && (
+            {profile._id === post.profile._id && (
                 <Menu>
                   <MenuButton 
                     color={'rgb(204, 206, 209)'}
@@ -200,7 +200,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                   </MenuList>
                 </Menu>
             )}
-            {profile._id !== post.profile && (
+            {profile._id !== post.profile._id && (
                 <Button
                     variant='ghost' 
                     color='rgb(204, 206, 209)'

@@ -21,8 +21,7 @@ async function index(req, res) {
         const posts = await Post.find().populate('profile').populate('likes.profile').populate('comments.profile');
         res.json(posts);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error fetching posts' });
+        res.json({ message: 'Error fetching posts' });
     }
 }
 
@@ -39,8 +38,7 @@ async function create(req, res) {
 
         res.json(savedPost);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error creating post' });
+        res.json({ message: 'Error creating post' });
     }
 }
 
@@ -69,7 +67,7 @@ async function edit(req, res) {
 
         res.json(updatedPost);
     } catch (err) {
-        res.status(400).json(err);
+        res.json(err);
     }
 }
 
@@ -81,8 +79,7 @@ async function deletePost(req, res) {
         }
         res.json({ message: "Post deleted successfully" });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server error" });
+        res.json({ error: "Server error" });
     }
     
 }
@@ -102,7 +99,7 @@ async function createLike(req, res) {
 
         res.json(newLike);
     } catch (err) {
-        res.status(400).json(err);
+        res.json(err);
     }
 }
 
@@ -118,7 +115,7 @@ async function deleteLike(req, res) {
         const updatedPost = await post.save();
         res.json(updatedPost);  
     } catch (err) {
-        res.status(400).json(err);
+        res.json(err);
     }
 
 }
@@ -143,7 +140,7 @@ async function getPostLikes(req, res) {
         res.json(likes);
       } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error' });
+        res.json({ message: 'Server error' });
       }
 }
 
@@ -161,7 +158,7 @@ async function createComment(req, res) {
         const newComment = updatedPost.comments[updatedPost.comments.length - 1];
         res.json(newComment);
     } catch (err) {
-        res.status(400).json(err);
+        res.json(err);
     }
 }
 
@@ -193,7 +190,7 @@ async function deleteComment(req, res) {
             await post.save(); 
             res.json({ message: 'Comment deleted successfully' });
         } else {
-            res.status(404).json({ message: 'Comment not found' });
+            res.json({ message: 'Comment not found' });
         }
     } catch (err) {
         res.status(400).json(err);
@@ -203,10 +200,10 @@ async function deleteComment(req, res) {
 async function getProfilePosts(req, res) {
     try {
         const profileId = req.params.id
-        const posts = await Post.find({ 'profile': profileId }).populate('likes.profile').populate('comments.profile');
+        const posts = await Post.find({ 'profile': profileId }).populate('profile').populate('likes.profile').populate('comments.profile');
         res.json(posts);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error fetching posts' });
+        res.json({ message: 'Error fetching posts' });
     }
 }
