@@ -6,7 +6,8 @@ module.exports = {
     addFollowing,
     deleteFollowing,
     getProfile,
-    addSkill
+    addSkill,
+    deleteSkill
 }
 
 async function index(req, res) {
@@ -103,5 +104,20 @@ async function addSkill(req, res) {
         res.json(skill)
     } catch (error) {
         res.json({ message: 'Error adding skill' });
+    }
+}
+
+async function deleteSkill(req, res) {
+    try {
+        const profileId = req.params.id;
+        const skillName = req.params.skill;
+
+        const profile = await Profile.findById(profileId);
+        profile.skills = profile.skills.filter((skill) => skill.skill !== skillName);
+
+        await profile.save();
+        res.json({ message: 'success' });
+    } catch (error) {
+        res.json({ message: 'Error deleting skill' });
     }
 }

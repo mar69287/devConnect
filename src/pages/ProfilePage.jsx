@@ -1,6 +1,6 @@
 import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input,  } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
-import {  getProfile, addSkill, addFollowing, deleteFollowing } from "../utilities/profiles-api"
+import {  getProfile, addSkill, deleteSkill, addFollowing, deleteFollowing } from "../utilities/profiles-api"
 import {  getProfilePosts } from "../utilities/posts-api"
 import { useState, useEffect } from "react"
 import { BsFillPersonCheckFill, BsPlusLg, BsTrash2 } from 'react-icons/bs'
@@ -74,6 +74,15 @@ const handleAddSkill = async () => {
     } catch (error) {
         console.error("Error adding skill:", error);
     }
+}
+
+const handleDeleteSkill = async(skill) => {
+    try {
+        await deleteSkill(profile._id, skill); 
+        setSkills((prevSkills) => prevSkills.filter((skillName) => skillName !== skill));
+      } catch (error) {
+        console.error("Error deleting skill:", error);
+      }
 }
 
 // const handleAddFollowing = async (profilePageId) => {
@@ -181,16 +190,18 @@ const handleAddSkill = async () => {
         <GridItem w={'100%'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} area={'skills'} h={'max-content'}>
             <HStack mb={0} justifyContent={'space-between'}>
                 <Heading align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Tech Skills</Heading>
-                <Box
-                    color="rgb(204, 206, 209)"
-                    _hover={{
-                        color: 'rgb(255, 255, 255)',
-                        cursor: 'pointer'
-                    }}
-                    onClick={displaySkillInput}
-                >
-                    <BsPlusLg/>
-                </Box>
+                {profilePageAccount._id === profile._id &&
+                    <Box
+                        color="rgb(204, 206, 209)"
+                        _hover={{
+                            color: 'rgb(255, 255, 255)',
+                            cursor: 'pointer'
+                        }}
+                        onClick={displaySkillInput}
+                    >
+                        <BsPlusLg/>
+                    </Box>
+                }
             </HStack>
             {showSkillInput && (
                 <HStack w={'100%'} mt={3}>
@@ -246,16 +257,18 @@ const handleAddSkill = async () => {
             {displaySkills && skills.map((skill, index) => (
                 <HStack mt={1} key={index} justifyContent={'space-between'}>
                     <Text color={'rgb(204, 206, 209)'} key={index}>{skill}</Text>
-                    <Box
-                        color="rgb(204, 206, 209)"
-                        _hover={{
-                            color: 'rgb(255, 255, 255)',
-                            cursor: 'pointer'
-                        }}
-                        onClick={displaySkillInput}
-                    >
-                        <BsTrash2 fontSize={'.9rem'}/>
-                    </Box>
+                    {profilePageAccount._id === profile._id && 
+                        <Box
+                            color="rgb(204, 206, 209)"
+                            _hover={{
+                                color: 'rgb(255, 255, 255)',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => handleDeleteSkill(skill)}
+                        >
+                            <BsTrash2 fontSize={'.9rem'}/>
+                        </Box>
+                    }
                 </HStack>
             ))}
         </GridItem>

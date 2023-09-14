@@ -24,3 +24,7 @@ export async function getProfile(userName) {
 export async function addSkill(profileId, skill) {
     return sendRequest(`${BASE_URL}/${profileId}/skills/${skill}`, 'POST')
 }
+
+export async function deleteSkill(profileId, skill) {
+    return sendRequest(`${BASE_URL}/${profileId}/skills/${skill}`, 'DELETE')
+}

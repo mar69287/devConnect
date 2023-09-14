@@ -9,5 +9,6 @@ router.post('/:id/following/:fid', ensureLoggedIn, profilesCtrl.addFollowing)
 router.delete('/:id/following/:fid', ensureLoggedIn, profilesCtrl.deleteFollowing)
 router.get('/:userName', ensureLoggedIn, profilesCtrl.getProfile);
 router.post('/:id/skills/:skill', ensureLoggedIn, profilesCtrl.addSkill);
+router.delete('/:id/skills/:skill', ensureLoggedIn, profilesCtrl.deleteSkill);
 
 module.exports = router;
