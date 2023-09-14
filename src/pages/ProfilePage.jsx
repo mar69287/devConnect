@@ -1,4 +1,4 @@
-import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input,  } from '@chakra-ui/react'
+import { Grid, GridItem, HStack, Heading, Image, Text, VStack, Spinner, Button, Box, Input, Link,  } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
 import {  getProfile, addSkill, deleteSkill, addFollowing, deleteFollowing } from "../utilities/profiles-api"
 import {  getProfilePosts } from "../utilities/posts-api"
@@ -16,6 +16,9 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
   const [skillInput, setSkillInput] = useState('')
   const [skillError, setSkillError] = useState(false)
   const [displaySkills, setDisplaySkills] = useState(true)
+  const [portfolioLink, setPortfolioLink] = useState('')
+  const [githubLink, setGithubLink] = useState('')
+  const [linkedinink, setLinkedinLink] = useState('')
 //   const [isFollowingProfile, setIsFollowingProfile] = useState(false)
 //   const [ profileFollowing, setProfileFollowing] = useState([])
 //   const [ profileFollowers, setProfileFollowers] = useState([])
@@ -37,6 +40,16 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
                 const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setPosts(sortedPosts);
             }
+
+            if (profileData.portfolio) {
+                setPortfolioLink(profileData.portfolio.startsWith('https://') ? profileData.portfolio : `https://${profileData.portfolio}`);
+              }
+              if (profileData.github) {
+                setGithubLink(profileData.github.startsWith('https://') ? profileData.github : `https://${profileData.github}`);
+              }
+              if (profileData.linkedin) {
+                setLinkedinLink(profileData.linkedin.startsWith('https://') ? profileData.linkedin : `https://${profileData.linkedin}`);
+              }
 
             // setIsFollowingProfile(following.some((followedProfile) => followedProfile._id === profilePageAccount._id))
             // setProfileFollowers(profileData.followers)
@@ -115,11 +128,11 @@ const handleDeleteSkill = async(skill) => {
   return (
     <Grid
         templateAreas={{
-            base: `"profile" 
-                "skills"
+            base: `"profile"
+                "details"
                 "posts"`,
-            lg: `"profile skills" 
-                "posts skills"`,
+            lg: `"profile details" 
+                "posts details"`,
         }}
         templateColumns={{ base: "1fr", md: "2fr 1fr" }}
         px={6}
@@ -187,91 +200,136 @@ const handleDeleteSkill = async(skill) => {
                     <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />
                 ))}
         </GridItem>
-        <GridItem w={'100%'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} area={'skills'} h={'max-content'}>
-            <HStack mb={0} justifyContent={'space-between'}>
-                <Heading align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Tech Skills</Heading>
-                {profilePageAccount._id === profile._id &&
-                    <Box
-                        color="rgb(204, 206, 209)"
-                        _hover={{
-                            color: 'rgb(255, 255, 255)',
-                            cursor: 'pointer'
-                        }}
-                        onClick={displaySkillInput}
+        <GridItem w={'100%'} area={'details'}>
+            <VStack mb={3} w={'100%'} alignItems={'flex-start'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} h={'max-content'}>
+                <Heading w={'100%'} align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Links</Heading>
+                {portfolioLink && <HStack gap={0} alignItems={'center'}>
+                    <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>Portfolio:</Text>
+                    <Link
+                        href={portfolioLink}
+                        isExternal
+                        color="purple.400"
+                        textDecoration="none"
+                        _hover={{ color: "purple.800" }}
                     >
-                        <BsPlusLg/>
-                    </Box>
-                }
-            </HStack>
-            {showSkillInput && (
-                <HStack w={'100%'} mt={3}>
-                    <Input
-                        borderRadius={100}
-                        placeholder="Add skill..."
-                        color={'whiteAlpha.800'}
-                        fontSize={'sm'}
-                        size={'sm'}
-                        _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
-                        backgroundColor={'blackAlpha.300'}
-                        borderColor={'whiteAlpha.500'}
-                        focusBorderColor='whiteAlpha.600'
-                        onChange={(e) => setSkillInput(e.target.value)}
-                        value={skillInput}                  
-                    />
-                    <Button
-                        backgroundColor='#7928CA' 
-                        color='rgb(255, 255, 255)' 
-                        borderRadius='full' 
-                        px={4} 
-                        _hover={{
-                            backgroundColor: 'purple.600', 
-                            color: 'white', 
-                        }}
-                        fontSize='md' 
-                        size={'sm'}
-                        onClick={() => handleAddSkill()}
+                        {profile.portfolio}
+                    </Link>
+                </HStack>}
+                {githubLink && <HStack gap={0} alignItems={'center'}>
+                    <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>Github:</Text>
+                    <Link
+                        href={githubLink}
+                        isExternal
+                        color="purple.400"
+                        textDecoration="none"
+                        _hover={{ color: "purple.800" }}
                     >
-                    Save
-                    </Button>
-                </HStack>
-            )}
-            {skillError && 
-                <Text align={'center'} mt={2} fontWeight={'normal'} fontSize={'md'} color="red">Must be unique skill</Text>
-            }
-            {skills.length > 0 && 
-             <Text 
-                align={'right'} 
-                mt={2} 
-                fontWeight={'normal'} 
-                fontSize={'xs'} 
-                color="rgb(204, 206, 209)"
-                _hover={{
-                    color: 'rgb(255, 255, 255)',
-                    cursor: 'pointer'
-                }}
-                onClick={() => setDisplaySkills(!displaySkills)}
-             >
-                {displaySkills ? 'Hide' : 'Show'} Skills
-            </Text>
-            }
-            {displaySkills && skills.map((skill, index) => (
-                <HStack mt={1} key={index} justifyContent={'space-between'}>
-                    <Text color={'rgb(204, 206, 209)'} key={index}>{skill}</Text>
-                    {profilePageAccount._id === profile._id && 
+                        {profile.github}
+                    </Link>
+                </HStack>}
+                {linkedinink && <HStack gap={0} alignItems={'center'}>
+                    <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>LinkedIn:</Text>
+                    <Link
+                        href={linkedinink}
+                        isExternal
+                        color="purple.400"
+                        textDecoration="none"
+                        _hover={{ color: "purple.800" }}
+                    >
+                        {profile.linkedIn}
+                    </Link>
+                </HStack>}
+            </VStack>
+            <VStack w={'100%'} alignItems={'flex-start'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} h={'max-content'}>
+                <HStack mb={0} justifyContent={'space-between'} w={'100%'}>
+                    <Heading align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Tech Skills</Heading>
+                    {profilePageAccount._id === profile._id &&
                         <Box
                             color="rgb(204, 206, 209)"
                             _hover={{
                                 color: 'rgb(255, 255, 255)',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => handleDeleteSkill(skill)}
+                            onClick={displaySkillInput}
                         >
-                            <BsTrash2 fontSize={'.9rem'}/>
+                            <BsPlusLg/>
                         </Box>
                     }
                 </HStack>
-            ))}
+                {showSkillInput && (
+                    <HStack w={'100%'} mt={3}>
+                        <Input
+                            borderRadius={100}
+                            placeholder="Add skill..."
+                            color={'whiteAlpha.800'}
+                            fontSize={'sm'}
+                            size={'sm'}
+                            _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                            backgroundColor={'blackAlpha.300'}
+                            borderColor={'whiteAlpha.500'}
+                            focusBorderColor='whiteAlpha.600'
+                            onChange={(e) => setSkillInput(e.target.value)}
+                            value={skillInput}                  
+                        />
+                        <Button
+                            backgroundColor='#7928CA' 
+                            color='rgb(255, 255, 255)' 
+                            borderRadius='full' 
+                            px={4} 
+                            _hover={{
+                                backgroundColor: 'purple.600', 
+                                color: 'white', 
+                            }}
+                            fontSize='md' 
+                            size={'sm'}
+                            onClick={() => handleAddSkill()}
+                        >
+                        Save
+                        </Button>
+                    </HStack>
+                )}
+                {skillError && 
+                    <Text align={'center'} mt={2} fontWeight={'normal'} fontSize={'md'} color="red">Must be unique skill</Text>
+                }
+                {skills.length > 0 && 
+                <Text 
+                    align={'right'} 
+                    mt={2} 
+                    fontWeight={'normal'} 
+                    fontSize={'xs'} 
+                    color="rgb(204, 206, 209)"
+                    _hover={{
+                        color: 'rgb(255, 255, 255)',
+                        cursor: 'pointer'
+                    }}
+                    w={'100%'}
+                    onClick={() => setDisplaySkills(!displaySkills)}
+                >
+                    {displaySkills ? 'Hide' : 'Show'} Skills
+                </Text>
+                }
+                {displaySkills && skills.map((skill, index) => (
+                    <HStack mt={1} key={index} justifyContent={'space-between'}>
+                        <Text color={'rgb(204, 206, 209)'} key={index}>{skill}</Text>
+                        {profilePageAccount._id === profile._id && 
+                            <Box
+                                color="rgb(204, 206, 209)"
+                                _hover={{
+                                    color: 'rgb(255, 255, 255)',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={() => handleDeleteSkill(skill)}
+                            >
+                                <BsTrash2 fontSize={'.9rem'}/>
+                            </Box>
+                        }
+                    </HStack>
+                ))}
+            </VStack>
         </GridItem>
+        {/* <GridItem w={'100%'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} area={'skills'} h={'max-content'}>
+            
+        </GridItem> */}
     </Grid>
   )
 }
