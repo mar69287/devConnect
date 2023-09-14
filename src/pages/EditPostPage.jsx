@@ -1,5 +1,6 @@
-import {  Input, Text, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Textarea, Divider } from "@chakra-ui/react"
+import {  Input, Text, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Textarea, Divider, HStack, IconButton } from "@chakra-ui/react"
 import { BsCardImage } from 'react-icons/bs'
+import  { AiOutlineClose } from 'react-icons/ai'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getPost, updatePost } from '../utilities/posts-api';
@@ -71,21 +72,18 @@ const handleEditConfirm = async (evt) => {
       } else {
         updatedPost.picture = post.picture;
       }
-      const newPost = await updatePost(post._id, updatedPost);
+      await updatePost(post._id, updatedPost);
       navigate(-1);
     } catch {
       console.error("Error updating post:");
     }
   };
 
-
-
   return (
-    <Modal isOpen={true} size={"full"}>
+    <Modal isOpen={true} size={"xl"}>
         <ModalOverlay />
         <ModalContent backgroundColor={'rgb(28, 30, 35)'}>
           <ModalHeader color="rgb(255, 255, 255)">Edit Post</ModalHeader>
-          <ModalCloseButton color="rgb(255, 255, 255)" onClick={() => navigate(-1)}/>
           <ModalBody>
             {post && (
               <>
@@ -144,7 +142,10 @@ const handleEditConfirm = async (evt) => {
                 <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
               )}
             </Box>
-            <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleEditConfirm}>Save Changes</Button>
+            <HStack>
+              <Button colorScheme='blue' borderRadius={50} type="submit" onClick={() => navigate(-1)}>Return</Button>
+              <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleEditConfirm}>Save Changes</Button>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>

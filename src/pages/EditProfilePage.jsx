@@ -71,7 +71,6 @@ const EditProfilePage = ({ profile, setProfile }) => {
         <ModalOverlay />
         <ModalContent backgroundColor={'rgb(28, 30, 35)'}>
             <ModalHeader color="rgb(255, 255, 255)"> Edit Profile</ModalHeader>
-            <ModalCloseButton  color="rgb(255, 255, 255)" onClick={() => navigate(-1)}/>
             <ModalBody>
                 <FormControl isRequired mt={2}>
                     <FormLabel color="rgb(255, 255, 255)">Name</FormLabel>
@@ -178,7 +177,8 @@ const EditProfilePage = ({ profile, setProfile }) => {
                 </FormControl>
             </ModalBody>
             <ModalFooter>
-            <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleUpdateProfile}>Save Changes</Button>
+              <Button mr={3} colorScheme='blue' borderRadius={50} type="submit" onClick={() => navigate(-1)}>Return</Button>
+              <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleUpdateProfile}>Save Changes</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
