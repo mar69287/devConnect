@@ -13,7 +13,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
     const [totalPostLikes, setTotalPostLikes] = useState(post.likes.length)
     const [isPostLikedByCurrentUser, setIsPostLikedByCurrentUser] = useState(post.likes.some((like) => like.profile._id === profile._id));
     const [totalPostComments, setTotalPostComments] = useState(post.comments.length)
-    const [isFollowingPostAuthor, setIsFollowingPostAuthor] = useState(following.some((followedProfile) => followedProfile._id === post.profile));
+    const [isFollowingPostAuthor, setIsFollowingPostAuthor] = useState(following.some((followedProfile) => followedProfile._id === post.profile._id));
     const [showCommentInput, setShowCommentInput] = useState(false)
     const [commentInput, setCommentInput] = useState('');
     const [postComments, setPostComments] = useState(post.comments)
