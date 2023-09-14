@@ -71,6 +71,11 @@ export default function NavBar({ user, setUser, profile }) {
                                     <Text>View Profile</Text>
                             </MenuItem>
                                 </Link>
+                                <Link to={`/profile/${profile.userName}/edit`}>
+                            <MenuItem>
+                                    <Text>Edit Profile</Text>
+                            </MenuItem>
+                                </Link>
                             <MenuDivider />
                             <MenuItem onClick={handleLogOut}>
                                 Log Out

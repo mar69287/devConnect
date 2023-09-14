@@ -13,6 +13,7 @@ import FeedPage from '../FeedPage';
 import EditPostPage from '../EditPostPage';
 import NetworkPage from '../NetworkPage';
 import ProfilePage from '../ProfilePage';
+import EditProfilePage from '../EditProfilePage';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -43,6 +44,7 @@ useEffect(() => {
             <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
             <Route path="/friends" element={<NetworkPage profile={profile} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
+            <Route path='/profile/:userName/edit' element={<EditProfilePage setProfile={setProfile} profile={profile}/>} />
             <Route path='/profile/:userName' element={<ProfilePage profile={profile} setProfile={setProfile} user={user} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount}/>} />
             <Route path='/post/edit/:postId' element={<EditPostPage />} />
             <Route path="*" element={<Navigate replace to="/feed" />} />
