@@ -5,7 +5,7 @@ const MessagesPage = ({ chatUser }) => {
     // console.log(process.env.REACT_APP_CHAT_ENGINE_API_KEY)
   return (
 
-      <Box h={'80vh'}>
+      <Box w={'100%'} position={'fixed'} top={'90px'} left={0} zIndex={3} h={'93%'}>
           <PrettyChatWindow
             projectId={`${process.env.REACT_APP_CHAT_ENGINE_API_KEY}`}
             username={chatUser.username}
