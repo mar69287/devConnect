@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { createProfile } from '../utilities/profiles-api'
-import { Stack, Box, Button, FormControl, FormLabel, Input, Text, VStack, Flex, Heading } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, Text, HStack, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, ModalFooter, } from "@chakra-ui/react";
 import axios from 'axios'
+import { BsCardImage } from 'react-icons/bs'
 
 const ProfileCreatePage = ({ setProfile, user }) => {
   const [newProfile, setNewProfile] = useState({
@@ -67,68 +68,151 @@ const ProfileCreatePage = ({ setProfile, user }) => {
     }
   };
 
-
   return (
-      <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'} display={'flex'}  justifyContent={"center"} alignItems={"center"}>
-        <Box m={4} w={['100%', '75%']}  p={4} gap={5} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} justifyContent={'center'} display={'flex'} flexDirection={'column'}>
-          <Heading textAlign={'center'} color={'whiteAlpha.700'}>Profile Info</Heading>
-          <Stack spacing={4}  direction={['column', 'row']}  alignItems={"center"}>
-              <VStack w={['100%', '50%']} color={'whiteAlpha.700'}>
-                <FormControl>
-                  <FormLabel>Name</FormLabel>
-                  <Input value={newProfile.name} onChange={(e) => setNewProfile({ ...newProfile, name: e.target.value })} />
+      <Modal isOpen={true} size={"xl"}>
+        <ModalOverlay />
+        <ModalContent backgroundColor={'rgb(28, 30, 35)'}>
+          <ModalHeader color="rgb(255, 255, 255)">Profile</ModalHeader>
+          <ModalBody>
+            <FormControl isRequired>
+                <FormLabel color="rgb(255, 255, 255)">Name</FormLabel>
+                <Input 
+                  value={newProfile.name} 
+                  onChange={(e) => setNewProfile({ ...newProfile, name: e.target.value })} 
+                  borderRadius={100}
+                  color={'whiteAlpha.800'}
+                  fontSize={'sm'} 
+                  _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                  backgroundColor={'blackAlpha.300'}
+                  borderColor={'whiteAlpha.500'}
+                  focusBorderColor='whiteAlpha.600'
+                />
+            </FormControl>
+            <FormControl isRequired mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">Username</FormLabel>
+              <Input 
+                value={newProfile.userName} 
+                onChange={(e) => setNewProfile({ ...newProfile, userName: e.target.value })} 
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">Bio</FormLabel>
+              <Input 
+                value={newProfile.bio} 
+                onChange={(e) => setNewProfile({ ...newProfile, bio: e.target.value })}
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">Location</FormLabel>
+              <Input 
+                value={newProfile.location} 
+                onChange={(e) => setNewProfile({ ...newProfile, location: e.target.value })}
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">Portfolio</FormLabel>
+              <Input 
+                value={newProfile.portfolio} 
+                onChange={(e) => setNewProfile({ ...newProfile, portfolio: e.target.value })}
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">Github</FormLabel>
+              <Input 
+                value={newProfile.github} 
+                onChange={(e) => setNewProfile({ ...newProfile, github: e.target.value })}
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+              <FormLabel color="rgb(255, 255, 255)">LinkedIn</FormLabel>
+              <Input 
+                value={newProfile.linkedIn} 
+                onChange={(e) => setNewProfile({ ...newProfile, linkedIn: e.target.value })}
+                borderRadius={100}
+                color={'whiteAlpha.800'}
+                fontSize={'sm'} 
+                _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                backgroundColor={'blackAlpha.300'}
+                borderColor={'whiteAlpha.500'}
+                focusBorderColor='whiteAlpha.600'
+              />
+            </FormControl>
+            <FormControl mt={2}>
+                    <FormLabel mb={0} color="rgb(255, 255, 255)">Profile Picture</FormLabel>
+                    <HStack justifyContent={'space-between'}>
+                        <Text color={'whiteAlpha.800'} marginLeft={0} display={'inline-block'}
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',   
+                                textOverflow: 'ellipsis', 
+                                maxWidth: '150px',    
+                            }}
+                        >
+                            {selectedFileName}
+                        </Text>
+                        <Input
+                            display="none"
+                            type="file"
+                            id="profile-picture"
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="profile-picture">
+                            <Button
+                            h={10}
+                            fontSize={'sm'}
+                            leftIcon={<BsCardImage />}
+                            colorScheme='whiteAlpha'
+                            variant={"ghost"}
+                            as="span" 
+                            >
+                            Photo
+                            </Button>
+                        </label>
+                    </HStack>
                 </FormControl>
-                <FormControl>
-                  <FormLabel>Username</FormLabel>
-                  <Input value={newProfile.userName} onChange={(e) => setNewProfile({ ...newProfile, userName: e.target.value })} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Location</FormLabel>
-                  <Input value={newProfile.location} onChange={(e) => setNewProfile({ ...newProfile, location: e.target.value })} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Bio</FormLabel>
-                  <Input value={newProfile.bio} onChange={(e) => setNewProfile({ ...newProfile, bio: e.target.value })} />
-                </FormControl>
-              </VStack>
-              <VStack w={['100%', '50%']} color={'whiteAlpha.700'}>
-                <FormControl>
-                  <FormLabel>GitHub</FormLabel>
-                  <Input value={newProfile.github} onChange={(e) => setNewProfile({ ...newProfile, github: e.target.value })} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>LinkedIn</FormLabel>
-                  <Input value={newProfile.linkedIn} onChange={(e) => setNewProfile({ ...newProfile, linkedIn: e.target.value })} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Portfolio</FormLabel>
-                  <Input value={newProfile.Portfolio} onChange={(e) => setNewProfile({ ...newProfile, portfolio: e.target.value })} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Profile Picture</FormLabel>
-                  <Input
-                    display="none"
-                    type="file"
-                    id="profile-picture"
-                    onChange={handleFileChange}
-                  />
-                  <label htmlFor="profile-picture">
-                    <Button
-                      as="span"
-                      borderRadius="md"
-                      colorScheme='whiteAlpha'
-                      cursor="pointer"
-                    >
-                      Choose File
-                    </Button>
-                  </label>
-                  {selectedFileName && <Text marginLeft={3} display={'inline-block'}>{selectedFileName}</Text>}
-                </FormControl>
-              </VStack>
-          </Stack>
-          <Button colorScheme="pink" _hover={{ bgGradient:'linear(to-l,#FF0080, #7928CA)'}} onClick={handleNewProfile}>Save</Button>
-        </Box>
-      </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleNewProfile}>Save</Button>
+          </ModalFooter>
+
+        </ModalContent>
+
+      </Modal>
   )
 }
 
