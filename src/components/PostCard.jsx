@@ -21,14 +21,12 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDeletePost = () => {
-        // setSelectedPostId(post._id);
         deleteDisclosure.onOpen();
     };
 
     const handleDeleteConfirm = async () => {
         try {
           await deletePost(post._id); 
-        //   setSelectedPostId(null);
           const deletedId = post._id
           setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
           deleteDisclosure.onClose();
@@ -129,15 +127,6 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
           }
     };
 
-    // const handleCommentDeleteConfirm = async (commentId) => {
-    //     try {
-    //       await deleteComment(post._id, commentId); 
-    //       deleteCommentDisclosure.onClose();
-    //     } catch (error) {
-    //       console.error("Error deleting comment:", error);
-    //     }
-    // };
-
     const handleToggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -208,9 +197,9 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                     leftIcon={isFollowingPostAuthor ? <BsFillPersonCheckFill /> : <BsPlusLg />}
                     onClick={() => {
                         if (isFollowingPostAuthor) {
-                            handleDeleteFollowing(post.profile);
+                            handleDeleteFollowing(post.profile._id);
                         } else {
-                            handleAddFollowing(post.profile);
+                            handleAddFollowing(post.profile._id);
                         }
                     }}
                     _hover={{
