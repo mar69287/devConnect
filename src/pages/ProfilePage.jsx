@@ -18,12 +18,12 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
   const [displaySkills, setDisplaySkills] = useState(true)
   const [portfolioLink, setPortfolioLink] = useState('')
   const [githubLink, setGithubLink] = useState('')
-  const [linkedinink, setLinkedinLink] = useState('')
+  const [linkedinLink, setLinkedinLink] = useState('')
 //   const [isFollowingProfile, setIsFollowingProfile] = useState(false)
 //   const [ profileFollowing, setProfileFollowing] = useState([])
 //   const [ profileFollowers, setProfileFollowers] = useState([])
-//   const [ profileFollowingCount, setProfileFollowingCount] = useState(0)
-//   const [ profileFollowersCount, setProfileFollowersCount] = useState(0)
+  const [ profileFollowingCount, setProfileFollowingCount] = useState(0)
+  const [ profileFollowersCount, setProfileFollowersCount] = useState(0)
 
   useEffect(() => {
     async function fetchProfile() {
@@ -43,19 +43,19 @@ const ProfilePage = ({ profile, following, setFollowing, setFollowingCount }) =>
 
             if (profileData.portfolio) {
                 setPortfolioLink(profileData.portfolio.startsWith('https://') ? profileData.portfolio : `https://${profileData.portfolio}`);
-              }
-              if (profileData.github) {
-                setGithubLink(profileData.github.startsWith('https://') ? profileData.github : `https://${profileData.github}`);
-              }
-              if (profileData.linkedin) {
-                setLinkedinLink(profileData.linkedin.startsWith('https://') ? profileData.linkedin : `https://${profileData.linkedin}`);
-              }
+            }
+            if (profileData.github) {
+            setGithubLink(profileData.github.startsWith('https://') ? profileData.github : `https://${profileData.github}`);
+            }
+            if (profileData.linkedIn) {
+            setLinkedinLink(profileData.linkedIn.startsWith('https://') ? profileData.linkedIn : `https://${profileData.linkedIn}`);
+            }
 
             // setIsFollowingProfile(following.some((followedProfile) => followedProfile._id === profilePageAccount._id))
             // setProfileFollowers(profileData.followers)
-            // setProfileFollowersCount(profileData.followers.length)
+            setProfileFollowersCount(profileData.followers.length)
             // setProfileFollowing(profileData.following)
-            // setProfileFollowingCount(profileData.following.length)
+            setProfileFollowingCount(profileData.following.length)
         } catch (error) {
             console.error(error);
         }
@@ -134,7 +134,7 @@ const handleDeleteSkill = async(skill) => {
             lg: `"profile details" 
                 "posts details"`,
         }}
-        templateColumns={{ base: "1fr", md: "2fr 1fr" }}
+        templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
         px={6}
         gap={4}
     >
@@ -142,23 +142,23 @@ const handleDeleteSkill = async(skill) => {
             <HStack alignItems={'flex-start'}>
                 <Image 
                     borderRadius='full'
-                    boxSize='150px'
+                    boxSize={{ base: '60px', sm: '80px', md: '110px', lg: '150px' }}
                     src={profilePageAccount.picture ? `/assets/${profilePageAccount.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                     alt='Dan Abramov'
                     border={'2px solid'}
                     borderColor={"whiteAlpha.600"}
                 />
                 <VStack justifyContent={'flex-start'} alignItems={'flex-start'} ml={3} flex={1} h={'100%'} gap={0}>
-                    <Heading m={0} textAlign={'left'} fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} display={'inline-block'} bgGradient={'linear(to-l, #7928CA 0%, #FF0080 100%)'} bgClip='text'>{profilePageAccount.name}</Heading>
-                    {/* {profilePageAccount.location && */}
-                        <Text align={'left'} marginBottom={2} fontWeight={'normal'} fontSize={'sm'} color="rgb(105, 107, 111)">{profilePageAccount.location} Los Angeles, CA</Text>
-                    {/* } */}
-                    {/* {profilePageAccount.bio &&  */}
-                        <Text align={'left'} marginBottom={3} fontWeight={'normal'} fontSize={'md'} color="rgb(255, 255, 255)">{profilePageAccount.bio} Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur vel facere voluptates necessitatibus magnam molestias obcaecati quos delectus est, culpa labore dolores nemo adipisci exercitationem error cumque officiis dolorum nam?</Text>
-                    {/* } */}
+                    <Heading m={0} textAlign={'left'} fontWeight={'normal'} fontSize={['xl', '2xl', '3xl','4xl']} display={'inline-block'} bgGradient={'linear(to-l, #7928CA 0%, #FF0080 100%)'} bgClip='text'>{profilePageAccount.name}</Heading>
+                    {profilePageAccount.location &&
+                        <Text align={'left'} marginBottom={2} fontWeight={'normal'} fontSize={['xs', 'sm']} color="rgb(105, 107, 111)">{profilePageAccount.location} Los Angeles, CA</Text>
+                    } 
+                    {profilePageAccount.bio && 
+                        <Text align={'left'} marginBottom={3} fontWeight={'normal'} fontSize={['xs', 'sm', 'md']} color="rgb(255, 255, 255)">{profilePageAccount.bio}</Text>
+                    }
                 </VStack>
             </HStack>
-            <HStack mt={2}>
+            {/* <HStack mt={2}>
                 <Button
                     _hover={{
                         cursor: 'pointer',
@@ -174,7 +174,7 @@ const handleDeleteSkill = async(skill) => {
                 >
                     Message
                 </Button>
-                {/* <Button
+                <Button
                     variant='none' 
                     color='rgb(204, 206, 209)'
                     size={"md"}
@@ -192,8 +192,8 @@ const handleDeleteSkill = async(skill) => {
                     }}
                 >
                     {isFollowingProfile ? "Following" : "Follow"}
-                </Button> */}
-            </HStack>
+                </Button>
+            </HStack> */}
         </GridItem>
         <GridItem w={'100%'} area={'posts'}>
                 {posts.map((post) => (
@@ -201,7 +201,20 @@ const handleDeleteSkill = async(skill) => {
                 ))}
         </GridItem>
         <GridItem w={'100%'} area={'details'}>
-            <VStack mb={3} w={'100%'} alignItems={'flex-start'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} h={'max-content'}>
+            <VStack mb={3} w={'100%'} alignItems={'flex-center'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} h={'max-content'}>
+                <Heading w={'100%'} align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Network</Heading>
+                <HStack justifyContent={'center'} alignItems={'center'} w={'100%'}>
+                    <VStack gap={0} alignItems={'center'}>
+                        <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>Followers</Text>
+                        <Text fontWeight={'bold'} textAlign={'left'} color="whiteAlpha.800" fontSize='md' mr={2}>{profileFollowersCount}</Text>
+                    </VStack>
+                    <VStack gap={0} alignItems={'center'}>
+                        <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>Following</Text>
+                        <Text fontWeight={'bold'} textAlign={'left'} color="whiteAlpha.800" fontSize='md' mr={2}>{profileFollowingCount}</Text>
+                    </VStack>
+                </HStack>
+            </VStack>
+            <VStack overflow={'hidden'} mb={3} w={'100%'} alignItems={'flex-start'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} h={'max-content'}>
                 <Heading w={'100%'} align={'center'} fontWeight={'normal'} size={'md'} color="rgb(255, 255, 255)">Links</Heading>
                 {portfolioLink && <HStack gap={0} alignItems={'center'}>
                     <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>Portfolio:</Text>
@@ -212,7 +225,7 @@ const handleDeleteSkill = async(skill) => {
                         textDecoration="none"
                         _hover={{ color: "purple.800" }}
                     >
-                        {profile.portfolio}
+                        view
                     </Link>
                 </HStack>}
                 {githubLink && <HStack gap={0} alignItems={'center'}>
@@ -224,19 +237,19 @@ const handleDeleteSkill = async(skill) => {
                         textDecoration="none"
                         _hover={{ color: "purple.800" }}
                     >
-                        {profile.github}
+                        view
                     </Link>
                 </HStack>}
-                {linkedinink && <HStack gap={0} alignItems={'center'}>
+                {linkedinLink && <HStack gap={0} alignItems={'center'}>
                     <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm' mr={2}>LinkedIn:</Text>
                     <Link
-                        href={linkedinink}
+                        href={linkedinLink}
                         isExternal
                         color="purple.400"
                         textDecoration="none"
                         _hover={{ color: "purple.800" }}
                     >
-                        {profile.linkedIn}
+                        view
                     </Link>
                 </HStack>}
             </VStack>
@@ -309,7 +322,7 @@ const handleDeleteSkill = async(skill) => {
                 </Text>
                 }
                 {displaySkills && skills.map((skill, index) => (
-                    <HStack mt={1} key={index} justifyContent={'space-between'}>
+                    <HStack mt={1} key={index} justifyContent={'space-between'} w={'100%'}>
                         <Text color={'rgb(204, 206, 209)'} key={index}>{skill}</Text>
                         {profilePageAccount._id === profile._id && 
                             <Box
@@ -327,9 +340,6 @@ const handleDeleteSkill = async(skill) => {
                 ))}
             </VStack>
         </GridItem>
-        {/* <GridItem w={'100%'} p={3} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} area={'skills'} h={'max-content'}>
-            
-        </GridItem> */}
     </Grid>
   )
 }
