@@ -73,6 +73,7 @@ const PostInput = ({user, profile, setPosts}) => {
         picture: postData.picture ? postData.picture.name : null,
         username: profile.userName
       });
+      
       setPosts(prevPosts => [post, ...prevPosts]);
       setIsModalOpen(false);
       setSelectedButton(null)
