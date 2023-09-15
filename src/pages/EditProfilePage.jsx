@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import {  updateUserProfile } from '../utilities/profiles-api'
-import { FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Textarea, Box, InputGroup, InputRightElement, Button, Text, HStack, ModalFooter } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Textarea, Button, Text, HStack, ModalFooter } from '@chakra-ui/react';
 import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
 
@@ -17,7 +17,6 @@ const EditProfilePage = ({ profile, setProfile }) => {
     picture: profile.picture,
   })
   const navigate = useNavigate()
-  const [selectedFile, setSelectedFile] = useState(null)
   const [fileName, setFileName] = useState(profile.picture)
 
   const handleUpdateProfile = async (evt) => {
@@ -140,6 +139,20 @@ const EditProfilePage = ({ profile, setProfile }) => {
                         borderColor={'whiteAlpha.500'}
                         focusBorderColor='whiteAlpha.600'
                         onChange={(e) => setUpdateProfile({ ...updateProfile, portfolio: e.target.value })}
+                    />
+                </FormControl>
+                <FormControl mt={2}>
+                    <FormLabel color="rgb(255, 255, 255)">LinkedIn</FormLabel>
+                    <Input 
+                        borderRadius={100}
+                        color={'whiteAlpha.800'}
+                        fontSize={'sm'} 
+                        _placeholder={{ opacity: 1, color: 'whiteAlpha.500' }}
+                        defaultValue={profile.linkedIn}
+                        backgroundColor={'blackAlpha.300'}
+                        borderColor={'whiteAlpha.500'}
+                        focusBorderColor='whiteAlpha.600'
+                        onChange={(e) => setUpdateProfile({ ...updateProfile, linkedIn: e.target.value })}
                     />
                 </FormControl>
                 <FormControl mt={2}>
