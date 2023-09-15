@@ -1,9 +1,12 @@
 const Profile = require('../../models/profile')
+const User = require('../../models/user');
+const Post = require('../../models/post');
 
 module.exports = {
     index,
     create,
     edit,
+    deleteProfile,
     addFollowing,
     deleteFollowing,
     getProfile,
@@ -55,6 +58,37 @@ async function edit(req, res) {
         res.status(400).json(err);
     }
 }
+
+async function deleteProfile(req, res) {
+    try {
+        const userId = req.params.id;
+        
+        const userProfile = await Profile.findOne({ user: userId });
+
+        const likedPosts = await Post.find({ 'likes.profile': userProfile._id });
+        for (const post of likedPosts) {
+            post.likes = post.likes.filter((like) => !like.profile.equals(userProfile._id));
+            await post.save();
+        }
+
+        const commentedPosts = await Post.find({ 'comments.profile': userProfile._id });
+        for (const post of commentedPosts) {
+            post.comments = post.comments.filter((comment) => !comment.profile.equals(userProfile._id));
+            await post.save();
+        }
+
+        await Post.deleteMany({ profile: userProfile._id });
+
+        await Profile.findByIdAndDelete(userProfile._id);
+
+        await User.findByIdAndDelete(userId);
+
+        return res.status(200).json({ success: true, message: 'User and associated data deleted' });
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
 
 async function addFollowing(req, res) {
     try {

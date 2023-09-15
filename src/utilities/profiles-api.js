@@ -10,11 +10,15 @@ export async function getUserProfile() {
 }
 
 export async function updateUserProfile(id, updatedData) {
-    // console.log(updatedData)
     return sendRequest(`${BASE_URL}/${id}`, 'PUT', updatedData)
 }
 
+export async function deleteProfile(userId) {
+    return sendRequest(`${BASE_URL}/${userId}`, 'DELETE')
+}
+
 export async function addFollowing(profileId, postProfileId) {
+    // console.log(postProfileId)
     return sendRequest(`${BASE_URL}/${profileId}/following/${postProfileId}`, 'POST')
 }
 

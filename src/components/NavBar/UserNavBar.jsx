@@ -1,19 +1,34 @@
-import { Link } from 'react-router-dom'
-import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider, Spinner, Hide, Show } from '@chakra-ui/react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider, Show, Spinner, Hide, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure } from '@chakra-ui/react'
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { AiFillHome } from 'react-icons/ai'
 import { BsPeopleFill } from 'react-icons/bs'
 import { BiSolidMessageRoundedDetail } from 'react-icons/bi'
 import * as userService from '../../utilities/users-service' 
+import { deleteProfile } from '../../utilities/profiles-api';
 
 export default function NavBar({ user, setUser, profile }) {
+    const deleteDisclosure = useDisclosure();
+    const navigate = useNavigate();
 
     function handleLogOut() {
         userService.logOut()
         setUser(null)
     }
 
-    
+    const handleDeleteProfile = () => {
+        deleteDisclosure.onOpen();
+    }
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await deleteProfile(user._id)
+            userService.logOut()
+            setUser(null)
+        } catch (error) {
+            console.error("Error deleting profile:", error);
+        }
+    }
 
     return (
         <Box w={'100%'} position={'fixed'} top={0} left={0} zIndex={3} backgroundColor={'rgb(15, 16, 19)'}>
@@ -80,16 +95,19 @@ export default function NavBar({ user, setUser, profile }) {
                             </HStack>
                         </MenuButton>
                         <MenuList>
-                                <Link to={`/profile/${profile.userName}`}>
-                            <MenuItem>
+                            <Link to={`/profile/${profile.userName}`}>
+                                <MenuItem>
                                     <Text>View Profile</Text>
-                            </MenuItem>
-                                </Link>
-                                <Link to={`/profile/${profile.userName}/edit`}>
-                            <MenuItem>
+                                </MenuItem>
+                            </Link>
+                            <Link to={`/profile/${profile.userName}/edit`}>
+                                <MenuItem>
                                     <Text>Edit Profile</Text>
+                                </MenuItem>
+                            </Link>
+                            <MenuItem onClick={handleDeleteProfile}>
+                                    <Text>Delete Profile</Text>
                             </MenuItem>
-                                </Link>
                             <MenuDivider />
                             <MenuItem onClick={handleLogOut}>
                                 Log Out
@@ -101,6 +119,26 @@ export default function NavBar({ user, setUser, profile }) {
                     )}
                 </HStack>
             </HStack>
+            <AlertDialog isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} size='md'>
+            <AlertDialogOverlay>
+            <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                Delete Profile
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                    Are you sure you want to delete this profile? This action cannot be undone.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                <Button onClick={deleteDisclosure.onClose}>Cancel</Button>
+                <Button colorScheme='red' onClick={handleDeleteConfirm} ml={3}>
+                    Delete
+                </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+            </AlertDialogOverlay>
+        </AlertDialog>
         </Box>
     )
 }
