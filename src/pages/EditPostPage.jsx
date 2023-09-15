@@ -1,6 +1,5 @@
-import {  Input, Text, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Textarea, Divider, HStack, IconButton } from "@chakra-ui/react"
+import {  Input, Text, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Divider, HStack } from "@chakra-ui/react"
 import { BsCardImage } from 'react-icons/bs'
-import  { AiOutlineClose } from 'react-icons/ai'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getPost, updatePost } from '../utilities/posts-api';
@@ -116,10 +115,7 @@ const handleEditConfirm = async (evt) => {
                 />
               </>
             )}
-          </ModalBody>
-          <Divider borderColor={"whiteAlpha.300"}/>
-          <ModalFooter display={'Flex'} justifyContent={"space-between"}>
-            <Box>
+            <HStack>
               <Input
                 display="none"
                 type="file"
@@ -141,7 +137,10 @@ const handleEditConfirm = async (evt) => {
               {post && (
                 <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
               )}
-            </Box>
+            </HStack>
+          </ModalBody>
+          <Divider borderColor={"whiteAlpha.300"}/>
+          <ModalFooter>
             <HStack>
               <Button colorScheme='blue' borderRadius={50} type="submit" onClick={() => navigate(-1)}>Return</Button>
               <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleEditConfirm}>Save Changes</Button>
