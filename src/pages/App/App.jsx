@@ -14,6 +14,7 @@ import EditPostPage from '../EditPostPage';
 import NetworkPage from '../NetworkPage';
 import ProfilePage from '../ProfilePage';
 import EditProfilePage from '../EditProfilePage';
+import MessagesPage from '../MessagesPage';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser())
@@ -35,7 +36,7 @@ useEffect(() => {
 
   return (
     <Box as='main' className="App" >
-      <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'}>
+      <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'} position={'relative'}>
       {
         user ?
         <>
@@ -48,6 +49,7 @@ useEffect(() => {
             <Route path='/profile/:userName/edit' element={<EditProfilePage setProfile={setProfile} profile={profile}/>} />
             <Route path='/profile/:userName' element={<ProfilePage profile={profile} setProfile={setProfile} user={user} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount}/>} />
             <Route path='/post/edit/:postId' element={<EditPostPage />} />
+            <Route path='/messaging' element={<MessagesPage chatUser={chatUser} />} />
             <Route path="*" element={<Navigate replace to="/feed" />} />
           </Routes>
         </>
