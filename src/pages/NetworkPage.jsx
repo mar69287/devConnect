@@ -5,7 +5,7 @@ import PersonCard from "../components/PersonCard"
 import { useState } from "react"
 
 
-const NetworkPage = ({ profile, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
+const NetworkPage = ({ profile, followers, followersCount, setFollowersCount, following, setFollowing, followingCount }) => {
   const [followingComponent, setFollowingComponent] = useState(true)
 
   return (
