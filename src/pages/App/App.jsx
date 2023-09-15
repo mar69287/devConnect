@@ -22,6 +22,7 @@ export default function App() {
   const [ following, setFollowing ] = useState([])
   const [ followersCount, setFollowersCount ] = useState(0)
   const [ followingCount, setFollowingCount ] = useState(0)
+  const [ chatUser, setChatUser ] = useState(undefined)
   const navigate = useNavigate();
 
 useEffect(() => {
@@ -41,7 +42,7 @@ useEffect(() => {
           <NavBar user={user} setUser={setUser} profile={profile} />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/feed" element={<FeedPage profile={profile} setProfile={setProfile} user={user} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
+            <Route path="/feed" element={<FeedPage setChatUser={setChatUser} profile={profile} setProfile={setProfile} user={user} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
             <Route path="/friends" element={<NetworkPage profile={profile} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
             <Route path='/profile/create' element={<ProfileCreatePage setProfile={setProfile} user={user}/>} />
             <Route path='/profile/:userName/edit' element={<EditProfilePage setProfile={setProfile} profile={profile}/>} />

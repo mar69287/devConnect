@@ -3,10 +3,11 @@ import { TiLocationArrowOutline } from 'react-icons/ti'
 import { useEffect, useState } from 'react'
 import { getUserProfile } from '../utilities/profiles-api'
 import { getPosts } from "../utilities/posts-api"
+import { authenticate } from "../utilities/messages-api"
 import PostInput from "../components/PostInput"
 import PostCard from "../components/PostCard"
 
-const FeedPage = ({ profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
+const FeedPage = ({ setChatUser, profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
@@ -19,6 +20,8 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
                 setFollowersCount(profileData.followers.length)
                 setFollowing(profileData.following)
                 setFollowingCount(profileData.following.length)
+                const chatData = await authenticate({username: profileData.userName})
+                setChatUser({ ...chatData, secret: profileData.userName });
                 const posts = await getPosts();
                 const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setPosts(sortedPosts);
@@ -61,9 +64,8 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
                 <Image
                     borderRadius='full'
                     boxSize='70px'
-                    src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}
+                    src={profile.picture ? `/assets/${profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                     alt='Dan Abramov'
-                    // mt={1}
                     border={'2px solid'}
                     borderColor={"whiteAlpha.600"}
                 />
@@ -90,21 +92,13 @@ const FeedPage = ({ profile, setProfile, user, followers, setFollowers, follower
                         <Image
                             borderRadius='full'
                             boxSize='40px'
-                            src={profile.picture ? `/assets/${profile.picture}` : 'https://bit.ly/dan-abramov'}
-                            alt='Dan Abramov'
-                            // mt={1}
+                            src={profile.picture ? `/assets/${profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                            alt='profile picture'
                             border={'2px solid'}
                             borderColor={"whiteAlpha.600"}
                         />
                         <PostInput user={user} profile={profile} setPosts={setPosts} />
                     </HStack>
-                    {/* <Divider  borderColor={"whiteAlpha.300"} />
-                    <HStack mt={2} justifyContent={"space-between"} w={'100%'}>
-                        <Button h={10}  fontSize={'sm'} leftIcon={<BsCardImage />} colorScheme='whiteAlpha' variant={"ghost"}>
-                            Photo
-                        </Button>
-                        <Button h={7} w={14} size={"sm"} fontSize={'sm'} colorScheme='pink' borderRadius={50}>Post</Button>
-                    </HStack> */}
                 </VStack>
                 {posts.map((post) => (
                     <PostCard key={post._id} posts={posts} post={post} profile={profile} setPosts={setPosts} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount} />

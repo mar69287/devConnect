@@ -3,8 +3,6 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const multer = require('multer');
-const profilesController = require('./controllers/api/profiles');
-
 
 require('dotenv').config()
 require('./config/database')
@@ -20,11 +18,9 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
-// app.post("/api/profiles/create", upload.single("picture"), profilesController.create);
+
 app.post('/api/upload', upload.single('profilePicture'), (req, res) => {
-  // console.log(req.file)
   if (req.file) {
-    // The uploaded file information is available in req.file
     const filePath = path.join('assets', req.file.filename);
     console.log('File uploaded:', filePath);
     res.json({ filePath });
@@ -46,14 +42,12 @@ app.use(require('./config/checkToken'))
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/profiles', require('./routes/api/profiles'))
 app.use('/api/posts', require('./routes/api/posts'))
+app.use('/api/messages', require('./routes/api/messages'))
 
-// The following "catch all" route (note the *) is necessary
-// to return the index.html on all non-AJAX requests
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-// Configure to use port 3001 instead of 3000 during
-// development to avoid collision with React's dev server
+
 const port = process.env.PORT || 3001;
 
 app.listen(port, function () {
