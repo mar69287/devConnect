@@ -34,9 +34,11 @@ async function create(req, res) {
     try {
         const post = req.body;
         const newPost = new Post(post);
-        const savedPost = await newPost.save();
+        await newPost.save();
 
-        res.json(savedPost);
+        const populatedPost = await Post.findById(newPost._id).populate('profile');
+
+        res.json(populatedPost);
     } catch (error) {
         res.json({ message: 'Error creating post' });
     }
