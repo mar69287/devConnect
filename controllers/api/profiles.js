@@ -4,6 +4,7 @@ const Post = require('../../models/post');
 
 module.exports = {
     index,
+    show,
     create,
     edit,
     deleteProfile,
@@ -15,6 +16,15 @@ module.exports = {
 }
 
 async function index(req, res) {
+    try {
+        const profiles = await Profile.find();
+        res.json(profiles);
+    } catch (error) {
+        res.json({ message: 'Error fetching profiles' });
+    }
+}
+
+async function show(req, res) {
     const userId = req.user._id;
     const profile = await Profile.findOne({ user: userId })
             .populate({

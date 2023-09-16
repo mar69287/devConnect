@@ -5,6 +5,10 @@ export async function createProfile(profileData) {
     return sendRequest(`${BASE_URL}/create`, 'POST', profileData)
 }
 
+export async function getAllProfiles() {
+    return sendRequest(`${BASE_URL}/all`)
+}
+
 export async function getUserProfile() {
     return sendRequest(BASE_URL)
 }
