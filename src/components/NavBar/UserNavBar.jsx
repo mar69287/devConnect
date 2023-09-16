@@ -3,7 +3,7 @@ import { Box, HStack, Heading, Text, VStack, Menu, MenuButton, MenuList, MenuIte
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { AiFillHome } from 'react-icons/ai'
 import { BsPeopleFill } from 'react-icons/bs'
-import { BiSolidMessageRoundedDetail } from 'react-icons/bi'
+import { BiSolidMessageRoundedDetail, BiSearchAlt2 } from 'react-icons/bi'
 import * as userService from '../../utilities/users-service' 
 import { deleteProfile } from '../../utilities/profiles-api';
 
@@ -45,6 +45,9 @@ export default function NavBar({ user, setUser, profile }) {
                                 DC
                             </Heading>
                         </Show>
+                        <Box ml={2} color={'rgb(204, 206, 209)'} gap={0} _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}}>
+                            <BiSearchAlt2 fontSize={30}/>
+                        </Box>
                     </HStack>
                 </Link>
                 <HStack gap={4}>
