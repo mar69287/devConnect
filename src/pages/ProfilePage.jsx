@@ -151,7 +151,7 @@ const handleDeleteSkill = async(skill) => {
                 <VStack justifyContent={'flex-start'} alignItems={'flex-start'} ml={3} flex={1} h={'100%'} gap={0}>
                     <Heading m={0} textAlign={'left'} fontWeight={'normal'} fontSize={['xl', '2xl', '3xl','4xl']} display={'inline-block'} bgGradient={'linear(to-l, #7928CA 0%, #FF0080 100%)'} bgClip='text'>{profilePageAccount.name}</Heading>
                     {profilePageAccount.location &&
-                        <Text align={'left'} marginBottom={2} fontWeight={'normal'} fontSize={['xs', 'sm']} color="rgb(105, 107, 111)">{profilePageAccount.location} Los Angeles, CA</Text>
+                        <Text align={'left'} marginBottom={2} fontWeight={'normal'} fontSize={['xs', 'sm']} color="rgb(105, 107, 111)">{profilePageAccount.location}</Text>
                     } 
                     {profilePageAccount.bio && 
                         <Text align={'left'} marginBottom={3} fontWeight={'normal'} fontSize={['xs', 'sm', 'md']} color="rgb(255, 255, 255)">{profilePageAccount.bio}</Text>

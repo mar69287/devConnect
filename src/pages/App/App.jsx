@@ -36,7 +36,7 @@ useEffect(() => {
 
   return (
     <Box as='main' className="App" >
-      <Box width={{ base: "100%", '2xl': "1400px" }} m={'0 auto'} pt={'90px'} minH={'100vh'} position={'relative'}>
+      <Box width={{ base: "100%", '2xl': "1400px" }} pb={5} m={'0 auto'} pt={'90px'} minH={'100vh'} position={'relative'}>
       {
         user ?
         <>
