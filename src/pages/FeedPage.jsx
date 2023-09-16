@@ -1,19 +1,22 @@
-import { Flex, VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem, Hide, Grid, GridItem } from "@chakra-ui/react"
+import { VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem, Hide, Grid, GridItem } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
 import { useEffect, useState } from 'react'
-import { getUserProfile } from '../utilities/profiles-api'
+import { getUserProfile, getAllProfiles } from '../utilities/profiles-api'
 import { getPosts } from "../utilities/posts-api"
 import { authenticate } from "../utilities/messages-api"
 import PostInput from "../components/PostInput"
 import PostCard from "../components/PostCard"
 
-const FeedPage = ({ setChatUser, profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
+const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
         localStorage.setItem('lastVisitedPage', '/feed');
         async function fetchProfile() {
             try {
+                const allProfiles = await getAllProfiles()
+                setAllProfiles(allProfiles)
+
                 const profileData = await getUserProfile();
                 setProfile(profileData);
                 setFollowers(profileData.followers)
