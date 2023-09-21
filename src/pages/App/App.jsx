@@ -41,7 +41,7 @@ useEffect(() => {
       {
         user ?
         <>
-          <NavBar user={user} setUser={setUser} profile={profile} />
+          <NavBar allProfiles={allProfiles} user={user} setUser={setUser} profile={profile} following={following} setFollowing={setFollowing} setFollowingCount={setFollowingCount}  />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/feed" element={<FeedPage setAllProfiles={setAllProfiles} setChatUser={setChatUser} profile={profile} setProfile={setProfile} user={user} followers={followers} setFollowers={setFollowers} followersCount={followersCount} setFollowersCount={setFollowersCount} following={following} setFollowing={setFollowing} followingCount={followingCount} setFollowingCount={setFollowingCount}/>} />
