@@ -16,12 +16,16 @@ This social media application is designed to cultivate a vibrant and collaborati
 * Chakra-Ui
 
 ## Disclaimer
-The project is still a work in progress. Future updates I hope to have running soon will be listed below in the next steps section.
+The project is still a work in progress. Image uploads only work locally. Turns out Heroku doesn't accept file uploads so will be adding AWS in the near future. Future updates I hope to have running soon will be listed below in the next steps section at the bottom.
 
 ## Try it Out
 Use the link below to try it out for yourself! <br>
+https://devconnect-social-d5ad076571e6.herokuapp.com/
+
+<img width="1458" alt="image" src="https://github.com/mar69287/devConnect/assets/104735283/d61a4dd3-117f-40c6-a144-055ad32ed9ae">
 
 
 ## Next Steps
+* Fix image upload with AWS
 * Adjust design and layout of the messaging page
 * Plan to add a page where people can find competitions to join 
