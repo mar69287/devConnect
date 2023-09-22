@@ -4,6 +4,7 @@ import {  updateUserProfile } from '../utilities/profiles-api'
 import { FormControl, FormLabel, Input, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Textarea, Button, Text, HStack, ModalFooter } from '@chakra-ui/react';
 import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
+import Dropzone from 'react-dropzone';
 
 const EditProfilePage = ({ profile, setProfile }) => {
   const [updateProfile, setUpdateProfile] = useState({
@@ -53,17 +54,16 @@ const EditProfilePage = ({ profile, setProfile }) => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-
+  const handleFileChange = (selectedFile) => {
     if (selectedFile) {
-      setUpdateProfile({
-        ...updateProfile,
-        picture: selectedFile,
-      });
-      setFileName(selectedFile.name)
+        setUpdateProfile({
+            ...updateProfile,
+            picture: selectedFile,
+        });
+        setFileName(selectedFile.name);
     }
-};
+  };
+
 
   return (
     <Modal isOpen={true} size={"xl"}>
@@ -161,31 +161,40 @@ const EditProfilePage = ({ profile, setProfile }) => {
                         <Text color={'whiteAlpha.800'} marginLeft={0} display={'inline-block'}
                             style={{
                                 whiteSpace: 'nowrap',
-                                overflow: 'hidden',   
-                                textOverflow: 'ellipsis', 
-                                maxWidth: '150px',    
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: '150px',
                             }}
                         >
                             {fileName}
                         </Text>
-                        <Input
-                            display="none"
-                            type="file"
-                            id="profile-picture"
-                            onChange={handleFileChange}
-                        />
-                        <label htmlFor="profile-picture">
-                            <Button
-                            h={10}
-                            fontSize={'sm'}
-                            leftIcon={<BsCardImage />}
-                            colorScheme='whiteAlpha'
-                            variant={"ghost"}
-                            as="span" 
-                            >
-                            Photo
-                            </Button>
-                        </label>
+                        <Dropzone
+                            maxFiles={1}
+                            onDrop={(acceptedFiles) => {
+                                const imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                                if (acceptedFiles.length === 1 && imageTypes.includes(acceptedFiles[0].type)) {
+                                    handleFileChange(acceptedFiles[0]);
+                                } else {
+                                    console.error('Invalid file type. Please upload a JPEG, JPG, or PNG image.');
+                                }
+                            }}
+                        >
+                            {({ getRootProps, getInputProps }) => (
+                                <div {...getRootProps()} style={{ cursor: 'pointer' }}>
+                                    <input {...getInputProps()} />
+                                    <Button
+                                        h={10}
+                                        fontSize={'sm'}
+                                        leftIcon={<BsCardImage />}
+                                        colorScheme='whiteAlpha'
+                                        variant="ghost"
+                                        as="span"
+                                    >
+                                        Photo
+                                    </Button>
+                                </div>
+                            )}
+                        </Dropzone>
                     </HStack>
                 </FormControl>
             </ModalBody>

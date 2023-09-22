@@ -3,6 +3,7 @@ import { Input, InputGroup, Modal, ModalContent, ModalHeader, ModalOverlay, Moda
 import { createPost } from "../utilities/posts-api";
 import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
+import Dropzone from 'react-dropzone';
 
 const PostInput = ({user, profile, setPosts}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,10 +19,9 @@ const PostInput = ({user, profile, setPosts}) => {
     username: ''
   });
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (selectedFile) => {
     setPostData({ ...postData, picture: selectedFile });
-    setSelectedFileName(selectedFile.name); 
+    setSelectedFileName(selectedFile ? selectedFile.name : ""); 
   };
 
   const handleInputClick = () => {
@@ -180,25 +180,34 @@ const PostInput = ({user, profile, setPosts}) => {
           <Divider borderColor={"whiteAlpha.300"} />
           <ModalFooter display={'Flex'} justifyContent={"space-between"}> 
             <Box>
-            <Input
-              display="none"
-              type="file"
-              id="post-picture"
-              onChange={handleFileChange}
-            />
-              <label htmlFor="post-picture">
-                <Button
-                  h={10}
-                  fontSize={'sm'}
-                  leftIcon={<BsCardImage />}
-                  colorScheme='whiteAlpha'
-                  variant={"ghost"}
-                  as="span" 
-                >
-                  Photo
-                </Button>
-              </label>
-              {selectedFileName && <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{selectedFileName}</Text>}
+              <Dropzone
+                maxFiles={1}
+                onDrop={(acceptedFiles) => {
+                  const imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                  if (acceptedFiles.length === 1 && imageTypes.includes(acceptedFiles[0].type)) {
+                      handleFileChange(acceptedFiles[0]);
+                  } else {
+                      console.error('Invalid file type. Please upload a JPEG, JPG, or PNG image.');
+                  }
+              }}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <div {...getRootProps()} style={{ cursor: 'pointer' }}>
+                    <input {...getInputProps()} />
+                    <Button
+                      h={10}
+                      fontSize={'sm'}
+                      leftIcon={<BsCardImage />}
+                      colorScheme='whiteAlpha'
+                      variant={"ghost"}
+                      as="span" 
+                    >
+                      Photo
+                    </Button>
+                  </div>
+                )}
+              </Dropzone>
+                {selectedFileName && <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{selectedFileName}</Text>}
             </Box>
             <Button colorScheme='pink' borderRadius={50} type="submit" onClick={handleSubmit}>Post</Button>
           </ModalFooter>

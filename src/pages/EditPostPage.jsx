@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getPost, updatePost } from '../utilities/posts-api';
 import axios from 'axios'
+import Dropzone from 'react-dropzone';
 
 const EditPostPage = () => {
   const { postId } = useParams();
@@ -30,16 +31,14 @@ const EditPostPage = () => {
     getPostById();
 }, []);
 
-const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-
-    if (selectedFile) {
-      setEditedPost({
-        ...editedPost,
-        picture: selectedFile,
-      });
-      setFileName(selectedFile.name)
-    }
+const handleFileChange = (selectedFile) => {
+  if (selectedFile) {
+    setEditedPost({
+      ...editedPost,
+      picture: selectedFile,
+    });
+    setFileName(selectedFile.name)
+  }
 };
 
 const handleEditConfirm = async (evt) => {
@@ -116,24 +115,33 @@ const handleEditConfirm = async (evt) => {
               </>
             )}
             <HStack>
-              <Input
-                display="none"
-                type="file"
-                id="post-picture"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="post-picture">
-                <Button
-                  h={10}
-                  fontSize={'sm'}
-                  leftIcon={<BsCardImage />}
-                  colorScheme='whiteAlpha'
-                  variant={"ghost"}
-                  as="span" 
-                >
-                  Photo
-                </Button>
-              </label>
+              <Dropzone
+                maxFiles={1}
+                onDrop={(acceptedFiles) => {
+                    const imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                    if (acceptedFiles.length === 1 && imageTypes.includes(acceptedFiles[0].type)) {
+                        handleFileChange(acceptedFiles[0]);
+                    } else {
+                        console.error('Invalid file type. Please upload a JPEG, JPG, or PNG image.');
+                    }
+                }}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <div {...getRootProps()} style={{ cursor: 'pointer' }}>
+                    <input {...getInputProps()} />
+                    <Button
+                      h={10}
+                      fontSize={'sm'}
+                      leftIcon={<BsCardImage />}
+                      colorScheme='whiteAlpha'
+                      variant={"ghost"}
+                      as="span" 
+                    >
+                      Photo
+                    </Button>
+                  </div>
+                )}
+              </Dropzone>
               {post && (
                 <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
               )}
