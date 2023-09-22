@@ -25,6 +25,8 @@ https://devconnect-social-d5ad076571e6.herokuapp.com/
 <img width="1458" alt="image" src="https://github.com/mar69287/devConnect/assets/104735283/d61a4dd3-117f-40c6-a144-055ad32ed9ae">
 <img width="1456" alt="image" src="https://github.com/mar69287/devConnect/assets/104735283/59516783-4a1f-4572-a5f5-fb81999c38b9">
 <img width="1452" alt="image" src="https://github.com/mar69287/devConnect/assets/104735283/6fe35208-d6cb-4ed7-a01c-c5668749d975">
+<img width="1475" alt="image" src="https://github.com/mar69287/devConnect/assets/104735283/4f2ec175-4ec8-46be-abbc-c0f1034674dc">
+
 
 ## Next Steps
 * Fix image upload with AWS
