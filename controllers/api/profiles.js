@@ -55,6 +55,16 @@ async function show(req, res) {
                 path: 'following',
                 select: 'userName picture _id'
             });
+    if (profile.picture !== null) {
+        profile.picture = await getSignedUrl(
+            s3Client,
+            new GetObjectCommand({
+              Bucket: bucketName,
+              Key: profile.picture
+            }),
+            { expiresIn: 60 * 10 }
+        )
+    }
     res.json(profile);
 }
 
