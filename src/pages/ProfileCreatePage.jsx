@@ -31,41 +31,57 @@ const ProfileCreatePage = ({ setProfile, user }) => {
     evt.preventDefault();
 
     if (newProfile.picture) {
-      try {
-        const formData = new FormData();
-        formData.append('profilePicture', newProfile.picture);
-
-        const response = await axios.post('/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        console.log('File uploaded:', response.data.filePath);
-      } catch (error) {
-        console.error('File upload error:', error);
-      }
-    }
-
-    try {
-      const profile = await createProfile({
-        user: user._id,
-        name: newProfile.name,
-        email: user.email,
-        userName: newProfile.userName,
-        location: newProfile.location,
-        bio: newProfile.bio,
-        github: newProfile.github,
-        linkedIn: newProfile.linkedIn,
-        portfolio: newProfile.portfolio,
-        picture: newProfile.picture ? newProfile.picture.name : null, 
-      });
-
-      setProfile(profile);
+      const formData = new FormData();
+      formData.append('image', newProfile.picture);
+      formData.append('user', user._id);
+      formData.append('name', newProfile.name);
+      formData.append('email', user.email);
+      formData.append('userName', newProfile.userName);
+      formData.append('location', newProfile.location);
+      formData.append('bio', newProfile.bio);
+      formData.append('github', newProfile.github);
+      formData.append('linkedIn', newProfile.linkedIn);
+      formData.append('portfolio', newProfile.portfolio);
+      const profile = await axios.post("/api/profiles/create", formData, { headers: {'Content-Type': 'multipart/form-data'}})
+      setProfile(profile.data)
       navigate('/feed');
-    } catch (err) {
-      console.log(err);
+    } else {
+      const profile = await createProfile({
+            user: user._id,
+            name: newProfile.name,
+            email: user.email,
+            userName: newProfile.userName,
+            location: newProfile.location,
+            bio: newProfile.bio,
+            github: newProfile.github,
+            linkedIn: newProfile.linkedIn,
+            portfolio: newProfile.portfolio,
+            picture: null, 
+          });
+    
+          setProfile(profile);
+          navigate('/feed');
     }
+
+    // try {
+    //   const profile = await createProfile({
+    //     user: user._id,
+    //     name: newProfile.name,
+    //     email: user.email,
+    //     userName: newProfile.userName,
+    //     location: newProfile.location,
+    //     bio: newProfile.bio,
+    //     github: newProfile.github,
+    //     linkedIn: newProfile.linkedIn,
+    //     portfolio: newProfile.portfolio,
+    //     picture: newProfile.picture ? newProfile.picture.name : null, 
+    //   });
+
+      // setProfile(profile);
+      // navigate('/feed');
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
