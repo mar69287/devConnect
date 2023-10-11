@@ -144,7 +144,7 @@ const handleDeleteSkill = async(skill) => {
                     borderRadius='full'
                     objectFit={'cover'}
                     boxSize={{ base: '60px', sm: '80px', md: '110px', lg: '150px' }}
-                    src={profilePageAccount.picture ? `/assets/${profilePageAccount.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                    src={profilePageAccount.picture ? `${profilePageAccount.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                     alt='Dan Abramov'
                     border={'2px solid'}
                     borderColor={"whiteAlpha.600"}

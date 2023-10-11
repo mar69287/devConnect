@@ -108,7 +108,7 @@ const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, foll
                             <Image
                                 borderRadius='full'
                                 boxSize='40px'
-                                src={profile.picture ? `/assets/${profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                                src={profile.picture ? `${profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                                 alt='profile picture'
                                 border={'2px solid'}
                                 borderColor={"whiteAlpha.600"}
