@@ -6,7 +6,7 @@ const ensureLoggedIn = require('../../config/ensureLoggedIn');
 router.get('/all', ensureLoggedIn, profilesCtrl.index);
 router.get('/', ensureLoggedIn, profilesCtrl.show);
 router.post('/create', profilesCtrl.create);
-router.put('/:id', ensureLoggedIn, profilesCtrl.edit);
+router.put('/:id', profilesCtrl.edit);
 router.delete('/:id', ensureLoggedIn, profilesCtrl.deleteProfile)
 router.post('/:id/following/:fid', ensureLoggedIn, profilesCtrl.addFollowing)
 router.delete('/:id/following/:fid', ensureLoggedIn, profilesCtrl.deleteFollowing)
