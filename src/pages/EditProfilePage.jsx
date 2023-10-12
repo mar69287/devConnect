@@ -6,7 +6,7 @@ import { BsCardImage } from 'react-icons/bs'
 import axios from 'axios'
 import Dropzone from 'react-dropzone';
 
-const EditProfilePage = ({ profile, setProfile }) => {
+const EditProfilePage = ({ profile, setProfile, user }) => {
   const [updateProfile, setUpdateProfile] = useState({
     name: profile.name,
     userName: profile.userName,
@@ -23,35 +23,35 @@ const EditProfilePage = ({ profile, setProfile }) => {
   const handleUpdateProfile = async (evt) => {
     evt.preventDefault();
 
-    if (fileName !== profile.picture) {
-        try {
-          const formData = new FormData();
-          formData.append('profilePicture', updateProfile.picture);
-  
-          const response = await axios.post('/api/upload', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-  
-          console.log('File uploaded:', response.data.filePath);
-        } catch (error) {
-          console.error('File upload error:', error);
+    try {
+        console.log(profile)
+        if (updateProfile.picture === null || profile.picture === updateProfile.picture) {
+            const updatedProfile = await updateUserProfile(profile._id, updateProfile);
+            setProfile(updatedProfile);
+            navigate(`/profile/${updatedProfile.userName}`)
+        } else {
+            const formData = new FormData();
+            formData.append('image', updateProfile.picture);
+            formData.append('user', user._id);
+            formData.append('name', updateProfile.name);
+            formData.append('email', user.email);
+            formData.append('userName', updateProfile.userName);
+            formData.append('location', updateProfile.location);
+            formData.append('bio', updateProfile.bio);
+            formData.append('github', updateProfile.github);
+            formData.append('linkedIn', updateProfile.linkedIn);
+            formData.append('portfolio', updateProfile.portfolio);
+            formData.append('picture', profile.picture);
+            console.log(profile._id)
+            const updatedProfile = await axios.put(`/api/profiles/${profile._id}`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
+            console.log(updatedProfile)
+            setProfile(updatedProfile.data);
+            navigate(`/profile/${updatedProfile.data.userName}`)
         }
+    } catch (err) {
+        console.log(err);
     }
 
-    try {
-        if (updateProfile.picture !== profile.picture) {
-            updateProfile.picture = fileName;
-        } else {
-            updateProfile.picture = profile.picture;
-        }
-      const updatedProfile = await updateUserProfile(profile._id, updateProfile);
-      setProfile(updatedProfile);
-      navigate(`/profile/${profile.userName}`)
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const handleFileChange = (selectedFile) => {

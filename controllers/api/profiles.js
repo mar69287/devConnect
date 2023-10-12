@@ -1,7 +1,7 @@
 const Profile = require('../../models/profile')
 const User = require('../../models/user');
 const Post = require('../../models/post');
-const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const multer = require('multer');
 require('dotenv').config();
@@ -129,18 +129,122 @@ async function create(req, res) {
 }
 
 async function edit(req, res) {
+    const profileId = req.params.id;
+    const profile = await Profile.findById(profileId);
+    const userPicture = profile.picture
     try {
-        const profileId = req.params.id;
-        const update = req.body;
+        if (req.body.picture === null || req.body.picture) {
+            const update = req.body;
+            update.picture = userPicture;
 
-        const profile = await Profile.findById(profileId);
+            Object.keys(update).forEach((key) => {
+                profile[key] = update[key];
+            });
 
-        Object.keys(update).forEach((key) => {
-            profile[key] = update[key];
-        });
-
-        await profile.save();
-        res.json(profile);
+            await profile.save();
+            res.json(profile);
+        } else {
+            if (userPicture === null) {
+                upload.single('image')(req, res, async (err) => {
+                    if (err) {
+                        console.error('Multer error:', err);
+                        return res.status(500).json({ message: 'Error uploading file' });
+                    }
+                    const file = req.file
+                    // Upload the file to AWS S3
+                    const fileName = generateFileName()
+                    const params = {
+                        Bucket: bucketName,
+                        Key: fileName,
+                        Body: file.buffer,
+                        ContentType: file.mimetype,
+                    };
+                    await s3Client.send(new PutObjectCommand(params));
+        
+                    // Upload to database
+                    const { user, name, email, userName, location, bio, github, linkedIn, portfolio } = req.body;
+                    const update = {
+                        user,
+                        name,
+                        email,
+                        userName,
+                        location,
+                        bio,
+                        github,
+                        linkedIn,
+                        portfolio,
+                        picture: fileName, 
+                    };
+                    Object.keys(update).forEach((key) => {
+                        profile[key] = update[key];
+                    });
+        
+                    await profile.save();
+                    profile.picture = await getSignedUrl(
+                        s3Client,
+                        new GetObjectCommand({
+                          Bucket: bucketName,
+                          Key: update.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                    )
+            
+                    res.json(update);
+                });
+            } else {
+                const deleteParams = {
+                    Bucket: bucketName,
+                    Key: userPicture,
+                }
+                
+                await s3Client.send(new DeleteObjectCommand(deleteParams))
+                upload.single('image')(req, res, async (err) => {
+                    if (err) {
+                        console.error('Multer error:', err);
+                        return res.status(500).json({ message: 'Error uploading file' });
+                    }
+                    const file = req.file
+                    // Upload the file to AWS S3
+                    const fileName = generateFileName()
+                    const params = {
+                        Bucket: bucketName,
+                        Key: fileName,
+                        Body: file.buffer,
+                        ContentType: file.mimetype,
+                    };
+                    await s3Client.send(new PutObjectCommand(params));
+        
+                    // Upload to database
+                    const { user, name, email, userName, location, bio, github, linkedIn, portfolio } = req.body;
+                    const update = {
+                        user,
+                        name,
+                        email,
+                        userName,
+                        location,
+                        bio,
+                        github,
+                        linkedIn,
+                        portfolio,
+                        picture: fileName, 
+                    };
+                    Object.keys(update).forEach((key) => {
+                        profile[key] = update[key];
+                    });
+        
+                    await profile.save();
+                    profile.picture = await getSignedUrl(
+                        s3Client,
+                        new GetObjectCommand({
+                          Bucket: bucketName,
+                          Key: update.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                    )
+                    res.json(profile);
+                })
+            }
+        }
     } catch (err) {
         res.status(400).json(err);
     }
@@ -228,7 +332,7 @@ async function getProfile(req, res) {
                 path: 'following',
                 select: 'userName picture _id'
             });
-    if (profile.picture !== null) {
+    if (profile.picture) {
         profile.picture = await getSignedUrl(
             s3Client,
             new GetObjectCommand({
