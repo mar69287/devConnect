@@ -48,7 +48,6 @@ const PostInput = ({user, profile, setPosts}) => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     if (postData.picture) {
-      console.log(postData.picture)
       const formData = new FormData();
       formData.append('image', postData.picture);
       formData.append('type', selectedButton)
