@@ -183,10 +183,16 @@ async function edit(req, res) {
 
 async function deletePost(req, res) {
     try {
-        const deletedPost = await Post.findByIdAndDelete(req.params.id);
-        if (!deletedPost) {
-            return res.status(404).json({ error: "Post not found" });
+        const post = await Post.findById(req.params.id);
+        console.log(post)
+        if (post.picture) {
+            const deleteParams = {
+                Bucket: bucketName,
+                Key: post.picture,
+            }
+            await s3Client.send(new DeleteObjectCommand(deleteParams))
         }
+        await Post.findByIdAndDelete(req.params.id);
         res.json({ message: "Post deleted successfully" });
     } catch (err) {
         res.json({ error: "Server error" });
