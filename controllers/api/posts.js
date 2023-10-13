@@ -1,4 +1,24 @@
 const Post = require('../../models/post')
+const Profile = require('../../models/profile')
+const { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const multer = require('multer');
+require('dotenv').config();
+const crypto = require('crypto')
+const bucketName = process.env.AWS_BUCKET_NAME;
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const s3Client = new S3Client({
+    region,
+    credentials: {
+        accessKeyId,
+        secretAccessKey
+    }
+});
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
 
 module.exports = {
     index,
@@ -31,16 +51,76 @@ async function show(req, res) {
 }
 
 async function create(req, res) {
-    try {
-        const post = req.body;
-        const newPost = new Post(post);
-        await newPost.save();
+    const post = req.body
+    if (post.title) {
+        try {
+            const newPost = new Post(post);
+            await newPost.save();
 
-        const populatedPost = await Post.findById(newPost._id).populate('profile');
+            let populatedPost = await Post.findById(newPost._id).populate('profile');
+            populatedPost = populatedPost.toObject(); 
+            populatedPost.profilePic = null;
 
-        res.json(populatedPost);
-    } catch (error) {
-        res.json({ message: 'Error creating post' });
+            if (populatedPost.profile.picture) {
+                populatedPost.profilePic = await getSignedUrl(
+                    s3Client,
+                        new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: populatedPost.profile.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                )
+            }
+            res.json(populatedPost);
+        } catch (err) {
+            res.json(err);
+        }
+
+    } else {
+        upload.single('image')(req, res, async (err) => {
+            if (err) {
+                console.error('Multer error:', err);
+                return res.status(500).json({ message: 'Error uploading file' });
+            }
+            const file = req.file
+            // Upload the file to AWS S3
+            const fileName = generateFileName()
+            const params = {
+                Bucket: bucketName,
+                Key: fileName,
+                Body: file.buffer,
+                ContentType: file.mimetype,
+            };
+            await s3Client.send(new PutObjectCommand(params));
+            const { content, type, title, profile } = req.body;
+            const post = {
+                content,
+                type,
+                title,
+                profile,
+                picture: fileName
+            }
+            const newPost = new Post(post);
+            await newPost.save();
+
+            let populatedPost = await Post.findById(newPost._id).populate('profile');
+            populatedPost = populatedPost.toObject(); 
+            populatedPost.profilePic = null;
+
+            if (populatedPost.profile.picture) {
+                populatedPost.profilePic = await getSignedUrl(
+                    s3Client,
+                        new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: populatedPost.profile.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                )
+            }
+
+            res.json(populatedPost);
+
+        })
     }
 }
 
