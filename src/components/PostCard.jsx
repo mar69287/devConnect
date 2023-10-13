@@ -162,7 +162,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                     <Image
                         borderRadius='full'
                         boxSize='40px'
-                        src={post.profile.picture ? `/assets/${post.profile.picture }` : 'https://i.imgur.com/uNL6B8O.png'}
+                        src={post.profile.picture ? `${post.profile.picture }` : 'https://i.imgur.com/uNL6B8O.png'}
                         alt='Dan Abramov'
                         border={'2px solid'}
                         borderColor={"whiteAlpha.600"}

@@ -48,22 +48,27 @@ const PostInput = ({user, profile, setPosts}) => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     if (postData.picture) {
-      try {
-        const formData = new FormData();
-        formData.append('profilePicture', postData.picture);
-
-        const response = await axios.post('/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        console.log('File uploaded:', response.data.filePath);
-      } catch (error) {
-        console.error('File upload error:', error);
-      }
-    }
-    try {
+      console.log(postData.picture)
+      const formData = new FormData();
+      formData.append('image', postData.picture);
+      formData.append('type', selectedButton)
+      formData.append('profile', profile._id)
+      formData.append('title', postData.title)
+      formData.append('content', postData.content)
+      const post = await axios.post("/api/posts/create", formData, { headers: {'Content-Type': 'multipart/form-data'}})
+      setPosts(prevPosts => [post.data, ...prevPosts]);
+      setIsModalOpen(false);
+      setSelectedButton(null)
+      setSelectedFileName('')
+      setPostData({
+        type: '',
+        profile: '',
+        title: '',
+        content: '',
+        picture: '',
+        username: ''  
+      });
+    } else {
       const post = await createPost({
         type: selectedButton,
         profile: profile._id,
@@ -86,8 +91,6 @@ const PostInput = ({user, profile, setPosts}) => {
       picture: '',
       username: ''
     });
-    } catch {
-      setPostData({ ...postData, error: 'Post Failed - Try Again' });
     }
   };
 
