@@ -143,7 +143,7 @@ const handleEditConfirm = async (evt) => {
                 )}
               </Dropzone>
               {post && (
-                <Text color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
+                <Text style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} color={'whiteAlpha.800'} marginLeft={3} display={'inline-block'}>{fileName}</Text>
               )}
             </HStack>
           </ModalBody>
