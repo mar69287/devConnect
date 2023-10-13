@@ -157,17 +157,17 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
   return (
     <VStack position={"relative"} mb={4} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
-            <Link to={`/profile/${post.username}`}>
+            <Link to={`/profile/${post.profile.userName}`}>
                 <HStack>
                     <Image
                         borderRadius='full'
                         boxSize='40px'
-                        src={post.profile.picture ? `${post.profile.picture }` : 'https://i.imgur.com/uNL6B8O.png'}
+                        src={post.profilePic? `${post.profilePic }` : 'https://i.imgur.com/uNL6B8O.png'}
                         alt='Dan Abramov'
                         border={'2px solid'}
                         borderColor={"whiteAlpha.600"}
                     />
-                    <Heading  color="rgb(255, 255, 255)" size='sm'>{post.username}</Heading>
+                    <Heading  color="rgb(255, 255, 255)" size='sm'>{post.profile.userName}</Heading>
                 </HStack>
             </Link>
             {profile._id === post.profile._id && (
@@ -221,7 +221,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
             <Text textAlign={'left'} color="whiteAlpha.800" fontSize='sm'>{post.content}</Text>
             {post.picture && (
                 <Image
-                    src={`/assets/${post.picture}`}
+                    src={`${post.picture}`}
                     alt='Post Image'
                     objectFit='cover'
                 />
