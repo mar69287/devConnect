@@ -38,6 +38,18 @@ module.exports = {
 async function index(req, res) {
     try {
         const profiles = await Profile.find();
+        for (const profile of profiles) {
+            if (profile.picture !== null) {
+                profile.picture = await getSignedUrl(
+                    s3Client,
+                    new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: profile.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+                );
+            }
+        }
         res.json(profiles);
     } catch (error) {
         res.json({ message: 'Error fetching profiles' });

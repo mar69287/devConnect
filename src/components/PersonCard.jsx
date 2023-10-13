@@ -36,7 +36,7 @@ const PersonCard = ({ person, following, setFollowing, setFollowingCount, profil
                     <Image
                         borderRadius='full'
                         boxSize='50px'
-                        src={person.picture ? `/assets/${person.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                        src={person.picture ? `${person.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                         alt='Dan Abramov'
                         border={'2px solid'}
                         borderColor={"whiteAlpha.600"}
