@@ -80,7 +80,8 @@ async function show(req, res) {
 
 async function create(req, res) {
     const post = req.body
-    if (post.title) {
+    console.log(post)
+    if (post.content) {
         try {
             const newPost = new Post(post);
             await newPost.save();
@@ -154,28 +155,29 @@ async function create(req, res) {
 
 async function edit(req, res) {
     try {
-        const id = req.params.id;
-        const update = {};
+        console.log('here')
+    //     const id = req.params.id;
+    //     const update = {};
 
-        if (req.body.title) {
-            update.title = req.body.title;
-        }
+    //     if (req.body.title) {
+    //         update.title = req.body.title;
+    //     }
 
-        if (req.body.picture) {
-            update.picture = req.body.picture;
-        }
+    //     if (req.body.picture) {
+    //         update.picture = req.body.picture;
+    //     }
 
-        if (req.body.content) {
-            update.content = req.body.content;
-        }
+    //     if (req.body.content) {
+    //         update.content = req.body.content;
+    //     }
 
-        const updatedPost = await Post.findByIdAndUpdate(
-            id,
-            update,
-            { new: true }
-        );
+    //     const updatedPost = await Post.findByIdAndUpdate(
+    //         id,
+    //         update,
+    //         { new: true }
+    //     );
 
-        res.json(updatedPost);
+    //     res.json(updatedPost);
     } catch (err) {
         res.json(err);
     }

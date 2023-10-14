@@ -43,38 +43,36 @@ const handleFileChange = (selectedFile) => {
 
 const handleEditConfirm = async (evt) => {
     evt.preventDefault();
-    if (editedPost.picture) {
-      try {
-        const formData = new FormData();
-        formData.append('profilePicture', editedPost.picture);
-
-        const response = await axios.post('/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        console.log('File uploaded:', response.data.filePath);
-      } catch (error) {
-        console.error('File upload error:', error);
-      }
-    }
-
     try {
-      const updatedPost = {
-        title: editedPost.title || post.title,
-        content: editedPost.content || post.content,
+      const formData = new FormData();
+      formData.append('image', editedPost.picture);
+      formData.append('type', post.type)
+      formData.append('picture', post.picture)
+      formData.append('title', editedPost.title || post.title)
+      formData.append('content', editedPost.content || post.content)
+      if (editedPost.picture !== post.picture) {
+        await axios.put(`/api/posts/${postId}`, formData, { headers: {'Content-Type':'multipart/form-dat a'}})
+        navigate(-1);
       }
-      if (editedPost.picture) {
-        updatedPost.picture = editedPost.picture.name;
-      } else {
-        updatedPost.picture = post.picture;
-      }
-      await updatePost(post._id, updatedPost);
-      navigate(-1);
-    } catch {
-      console.error("Error updating post:");
+    } catch (error) {
+        console.error('File upload error:', error);
     }
+
+    // try {
+    //   const updatedPost = {
+    //     title: editedPost.title || post.title,
+    //     content: editedPost.content || post.content,
+    //   }
+    //   if (editedPost.picture) {
+    //     updatedPost.picture = editedPost.picture.name;
+    //   } else {
+    //     updatedPost.picture = post.picture;
+    //   }
+    //   await updatePost(post._id, updatedPost);
+    //   navigate(-1);
+    // } catch {
+    //   console.error("Error updating post:");
+    // }
   };
 
   return (

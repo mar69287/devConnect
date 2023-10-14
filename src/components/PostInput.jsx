@@ -12,11 +12,9 @@ const PostInput = ({user, profile, setPosts}) => {
   const [postData, setPostData] = useState({
     type: '',
     profile: '',
-    profilePic: '',
     title: '',
     content: '',
     picture: '',
-    username: ''
   });
 
   const handleFileChange = (selectedFile) => {
@@ -29,6 +27,7 @@ const PostInput = ({user, profile, setPosts}) => {
   };
 
   const handleButtonSelect = (buttonType) => {
+    setPostData({ ...postData, title: '' });
     setSelectedButton(buttonType);
   };
 
@@ -71,11 +70,9 @@ const PostInput = ({user, profile, setPosts}) => {
       const post = await createPost({
         type: selectedButton,
         profile: profile._id,
-        profilePic: profile.picture,
         title: postData.title,
         content: postData.content,
         picture: postData.picture ? postData.picture.name : null,
-        username: profile.userName
       });
       
       setPosts(prevPosts => [post, ...prevPosts]);
