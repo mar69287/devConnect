@@ -59,33 +59,12 @@ const handleEditConfirm = async (evt) => {
           content: editedPost.content || post.content,
           picture: post.picture
         }
-        // if (editedPost.picture) {
-        //   updatedPost.picture = editedPost.picture;
-        // } else {
-        //   updatedPost.picture = post.picture;
-        // }
         await updatePost(post._id, updatedPost);
         navigate(-1);
       }
     } catch (error) {
         console.error('File upload error:', error);
     }
-
-    // try {
-    //   const updatedPost = {
-    //     title: editedPost.title || post.title,
-    //     content: editedPost.content || post.content,
-    //   }
-    //   if (editedPost.picture) {
-    //     updatedPost.picture = editedPost.picture.name;
-    //   } else {
-    //     updatedPost.picture = post.picture;
-    //   }
-    //   await updatePost(post._id, updatedPost);
-    //   navigate(-1);
-    // } catch {
-    //   console.error("Error updating post:");
-    // }
   };
 
   return (
