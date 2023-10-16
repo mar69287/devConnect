@@ -176,31 +176,46 @@ async function edit(req, res) {
             res.json(updatedPost);
         
         } else {
-            
+            upload.single('image')(req, res, async (err) => {
+                if (err) {
+                    console.error('Multer error:', err);
+                    return res.status(500).json({ message: 'Error uploading file' });
+                }
+                const postId =  req.params.id;
+                const post = await Post.findById(postId)
+                if (post.picture !== null) {
+                    const deleteParams = {
+                        Bucket: bucketName,
+                        Key: post.picture,
+                    }
+                    await s3Client.send(new DeleteObjectCommand(deleteParams))
+                }
+
+                const file = req.file
+                const fileName = generateFileName()
+                const params = {
+                    Bucket: bucketName,
+                    Key: fileName,
+                    Body: file.buffer,
+                    ContentType: file.mimetype,
+                };
+                await s3Client.send(new PutObjectCommand(params));
+                const { type, title, content } = req.body
+                const update = {
+                    type,
+                    title,
+                    content,
+                    picture: fileName
+                }
+                const updatedPost = await Post.findByIdAndUpdate(
+                    postId,
+                    update,
+                    { new: true }
+                );
+                res.json(updatedPost);
+
+            })
         }
-
-    //     const id = req.params.id;
-    //     const update = {};
-
-    //     if (req.body.title) {
-    //         update.title = req.body.title;
-    //     }
-
-    //     if (req.body.picture) {
-    //         update.picture = req.body.picture;
-    //     }
-
-    //     if (req.body.content) {
-    //         update.content = req.body.content;
-    //     }
-
-    //     const updatedPost = await Post.findByIdAndUpdate(
-    //         id,
-    //         update,
-    //         { new: true }
-    //     );
-
-    //     res.json(updatedPost);
     } catch (err) {
         res.json(err);
     }
