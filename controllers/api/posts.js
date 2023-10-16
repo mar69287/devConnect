@@ -155,7 +155,30 @@ async function create(req, res) {
 
 async function edit(req, res) {
     try {
-        console.log('here')
+        if (Object.keys(req.body).length > 0) {
+            const id = req.params.id;
+            const update = {};
+
+            if (req.body.title) {
+                update.title = req.body.title;
+            }
+
+            if (req.body.content) {
+                update.content = req.body.content;
+            }
+
+            const updatedPost = await Post.findByIdAndUpdate(
+                id,
+                update,
+                { new: true }
+            );
+
+            res.json(updatedPost);
+        
+        } else {
+            
+        }
+
     //     const id = req.params.id;
     //     const update = {};
 
@@ -186,7 +209,6 @@ async function edit(req, res) {
 async function deletePost(req, res) {
     try {
         const post = await Post.findById(req.params.id);
-        console.log(post)
         if (post.picture) {
             const deleteParams = {
                 Bucket: bucketName,

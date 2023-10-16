@@ -50,8 +50,21 @@ const handleEditConfirm = async (evt) => {
       formData.append('picture', post.picture)
       formData.append('title', editedPost.title || post.title)
       formData.append('content', editedPost.content || post.content)
-      if (editedPost.picture !== post.picture) {
+      if (editedPost.picture !== post.picture ) {
         await axios.put(`/api/posts/${postId}`, formData, { headers: {'Content-Type':'multipart/form-dat a'}})
+        navigate(-1);
+      } else {
+        const updatedPost = {
+          title: editedPost.title || post.title,
+          content: editedPost.content || post.content,
+          picture: post.picture
+        }
+        // if (editedPost.picture) {
+        //   updatedPost.picture = editedPost.picture;
+        // } else {
+        //   updatedPost.picture = post.picture;
+        // }
+        await updatePost(post._id, updatedPost);
         navigate(-1);
       }
     } catch (error) {
