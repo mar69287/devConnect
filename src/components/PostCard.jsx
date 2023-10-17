@@ -253,7 +253,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                                                 <Image
                                                     borderRadius='full'
                                                     boxSize='40px'
-                                                    src={like.profile.picture ? `/assets/${like.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                                                    src={like.profile.picture ? `${like.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                                                     alt='Dan Abramov'
                                                     border={'2px solid'}
                                                     borderColor={"whiteAlpha.600"}
@@ -355,7 +355,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                         <Image
                             borderRadius='full'
                             boxSize='30px'
-                            src={post.profilePic ? `/assets/${comment.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
+                            src={comment.profile.picture ? `${comment.profile.picture}` : 'https://i.imgur.com/uNL6B8O.png'}
                             alt='Dan Abramov'
                             border={'2px solid'}
                             borderColor={"whiteAlpha.600"}
