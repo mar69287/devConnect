@@ -381,15 +381,14 @@ async function deleteComment(req, res) {
 
 async function getProfilePosts(req, res) {
     try {
-        const profileId = req.params.id
-        let posts = await Post.find({ 'profile': profileId }).populate('profile').populate('likes.profile').populate('comments.profile');
+        let posts = await Post.find().populate('profile').populate('likes.profile').populate('comments.profile');
         posts = posts.map(post => {
             const postObject = post.toObject();
             postObject.profilePic = null;
             return postObject;
-        })
-        for (let post of posts) {
+        });
 
+        await Promise.all(posts.map(async post => {
             if (post.picture !== null) {
                 post.picture = await getSignedUrl(
                     s3Client,
@@ -410,7 +409,32 @@ async function getProfilePosts(req, res) {
                     { expiresIn: 60 * 10 }
                 );
             }
-        }
+
+            await Promise.all(post.likes.map(async like => {
+                if (like.profile.picture !== null) {
+                    like.profile.picture = await getSignedUrl(
+                        s3Client,
+                        new GetObjectCommand({
+                            Bucket: bucketName,
+                            Key: like.profile.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                    );
+                }
+            }));
+            await Promise.all(post.comments.map(async comment => {
+                if (comment.profile.picture !== null) {
+                    comment.profile.picture = await getSignedUrl(
+                        s3Client,
+                        new GetObjectCommand({
+                            Bucket: bucketName,
+                            Key: comment.profile.picture
+                        }),
+                        { expiresIn: 60 * 10 }
+                    );
+                }
+            }));
+        }));
         res.json(posts);
     } catch (error) {
         console.error(error);
