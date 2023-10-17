@@ -1,4 +1,4 @@
-import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Input, InputGroup } from "@chakra-ui/react"
+import { HStack, VStack, Image, Text, Heading, Box, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, AlertDialogHeader, useDisclosure, Menu, MenuButton, IconButton, MenuList, MenuItem, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Input } from "@chakra-ui/react"
 import { BsFillChatLeftDotsFill, BsThreeDots, BsTrash3Fill, BsFillPencilFill, BsFillPersonCheckFill, BsPlusLg } from 'react-icons/bs'
 import { BiSolidLike } from 'react-icons/bi';
 import { Link } from "react-router-dom";
