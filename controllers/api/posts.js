@@ -355,7 +355,35 @@ async function deleteComment(req, res) {
 async function getProfilePosts(req, res) {
     try {
         const profileId = req.params.id
-        const posts = await Post.find({ 'profile': profileId }).populate('profile').populate('likes.profile').populate('comments.profile');
+        let posts = await Post.find({ 'profile': profileId }).populate('profile').populate('likes.profile').populate('comments.profile');
+        posts = posts.map(post => {
+            const postObject = post.toObject();
+            postObject.profilePic = null;
+            return postObject;
+        })
+        for (let post of posts) {
+
+            if (post.picture !== null) {
+                post.picture = await getSignedUrl(
+                    s3Client,
+                    new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: post.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+                );
+            }
+            if (post.profile.picture !== null) {
+                post.profilePic = await getSignedUrl(
+                    s3Client,
+                    new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: post.profile.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+                );
+            }
+        }
         res.json(posts);
     } catch (error) {
         console.error(error);
