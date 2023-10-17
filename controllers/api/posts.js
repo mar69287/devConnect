@@ -107,7 +107,6 @@ async function show(req, res) {
 
 async function create(req, res) {
     const post = req.body
-    console.log(post)
     if (post.content) {
         try {
             const newPost = new Post(post);
@@ -173,6 +172,14 @@ async function create(req, res) {
                         { expiresIn: 60 * 10 }
                 )
             }
+            populatedPost.picture = await getSignedUrl(
+                s3Client,
+                    new GetObjectCommand({
+                    Bucket: bucketName,
+                    Key: populatedPost.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+            )
 
             res.json(populatedPost);
 
@@ -381,7 +388,8 @@ async function deleteComment(req, res) {
 
 async function getProfilePosts(req, res) {
     try {
-        let posts = await Post.find().populate('profile').populate('likes.profile').populate('comments.profile');
+        const profileId = req.params.id
+        let posts = await Post.find({ 'profile': profileId }).populate('profile').populate('likes.profile').populate('comments.profile');
         posts = posts.map(post => {
             const postObject = post.toObject();
             postObject.profilePic = null;
