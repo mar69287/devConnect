@@ -77,6 +77,34 @@ async function show(req, res) {
             { expiresIn: 60 * 10 }
         )
     }
+    if (profile.followers) {
+        for (let follower of profile.followers) {
+            if (follower.picture !== null) {
+                follower.picture = await getSignedUrl(
+                    s3Client,
+                    new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: follower.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+                );
+            }
+        }
+    }
+    if (profile.following) {
+        for (let following of profile.following) {
+            if (following.picture !== null) {
+                following.picture = await getSignedUrl(
+                    s3Client,
+                    new GetObjectCommand({
+                        Bucket: bucketName,
+                        Key: following.picture
+                    }),
+                    { expiresIn: 60 * 10 }
+                );
+            }
+        }
+    }
     res.json(profile);
 }
 
