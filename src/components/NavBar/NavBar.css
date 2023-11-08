@@ -1,9 +1,10 @@
 .arrow-icon {
-    transition: transform 0.3s ease;
+    transition: transform .4s ease;
+    transform: rotate(-45deg);
 }
 
 .login-stack:hover .arrow-icon {
-    transform: translateX(2px);
+    transform: rotate(0deg);
 }
 
 .arrowdown-icon {
@@ -11,5 +12,5 @@
 }
 
 .login-stack:hover .arrowdown-icon {
-    transform: translateY(2px);
+    transform: rotate(45deg);
 }

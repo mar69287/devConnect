@@ -3,8 +3,9 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import { AiOutlineArrowRight } from 'react-icons/ai'
 import '../../components/NavBar/NavBar.css'
-import { motion } from "framer-motion";
+import { easeInOut, motion,  } from "framer-motion";
 
 const Hero = () => {
   const initialIcon = {
@@ -218,12 +219,34 @@ const Hero = () => {
         <VStack >
           <Heading align={'center'}  fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(255, 255, 255)">Empowering Developers in the Digital Era.</Heading>
           <Heading align={'center'} marginBottom={3} fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(105, 107, 111)">Networking and Collaborating on Your Own Terms.</Heading>
-          <Link to='/signup'>
-              <HStack marginBottom={3} className="login-stack" _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} gap={0}  p={'.5rem 1.2rem'} backgroundColor={'rgb(255, 255, 255)'} borderRadius={50}>
-                <Text>Join Us</Text>
-                <MdKeyboardArrowRight className="arrow-icon"/>
-              </HStack>
-          </Link>
+            <Link to='/signup'>
+              <motion.div
+                style={{
+                  padding: '.5rem 1.2rem',
+                  backgroundColor: '#FFF',
+                  display: 'flex',
+                  fontWeight: 500,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  position: 'relative',
+                  overflow: 'hidden', 
+                  gap: 5
+                }}
+                whileHover={{
+                  scale: 1.08,
+                  background: 'linear-gradient(to right, #7928CA, #FF0080)',
+                  color: '#FFF'
+                }}
+                whileTap={{
+                  scale: .9,
+                }}
+                className="login-stack"
+              >
+                Join Us
+                <AiOutlineArrowRight className="arrow-icon"/>
+              </motion.div>
+            </Link>  
           <Text align={'center'} color={'rgb(123, 125, 128)'} fontSize={'1.1rem'}>devConnect fuels your growth by channeling <br />your coding skills into meaningful</Text>
           <Carousel width={'18rem'} infiniteLoop showArrows={false} autoPlay interval={5000} showStatus={false}  renderIndicator={renderEmptyIndicator} showThumbs={false}>
               <Box><Text align={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.1rem'}>Connections</Text></Box>
