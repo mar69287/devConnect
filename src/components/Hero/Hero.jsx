@@ -214,7 +214,7 @@ const Hero = () => {
       </svg>
     </Box>
   </Show>
-  <Box overflow={'hidden'} top={90} className="hero" minH="86vh" m='0 auto' display="flex" justifyContent={"center"} alignItems="center" p={'0 1rem 0 1rem'} width={{xl: '100%', '2xl': '1400px'}} position={'absolute'}>
+  <Box w={'100%'} overflow={'hidden'} top={90} className="hero" minH="86vh" m='0 auto' display="flex" justifyContent={"center"} alignItems="center" p={'0 1rem 0 1rem'} position={'absolute'}>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.4, duration: 0.5 }}>
         <VStack >
           <Heading align={'center'}  fontWeight={'normal'} fontSize={['2xl', '3xl', '4xl']} color="rgb(255, 255, 255)">Empowering Developers in the Digital Era.</Heading>
