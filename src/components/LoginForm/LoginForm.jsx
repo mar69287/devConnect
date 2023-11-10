@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { FormControl, FormLabel, Input, Button, Text, VStack, Center, Stack } from "@chakra-ui/react";
 
 export default function LoginForm({ setUser }) {
@@ -39,9 +40,28 @@ export default function LoginForm({ setUser }) {
           <FormLabel color={'rgb(105, 107, 111)'}>Password</FormLabel>
           <Input color={'rgb(105, 107, 111)'} type="password" name="password" value={credentials.password} onChange={handleChange} required />
         </FormControl>
-        <Button _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)'}} transition='all 0.3s ease-in-out' backgroundColor={'rgb(255, 255, 255)'} borderRadius={50} background={'rgb(230, 137, 50)'} type="submit" onClick={handleSubmit}>
+        <motion.div
+          style={{
+            padding: '.5rem 1.2rem',
+            backgroundColor: '#FFF',
+            display: 'flex',
+            fontWeight: 500,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 6,
+            position: 'relative',
+            overflow: 'hidden', 
+            gap: 5,
+            width: '100%'
+          }}
+          whileHover={{
+            background: 'linear-gradient(to right, #7928CA, #FF0080)',
+            color: '#FFF'
+          }}
+          onClick={handleSubmit}
+        >
           Continue
-        </Button>
+        </motion.div>
         {error && <Text color="red.500">{error}</Text>}
       </VStack>
       <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'column', lg: 'row'}} justifyContent={'center'} alignItems={'center'}>

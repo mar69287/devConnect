@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { signUp } from '../../utilities/users-service';
-import { Box, Button, Stack, Heading, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { Box, Stack, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function SignUpForm({ setUser }) {
   const [formData, setFormData] = useState({
@@ -56,9 +57,30 @@ export default function SignUpForm({ setUser }) {
             <FormLabel color={'rgb(105, 107, 111)'}>Confirm Password</FormLabel>
             <Input color={'rgb(105, 107, 111)'} type="password" name="confirm" value={formData.confirm} onChange={handleChange} required />
           </FormControl>
-          <Button _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)'}} transition='all 0.3s ease-in-out' backgroundColor={'rgb(255, 255, 255)'} borderRadius={50} background={'rgb(230, 137, 50)'} type="submit" onClick={handleSubmit}>
+          {/* <Button _hover={{cursor: 'pointer', backgroundColor: 'rgb(26, 29, 35)', color: 'rgb(183, 184, 185)'}} transition='all 0.3s ease-in-out' backgroundColor={'rgb(255, 255, 255)'} borderRadius={50} background={'rgb(230, 137, 50)'} type="submit" onClick={handleSubmit}>
             Continue
-          </Button>
+          </Button> */}
+          <motion.div
+          style={{
+            padding: '.5rem 1.2rem',
+            backgroundColor: '#FFF',
+            display: 'flex',
+            fontWeight: 500,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 6,
+            position: 'relative',
+            overflow: 'hidden', 
+            gap: 5,
+          }}
+          whileHover={{
+            background: 'linear-gradient(to right, #7928CA, #FF0080)',
+            color: '#FFF'
+          }}
+          onClick={handleSubmit}
+        >
+          Continue
+        </motion.div>
           {formData.error && <Text color="red.500">{formData.error}</Text>}
         </Stack>
         <Stack color="rgb(255, 255, 255)" paddingTop={4} direction={{base: 'row'}} justifyContent={'center'} alignItems={'center'}>
