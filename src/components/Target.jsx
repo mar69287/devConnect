@@ -1,11 +1,10 @@
-import { HStack, VStack, Heading, Stack, Text, Divider, Box } from '@chakra-ui/react'
+import { VStack, Heading, Stack, Text, Divider, Box } from '@chakra-ui/react'
 import {  motion, useAnimation  } from "framer-motion";
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 
 const Target = () => {
-  const ref = useRef(null)
   const { ref: inViewRef, inView } = useInView();
 
   const mainControls = useAnimation()
@@ -13,6 +12,7 @@ const Target = () => {
   useEffect(() => {
     if (inView) {
       mainControls.start('visible')
+      // console.log('in view')
     } 
   }, [inView]);
 
