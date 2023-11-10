@@ -7,7 +7,8 @@ import { BiSolidMessageRoundedDetail, BiSearchAlt2 } from 'react-icons/bi'
 import * as userService from '../../utilities/users-service' 
 import { deleteProfile } from '../../utilities/profiles-api';
 import { useState, useEffect } from 'react';
-import PersonCard from "../PersonCard"
+import PersonCard from "../PersonCard";
+import './NavBar.css';
 
 export default function NavBar({ allProfiles, user, setUser, profile, following, setFollowing, setFollowingCount }) {
     const deleteDisclosure = useDisclosure();
@@ -57,19 +58,20 @@ export default function NavBar({ allProfiles, user, setUser, profile, following,
             <HStack width={{lg: '100%', '2xl': '1400px'}} m='5px auto' justifyContent={'space-between'} p={'.9rem 1.8rem .9rem 1.4rem'}>
                     <HStack>
                         <Link to="/feed">
-                            <Hide breakpoint='(max-width: 500px)'>
-                                <Heading _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} as={'h1'} fontSize={{ base: '1.1rem', md: '1.3rem', lg: '1.5rem' }} color="rgb(255, 255, 255)" p={'.3rem .1rem'} borderColor={'rgb(255, 255, 255)'} borderBottom={'2px solid'} borderTop={'2px solid'}>
+                            <Hide breakpoint='(max-width: 600px)'>
+                                <Heading fontFamily="AquireBold" _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} as={'h1'} fontSize={{ base: '1.1rem', md: '1.3rem', lg: '1.5rem' }} color="rgb(255, 255, 255)" p={'.3rem .1rem'} borderColor={'rgb(255, 255, 255)'} borderBottom={'2px solid'} borderTop={'2px solid'}>
                                     devConnect
                                 </Heading>
                             </Hide>
-                            <Show breakpoint='(max-width: 500px)'>
-                                <Heading _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} as={'h1'} fontSize={{ base: '1.1rem', md: '1.3rem', lg: '1.5rem' }} color="rgb(255, 255, 255)" p={'.3rem .1rem'} borderColor={'rgb(255, 255, 255)'} borderBottom={'2px solid'} borderTop={'2px solid'}>
+                            <Show breakpoint='(max-width: 600px)'>
+                                <Heading fontFamily="AquireBold" _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}} as={'h1'} fontSize={{ base: '1.1rem', md: '1.3rem', lg: '1.5rem' }} color="rgb(255, 255, 255)" p={'.3rem .1rem'} borderColor={'rgb(255, 255, 255)'} borderBottom={'2px solid'} borderTop={'2px solid'}>
                                     DC
                                 </Heading>
                             </Show>
                         </Link>
-                        <Box onClick={handleUserInputClick} ml={2} color={'rgb(204, 206, 209)'} gap={0} _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}}>
-                            <BiSearchAlt2 fontSize={30}/>
+                        <Box onClick={handleUserInputClick} fontSize={[25, 30]} ml={[0,2]} color={'rgb(204, 206, 209)'} gap={0} _hover={{cursor: 'pointer', color: 'rgb(183, 184, 185)', transition: 'all 0.3s ease-in-out'}}>
+                            <BiSearchAlt2 />
+                            {/* fontSize={30} */}
                         </Box>
                     </HStack>
                 <HStack gap={4}>
