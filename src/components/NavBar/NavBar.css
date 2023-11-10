@@ -14,3 +14,13 @@
 .login-stack:hover .arrowdown-icon {
     transform: rotate(45deg);
 }
+
+@font-face {
+    font-family: 'AquireBold';
+    src: url('../../assets/AquireBold-8Ma60.otf') format('opentype');
+  }
+
+  
+  
+  
+  
