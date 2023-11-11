@@ -1,4 +1,4 @@
-import { VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem, Hide, Grid, GridItem } from "@chakra-ui/react"
+import { VStack, Image, Heading, Text, Divider, HStack, Spinner, Link, List, ListItem, Hide, Grid, GridItem, Progress } from "@chakra-ui/react"
 import { TiLocationArrowOutline } from 'react-icons/ti'
 import { useEffect, useState } from 'react'
 import { getUserProfile, getAllProfiles } from '../utilities/profiles-api'
@@ -9,25 +9,35 @@ import PostCard from "../components/PostCard"
 
 const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, followers, setFollowers, followersCount, setFollowersCount, following, setFollowing, followingCount, setFollowingCount }) => {
     const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [loadingValue, setLoadingValue] = useState(0)
+    const [loadingColor, setLoadingColor] = useState('purple')
 
     useEffect(() => {
         localStorage.setItem('lastVisitedPage', '/feed');
         async function fetchProfile() {
             try {
+                setLoadingValue(20)
                 const allProfiles = await getAllProfiles()
                 setAllProfiles(allProfiles)
-
                 const profileData = await getUserProfile();
                 setProfile(profileData);
                 setFollowers(profileData.followers)
                 setFollowersCount(profileData.followers.length)
                 setFollowing(profileData.following)
                 setFollowingCount(profileData.following.length)
+                setLoadingValue(40)
+                setLoadingColor('pink')
                 const chatData = await authenticate({username: profileData.userName})
                 setChatUser({ ...chatData, secret: profileData.userName });
+                setLoadingValue(80)
                 const posts = await getPosts();
                 const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setPosts(sortedPosts);
+                setLoadingValue(100)
+                setLoadingColor('red')
+                // setTimeout(() => setLoading(false), 1000)
+                setLoading(false)
             } catch (error) {
                 console.error(error);
             }
@@ -58,6 +68,10 @@ const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, foll
         },
       
     ];
+
+    if (loading){
+        return <Progress colorScheme={loadingColor} value={loadingValue}/>
+    }
 
   return (
     <Grid
