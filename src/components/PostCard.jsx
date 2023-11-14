@@ -299,7 +299,8 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
 
                 )}
             </HStack>
-            <Divider borderColor={"#F8F8F8"} mt={2}/>
+            {/* <Divider borderColor={"#F8F8F8"} mt={2}/> */}
+            <Box h={'1px'} mt={2} bgGradient='linear(to-l, #1A1A1A, #FFF, #1A1A1A)' w={'100%'}/>
             <HStack justify='space-between' w={'100%'}>
             {isPostLikedByCurrentUser ? (
                 <Button

@@ -117,7 +117,7 @@ const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, foll
                     </VStack>
                 </GridItem>
                 <GridItem w={'100%'} area={'posts'}>
-                    <VStack py={3} px={4} mb={2} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10} w={'100%'}>
+                    <VStack py={3} px={4} mb={2} bgGradient='linear(to-t, rgb(18,18,18), rgb(31,31,31))' border={'2px solid rgb(50,50,50)'} borderRadius={10} w={'100%'}>
                         <HStack  w={'100%'} >
                             <Image
                                 borderRadius='full'
@@ -136,7 +136,7 @@ const FeedPage = ({ setAllProfiles, setChatUser, profile, setProfile, user, foll
                 </GridItem>
                 <Hide below='md'>
                     <GridItem w={'100%'} area={'references'}>
-                        <VStack py={3} px={4} h={'max-content'} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+                        <VStack py={3} px={4} h={'max-content'} bgGradient='linear(to-t, rgb(18,18,18), rgb(31,31,31))' border={'2px solid rgb(50,50,50)'} borderRadius={10}>
                             <Heading textAlign={'center'} color="rgb(255, 255, 255)" size='sm'>Learning to code or just want more practice?</Heading>
                             <Text align={"center"} color="whiteAlpha.800" fontSize='sm'>Below we'll share some great resources for you to check out.</Text>
                             <List spacing={2} mt={2} textAlign="left" w={'100%'}>
