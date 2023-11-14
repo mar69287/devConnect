@@ -155,7 +155,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
 
 
   return (
-    <VStack position={"relative"} mb={4} gap={2} pt={3} pb={1} px={4} w={['100%']} backgroundColor={'rgb(28, 30, 35)'} borderColor={'WhiteAlpha300'} border={'2px solid'} borderRadius={10}>
+    <VStack position={"relative"} mb={4} gap={2} pt={3} pb={1} px={4} w={['100%']} bgGradient='linear(to-t, rgb(18,18,18), rgb(31,31,31))' border={'2px solid rgb(50,50,50)'} borderRadius={10}>
         <HStack justifyContent={'space-between'} w={'100%'}>
             <Link to={`/profile/${post.profile.userName}`}>
                 <HStack>
@@ -299,7 +299,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
 
                 )}
             </HStack>
-            <Divider borderColor={"whiteAlpha.300"} mt={2}/>
+            <Divider borderColor={"#F8F8F8"} mt={2}/>
             <HStack justify='space-between' w={'100%'}>
             {isPostLikedByCurrentUser ? (
                 <Button
@@ -317,6 +317,7 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                     color='rgb(204, 206, 209)'
                     leftIcon={<BiSolidLike />}
                     flex={1} 
+                    _hover={{ color: '#000', bg: 'rgba(255, 255, 255, 0.9)' }}
                     onClick={() => handleAddLike(post._id)}
                 >
                     Like
@@ -326,7 +327,8 @@ const PostCard = ({ posts, post, profile, setPosts, following, setFollowing, set
                 <Button 
                   color={'rgb(204, 206, 209)'} 
                   flex='1' variant='ghost' 
-                  leftIcon={<BsFillChatLeftDotsFill />} 
+                  leftIcon={<BsFillChatLeftDotsFill />}
+                  _hover={{ color: '#000', bg: 'rgba(255, 255, 255, 0.9)' }} 
                   onClick={() => setShowCommentInput(true)}
                 >
                   Comment
