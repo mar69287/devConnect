@@ -1,9 +1,9 @@
-import { Grid, GridItem, Heading, Button, VStack, SimpleGrid, Text, HStack, Card, Box } from "@chakra-ui/react"
+import { Grid, GridItem, Heading, Button, VStack, SimpleGrid, Text, HStack, Card, Box, Flex } from "@chakra-ui/react"
 import { FaPeopleGroup } from 'react-icons/fa6'
 import { BsFillPeopleFill } from 'react-icons/bs'
 import PersonCard from "../components/PersonCard"
 import { useState } from "react"
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import NetworkCard from "../components/NetworkCard"
 
 
@@ -20,35 +20,59 @@ const NetworkPage = ({ profile, followers, followersCount, setFollowersCount, fo
             <Heading mb={3} textAlign={"center"}  color="rgb(255, 255, 255)" size='md'>My Network</Heading>
             <VStack w={'100%'} alignItems={'flex-start'}>
                 <HStack w={'100%'} justifyContent={'space-between'}>
-                    <Button
-                        variant='none'
-                        color={followingComponent ? '#7928CA' : 'rgb(204, 206, 209)' }
-                        size={"md"}
-                        leftIcon={<FaPeopleGroup /> }
-                        _hover={{
-                            color: 'rgb(255, 255, 255)',
-                            borderColor: 'rgb(255, 255, 255)',
+                    <motion.div
+                        style={{
+                            padding: '.5rem 1rem',
+                            backgroundColor: followingComponent ? '#7928CA' : 'rgb(28, 30, 35)',
+                            display: 'flex',
+                            fontWeight: 600,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 5,
+                            position: 'relative',
+                            overflow: 'hidden', 
+                            gap: 8,
+                            color: '#FFF'
+                        }}
+                        whileHover={{
+                            cursor: 'pointer',
+                        }}
+                        whileTap={{
+                            scale: .9,
                         }}
                         onClick={() => setFollowingComponent(true)}
                     >
+                        <FaPeopleGroup />
                         Following
-                    </Button>
+                    </motion.div>
                     <Text color="whiteAlpha.800" fontSize='sm'>{followingCount}</Text>
                 </HStack>
                 <HStack w={'100%'} justifyContent={'space-between'}>
-                    <Button
-                        variant='none'
-                        color={followingComponent ? 'rgb(204, 206, 209)' : '#7928CA' }
-                        size={"md"}
-                        leftIcon={<BsFillPeopleFill /> }
-                        _hover={{
-                            color: 'rgb(255, 255, 255)',
-                            borderColor: 'rgb(255, 255, 255)',
+                    <motion.div
+                        style={{
+                            padding: '.5rem 1rem',
+                            backgroundColor: followingComponent ? 'rgb(28, 30, 35)' : '#7928CA',
+                            display: 'flex',
+                            fontWeight: 600,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 5,
+                            position: 'relative',
+                            overflow: 'hidden', 
+                            gap: 8,
+                            color: '#FFF'
+                        }}
+                        whileHover={{
+                            cursor: 'pointer',
+                        }}
+                        whileTap={{
+                            scale: .9,
                         }}
                         onClick={() => setFollowingComponent(false)}
                     >
+                        <BsFillPeopleFill />
                         Followers
-                    </Button>
+                    </motion.div>
                     <Text color="whiteAlpha.800" fontSize='sm'>{followersCount}</Text>
                 </HStack>
             </VStack>
@@ -62,7 +86,7 @@ const NetworkPage = ({ profile, followers, followersCount, setFollowersCount, fo
                 <Text mb={5} align={'left'} bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize={'1.3rem'}>Followers</Text>
                 
             )} 
-        <SimpleGrid spacing={4} minChildWidth={'13rem'} w={'100%'} alignItems={'center'} justifyItems={'center'} >
+        <Flex spacing={4} gap={10} w={'100%'} alignItems={'center'} justifyContent={['center','center','start']} flexWrap={'wrap'} >
             {followingComponent && following.map((person) => (
                 // <PersonCard
                 //     key={person._id}
@@ -88,7 +112,7 @@ const NetworkPage = ({ profile, followers, followersCount, setFollowersCount, fo
                 <NetworkCard key={person._id} person={person} followingComponent={followingComponent} profile={profile} setFollowing={setFollowing} setFollowingCount={setFollowingCount} following={following} />
 
             ))}
-        </SimpleGrid>
+        </Flex>
       </GridItem>
     </Grid>
   )
