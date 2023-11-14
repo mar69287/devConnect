@@ -19,7 +19,6 @@ const NetworkCard = ({ person, followingComponent, setFollowing, setFollowingCou
     const handleAddFollower = async (followerId) => {
         try {
             const newFollowing = await addFollowing(profile._id, followerId);
-            console.log(newFollowing)
             setFollowing((prev) => [...prev, newFollowing]);
             setFollowingCount((prevTotal) => prevTotal + 1);
             setIsFollowingUser(true)
@@ -29,7 +28,14 @@ const NetworkCard = ({ person, followingComponent, setFollowing, setFollowingCou
     }
 
     const handleDeleteFollower = async (followerId) => {
-        console.log('in delete follower')
+        try {
+            await deleteFollowing(profile._id, followerId);
+            setFollowing((prevFollowing) => prevFollowing.filter((profile) => profile._id !== followerId));
+            setFollowingCount((prevTotal) => prevTotal - 1);
+            setIsFollowingUser(false)
+        } catch (error) {
+            console.error("Error deleting follow:", error);
+        }
     }
 
   return (
