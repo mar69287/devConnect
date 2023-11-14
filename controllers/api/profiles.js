@@ -332,6 +332,17 @@ async function addFollowing(req, res) {
         followerProfile.following.push(profileId);
         userProfile.followers.push(followerProfileId);
 
+        if (userProfile.picture) {
+            userProfile.picture = await getSignedUrl(
+                s3Client,
+                new GetObjectCommand({
+                  Bucket: bucketName,
+                  Key: userProfile.picture
+                }),
+                { expiresIn: 60 * 10 }
+            )
+        }
+
         await userProfile.save();
         await followerProfile.save();
 
